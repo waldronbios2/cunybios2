@@ -1,0 +1,29 @@
+Package: CUNYBIOS2
+Type: Package
+Title: Lecture and lab materials for CUNY Biostatistics 2
+Version: 0.1.0
+Author: Levi Waldron
+Maintainer: Levi Waldron <lwaldron.research@gmail.com>
+Description: This package uses git submodules to import session-specific packages
+    and helps to install all needed dependencies
+Imports: 
+    tidyverse,
+    tableone,
+    survminer,
+    muhaz,
+    nlme,
+    xtable,
+    RColorBrewer,
+    MASS,
+    stargazer,
+    multicomp,
+    highlight,
+    pscl,
+    gamlss,
+    lme4,
+    reshape2,
+    cmprsk,
+    mstate
+License: CC BY-SA
+Encoding: UTF-8
+LazyData: true
