@@ -1,8 +1,8 @@
 on: [push]
 jobs:
   job1:
-    runs-on: ubuntu-latest
-    container: rocker/rstudio:latest
+    runs-on: debian:stretch
+    container: rocker/verse:3.6.3
     steps:
       - uses: actions/checkout@v1
 
@@ -39,7 +39,12 @@ jobs:
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "error", check_dir = "check")
+        run: |
+          git submodule init
+          git submodule update
+          mkdir vignettes/
+          rm vignettes/*.pdf vignettes/*.html vignettes/*.Rproj vignettes/*.md
+          rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "error", check_dir = "check")
         shell: Rscript {0}
         
       - uses: docker/build-push-action@v1
@@ -53,8 +58,6 @@ jobs:
 
       - name: Build pkgdown
         run: |
-           mkdir vignettes/
-           rm vignettes/*.pdf vignettes/*.html vignettes/*.Rproj vignettes/*.md
            PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site(".")'
 
       # deploy needs rsync? Seems so.
