@@ -167,6 +167,7 @@ Suggests:
 Remotes:
     rstudio-education/gradethis,
     rstudio-education/envtutorial
+DockerImage: waldronbios2/cunybios2:latest
 License: CC BY-SA
 Encoding: UTF-8
 LazyData: true
