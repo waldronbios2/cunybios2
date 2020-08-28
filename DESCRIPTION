@@ -16,7 +16,7 @@ Imports:
     RColorBrewer,
     MASS,
     stargazer,
-    multicomp,
+    multcomp,
     highlight,
     pscl,
     gamlss,
