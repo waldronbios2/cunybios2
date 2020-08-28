@@ -6,7 +6,7 @@ Author: Levi Waldron
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
 Description: This package uses git submodules to import session-specific packages
     and helps to install all needed dependencies
-Suggests:
+Imports:
     tableone,
     survminer,
     muhaz,
@@ -142,7 +142,6 @@ Suggests:
     scales,
     selectr,
     shape,
-    shiny,
     sourcetools,
     sp,
     stringi,
@@ -164,6 +163,11 @@ Suggests:
     xml2,
     xtable,
     yaml
+Suggests:
+    pkgdown,
+    shiny,
+    knitr,
+    rmarkdown
 Remotes:
     rstudio-education/gradethis,
     rstudio-education/envtutorial
@@ -171,3 +175,6 @@ DockerImage: waldronbios2/cunybios2:latest
 License: CC BY-SA
 Encoding: UTF-8
 LazyData: true
+URL: https://waldronbios2.github.io/cunybios2/
+BugReports: https://github.com/waldronbios2/cunybios2/issues/new/choose
+VignetteBuilder: knitr
