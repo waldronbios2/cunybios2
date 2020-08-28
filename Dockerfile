@@ -9,5 +9,5 @@ RUN git submodule init
 RUN git submodule update
 
 
-RUN Rscript -e "install.packages('devtools', ask=FALSE, Ncpus=max(1, detectCores(), na.rm=TRUE))"
-RUN Rscript -e "devtools::install('.', dependencies=TRUE, build_vignettes=FALSE, Ncpus=max(1, detectCores(), na.rm=TRUE))"
+RUN Rscript -e "install.packages('devtools', ask=FALSE, Ncpus=max(1, parallel::detectCores(), na.rm=TRUE))"
+RUN Rscript -e "devtools::install('.', dependencies=TRUE, build_vignettes=FALSE, Ncpus=max(1, parallel::detectCores(), na.rm=TRUE))"
