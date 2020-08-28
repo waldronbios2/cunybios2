@@ -1,0 +1,15 @@
+url: https://waldronbios2.github.io/cunybios2
+
+template:
+  params:
+    bootswatch: flatly
+
+home:
+  title: "CUNY SPH Biostatistics 2"
+  type: inverse
+
+
+navbar:
+  right:
+   - icon: fa-github
+     href: https://github.com/waldronbios2
