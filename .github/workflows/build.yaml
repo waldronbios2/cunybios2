@@ -1,7 +1,7 @@
 on: [push]
 jobs:
   job1:
-    runs-on: debian:stretch
+    runs-on: debian:stretch-slim
     container: rocker/verse:3.6.3
     steps:
       - uses: actions/checkout@v1
