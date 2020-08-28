@@ -1,9 +1,9 @@
 [submodule "session1"]
 	path = session1
-	url = git@github.com:waldronbios2/session1.git
+	url = https://github.com/waldronbios2/session1.git
 [submodule "session2"]
 	path = session2
-	url = git@github.com:waldronbios2/session2.git
+	url = https://github.com:waldronbios2/session2.git
 [submodule "primers"]
 	path = primers
 	url = https://github.com/rstudio-education/primers.git
