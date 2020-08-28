@@ -6,7 +6,7 @@ Author: Levi Waldron
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
 Description: This package uses git submodules to import session-specific packages
     and helps to install all needed dependencies
-Imports: 
+Suggests:
     tableone,
     survminer,
     muhaz,
@@ -164,6 +164,9 @@ Imports:
     xml2,
     xtable,
     yaml
+Remotes:
+    rstudio-education/gradethis,
+    rstudio-education/envtutorial
 License: CC BY-SA
 Encoding: UTF-8
 LazyData: true
