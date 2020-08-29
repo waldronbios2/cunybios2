@@ -1,3 +1,5 @@
+![.github/workflows/build.yaml](https://github.com/waldronbios2/cunybios2/workflows/.github/workflows/build.yaml/badge.svg)
+
 # Lecture and lab materials for CUNY SPH Biostatistics 2
 
 This course is designed to expand on the biostatistical methods
