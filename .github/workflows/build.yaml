@@ -29,6 +29,10 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+          git submodule init
+          git submodule update
+          mkdir vignettes/
+          rm vignettes/*.pdf vignettes/*.html vignettes/*.Rproj vignettes/*.md
           
       - name: Install dependencies
         run: |
@@ -40,10 +44,6 @@ jobs:
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: |
-          git submodule init
-          git submodule update
-          mkdir vignettes/
-          rm vignettes/*.pdf vignettes/*.html vignettes/*.Rproj vignettes/*.md
           rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "error", check_dir = "check")
         shell: Rscript {0}
         
