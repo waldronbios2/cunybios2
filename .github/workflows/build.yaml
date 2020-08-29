@@ -32,6 +32,7 @@ jobs:
           git submodule init
           git submodule update
           mkdir vignettes/
+          cp session*/* vignettes/
           rm vignettes/*.pdf vignettes/*.html vignettes/*.Rproj vignettes/*.md
           
       - name: Install dependencies
