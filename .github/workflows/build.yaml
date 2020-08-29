@@ -26,14 +26,14 @@ jobs:
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
           git submodule init
           git submodule update
           mkdir vignettes/
-          cp session*/* vignettes/
+          /bin/cp -rf cp session*/* vignettes/
           rm vignettes/*.pdf vignettes/*.html vignettes/*.Rproj vignettes/*.md
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
           
       - name: Install dependencies
         run: |
