@@ -32,14 +32,14 @@ jobs:
           apt-get install -y rsync
           git submodule init
           git submodule update
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          Rscript -e "options(c(CRAN = 'https://cran.r-project.org')); remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
+          options(c(CRAN = 'https://cran.r-project.org')); remotes::install_deps(dependencies = TRUE)
+          options(c(CRAN = 'https://cran.r-project.org')); remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
       - name: Check
