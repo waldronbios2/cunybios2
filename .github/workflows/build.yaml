@@ -9,9 +9,8 @@ jobs:
 
       - name: Query dependencies and update old packages
         run: |
-          remove.packages('remotes')
           install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends2.Rds", version = 2)
         shell: Rscript {0}
 
       - name: Cache R packages
@@ -19,7 +18,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: /usr/local/lib/R/site-library
-          key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
+          key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends2.Rds') }}
           restore-keys: ${{ runner.os }}-r-1-
 
       # This lets us augment with additional dependencies
