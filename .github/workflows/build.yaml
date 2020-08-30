@@ -9,6 +9,7 @@ jobs:
 
       - name: Query dependencies and update old packages
         run: |
+          remove.packages('remotes')
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
