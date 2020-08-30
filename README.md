@@ -1,4 +1,4 @@
-![.github/workflows/build.yaml](https://github.com/waldronbios2/cunybios2/workflows/.github/workflows/build.yaml/badge.svg)
+![Website and Docker](https://github.com/waldronbios2/cunybios2/workflows/Website%20and%20Docker/badge.svg)
 
 # Lecture and lab materials for CUNY SPH Biostatistics 2
 
