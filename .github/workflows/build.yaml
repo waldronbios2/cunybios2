@@ -10,12 +10,11 @@ jobs:
       - name: Query dependencies and update old packages
         run: |
           repos = options(c(CRAN = 'https://cran.r-project.org')); install.packages('remotes')
-          repos = options(c(CRAN = 'https://cran.r-project.org')); install.packages('stringi')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
       - name: Cache R packages
-        if: runner.os != 'Windows'
+        if: runner.os != 'Linux'
         uses: actions/cache@v1
         with:
           path: /usr/local/lib/R/site-library
