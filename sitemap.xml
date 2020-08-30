@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://waldronbios2.github.io/cunybios2/index.html</loc>
+    <loc>https://bios2.waldronlab.io/index.html</loc>
   </url>
   <url>
-    <loc>https://waldronbios2.github.io/cunybios2/articles/session1_introR.html</loc>
-  </url>
-  <url>
-    <loc>https://waldronbios2.github.io/cunybios2/articles/session1_linearmodels.html</loc>
-  </url>
-  <url>
-    <loc>https://waldronbios2.github.io/cunybios2/articles/session2_lab.html</loc>
-  </url>
-  <url>
-    <loc>https://waldronbios2.github.io/cunybios2/articles/session2_lecture.html</loc>
+    <loc>https://bios2.waldronlab.io/articles/technicalnotes.html</loc>
   </url>
 </urlset>

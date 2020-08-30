@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title> • CUNYBIOS2</title>
+<title>About this website • CUNYBIOS2</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script>
+<link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,13 +33,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="" />
+<meta property="og:title" content="About this website" />
 
 
 
@@ -68,7 +68,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -80,7 +80,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">CUNYBIOS2</a>
+        <a class="navbar-link" href="index.html">CUNYBIOS2</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
@@ -125,7 +125,7 @@
 </li>
 <li class="dropdown-header"></li>
 <li>
-  <a href="../about.html">About</a>
+  <a href="about.html">About</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -154,19 +154,27 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>Reference</h1>
+      <h1>About this website</h1>
     </div>
 
-    <table class="ref-index">
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+<div id="about-this-website" class="section level1">
 
-    
-    </table>
+<p>This site provides automatically rendered course notes for CUNY SPH Biostatistics 2. This course consists of 10 sessions, and each session has an individual GitHub repo with its own R pkgdown website. Those session websites contain lecture and lab notes in html version, and lecture slides as PDF. This site serves to:</p>
+<ol>
+<li>provide a simple website with links to all lectures and labs</li>
+<li>provide convenient access to all source code using Git Submodules</li>
+<li>create a Docker image containing all source code, and with all dependencies needed to run any of the source code.</li>
+</ol>
+<p>The template used for creating sessions is <a href="https://github.com/waldronbios2/templatesession" class="uri">https://github.com/waldronbios2/templatesession</a>. This provides the shell website, lecture, lab, and a GitHub Action for rendering and deploying to GitHub Pages. Click the “Use this template” button to use it as the template for a new GitHub repo. You can then use the <a href="https://github.com/waldronbios2/templatesession/blob/master/sedhelper.sh">sedhelper.sh</a> script to change session “N” to an actual number in the places where it’s needed.</p>
+</div>
+<div id="about-the-author" class="section level1">
+<h1 class="hasAnchor">
+<a href="#about-the-author" class="anchor"></a>About the author</h1>
+<p><a href="https://waldronlab.io">Levi Waldron</a> is an Associate Professor of Biostatistics at the CUNY SPH. He created this site for the first fully-online offering of CUNY SPH Biostatistics 2 in Fall 2020.</p>
+</div>
+
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -174,7 +182,9 @@
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
+
 
 
       <footer>
