@@ -10,15 +10,16 @@ jobs:
       - name: Query dependencies and update old packages
         run: |
           install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
-#       - name: Cache R packages
-#         if: runner.os != 'Windows'
-#         uses: actions/cache@v1
-#         with:
-#           path: /usr/local/lib/R/site-library
-#           key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends2.Rds') }}
-#           restore-keys: ${{ runner.os }}-r-1-
+      - name: Cache R packages
+        if: runner.os != 'Windows'
+        uses: actions/cache@v1
+        with:
+          path: /usr/local/lib/R/site-library
+          key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-1-
 
       # This lets us augment with additional dependencies
       - name: Install system dependencies
@@ -28,14 +29,11 @@ jobs:
         run: |
           apt-get update
           apt-get install -y rsync
+          git submodule init
+          git submodule update
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-
-      - name: fetch git submodules
-        run: |
-          git submodule init
-          git submodule update
 
       - name: Install dependencies
         run: |
