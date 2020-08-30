@@ -1,4 +1,4 @@
-FROM rocker/verse:3.6.3
+FROM rocker/tidyverse:4.0.2
 WORKDIR /home/rstudio
 
 COPY --chown=rstudio:rstudio . /home/rstudio/

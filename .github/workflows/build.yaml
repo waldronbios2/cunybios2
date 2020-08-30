@@ -1,8 +1,9 @@
+name: Website and Docker
 on: [push]
 jobs:
   job1:
-    runs-on: ubuntu-16.04
-    container: rocker/verse:3.6.3
+    runs-on: ubuntu-18.04
+    container: rocker/tidyverse:4.0.2
     steps:
       - uses: actions/checkout@v1
 
