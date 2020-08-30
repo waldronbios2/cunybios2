@@ -1,15 +1,44 @@
-url: https://waldronbios2.github.io/cunybios2
+home:
+  strip_header: true
+
+url: https://bios2.waldronlab.io
 
 template:
   params:
-    bootswatch: flatly
-
-home:
-  title: "CUNY SPH Biostatistics 2"
-  type: inverse
-
+    bootswatch: lumen
+    ganalytics: UA-176789980-1
 
 navbar:
-  right:
-   - icon: fa-github
-     href: https://github.com/waldronbios2
+  structure:
+    left:  [home, lectures, labs, articles]
+    right: [github, twitter]
+  components:
+    home: ~
+    lectures:
+      menu:
+      - text: Session 1
+        href: https://waldronbios2.github.io/session1/articles/session_lecture.html
+      - text: Session 2
+        href: https://waldronbios2.github.io/session2/articles/session_lecture.html
+      - text: Session 3
+        href: https://waldronbios2.github.io/session3/articles/session_lecture.html
+    labs:
+      menu:
+      - text: Session 1
+        href: https://waldronbios2.github.io/session1/articles/session_lab.html
+      - text: Session 2
+        href: https://waldronbios2.github.io/session2/articles/session_lab.html
+      - text: Session 3
+        href: https://waldronbios2.github.io/session3/articles/session_lab.html
+    articles:
+      text: "Technical Notes"
+    reference:
+      text: ""
+    twitter:
+      icon: "fab fa-twitter fa-lg"
+      href: https://twitter.com/leviwaldron1
+
+
+authors:
+  Levi Waldron:
+    href: https://waldronlab.io
