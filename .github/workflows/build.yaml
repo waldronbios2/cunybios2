@@ -3,7 +3,7 @@ on: [push]
 jobs:
   job1:
     runs-on: ubuntu-18.04
-    container: docker pull rocker/tidyverse:3.6.3-ubuntu18.04
+    container: rocker/tidyverse:3.6.3-ubuntu18.04
     steps:
       - uses: actions/checkout@v1
 
