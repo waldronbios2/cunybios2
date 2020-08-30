@@ -12,7 +12,7 @@ jobs:
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
-        
+
       - name: Cache R packages
         if: runner.os != 'Windows'
         uses: actions/cache@v1
@@ -31,13 +31,10 @@ jobs:
           apt-get install -y rsync
           git submodule init
           git submodule update
-          mkdir vignettes/
-          rsync -r session*/* vignettes/
-          rm vignettes/*.pdf vignettes/*.html vignettes/*.Rproj vignettes/*.md
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          
+
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
@@ -50,7 +47,7 @@ jobs:
         run: |
           rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "error", check_dir = "check")
         shell: Rscript {0}
-        
+
       - uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
