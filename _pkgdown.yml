@@ -10,12 +10,12 @@ template:
 
 navbar:
   structure:
-    left:  [home, lectures, labs, about]
+    left:  [home, lectures, pdf, labs, websites, about]
     right: [github, twitter]
   components:
     home:
     lectures:
-      text: lectures
+      text: lecture HTML
       menu:
       - text: Session 1
         href: https://waldronbios2.github.io/session1/articles/session_lecture.html
@@ -23,6 +23,15 @@ navbar:
         href: https://waldronbios2.github.io/session2/articles/session_lecture.html
       - text: Session 3
         href: https://waldronbios2.github.io/session3/articles/session_lecture.html
+    pdf:
+      text: lecture PDF
+      menu:
+      - text: Session 1
+        href: https://waldronbios2.github.io/session1/articles/session_lecture.pdf
+      - text: Session 2
+        href: https://waldronbios2.github.io/session2/articles/session_lecture.pdf
+      - text: Session 3
+        href: https://waldronbios2.github.io/session3/articles/session_lecture.pdf
     labs:
       text: labs
       menu:
@@ -32,6 +41,15 @@ navbar:
         href: https://waldronbios2.github.io/session2/articles/session_lab.html
       - text: Session 3
         href: https://waldronbios2.github.io/session3/articles/session_lab.html
+    websites:
+      text: Session websites
+      menu:
+      - text: Session 1
+        href: https://waldronbios2.github.io/session1/
+      - text: Session 2
+        href: https://waldronbios2.github.io/session2/
+      - text: Session 3
+        href: https://waldronbios2.github.io/session3/
     articles:
       text: About
       href: about.html
