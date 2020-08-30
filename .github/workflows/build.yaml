@@ -10,6 +10,7 @@ jobs:
       - name: Query dependencies and update old packages
         run: |
           repos = options(c(CRAN = 'https://cran.r-project.org')); install.packages('remotes')
+          repos = options(c(CRAN = 'https://cran.r-project.org')); install.packages('stringi')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
