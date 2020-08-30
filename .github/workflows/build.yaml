@@ -10,7 +10,7 @@ jobs:
       - name: Query dependencies and update old packages
         run: |
           install.packages('remotes')
-          shell: Rscript {0}
+        shell: Rscript {0}
 
 #       - name: Cache R packages
 #         if: runner.os != 'Windows'
