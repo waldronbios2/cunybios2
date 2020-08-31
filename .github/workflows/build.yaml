@@ -61,12 +61,6 @@ jobs:
         run: |
            PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site(".")'
 
-      # deploy needs rsync? Seems so.
-      - name: Install deploy dependencies
-        run: |
-          apt-get update
-          apt-get -y install rsync
-
       - name: Deploy ð
         uses: JamesIves/github-pages-deploy-action@3.5.9
         with:
