@@ -28,6 +28,11 @@ suppressPackageStartupMessages({
   library(kableExtra)
 })
 chapters <- dir(pattern = "session*")
+badgeimages <- paste0("https://github.com/waldronbios2/", chapters, 
+                 "/workflows/build/badge.svg")
+badgeimagehtml <- paste0("<img src='", badgeimages, "'>")
+badgelinks <- paste0("https://github.com/waldronbios2/", chapters, "/actions")
+badgehyper <- paste0("<a href = '", badgelinks, "'> </a>")
 dt <- data.frame(
   session = cell_spec(
     seq_along(chapters),
@@ -35,10 +40,10 @@ dt <- data.frame(
       packageDescription(x)$Description),
     link = paste0("https://waldronbios2.github.io/", chapters)
   ),
-  status = "", 
+  status = badgehyper,
   git = cell_spec(
-  "git",
-  tooltip = "use for git clone",
+  "git clone",
+  tooltip = "use for git clone click to go to GitHub repo",
   link = paste0("https://github.com/waldronbios2/", chapters, ".git")
 ),
 lecture = cell_spec(
@@ -78,15 +83,9 @@ kableExtra::kbl(
   align = "c"
 ) %>%
   kable_paper() %>%
-  column_spec(
-    2,
-    image = paste0(
-      "https://github.com/waldronbios2/",
-      chapters,
-      "/workflows/build/badge.svg"
-    ),
-    link = paste0("https://github.com/waldronbios2/", chapters, "/actions")
-  ) %>%
+  column_spec(2,
+    image = badgeimages
+  ) %>% 
   kableExtra::kable_styling(
     bootstrap_options = "striped",
     full_width = FALSE,
@@ -94,8 +93,8 @@ kableExtra::kbl(
   ) %>%
   kableExtra::add_header_above(c(
     "Session" = 1,
+    "Status" = 1,
     "GitHub" = 1,
-    "Sites" = 1,
     "Lecture" = 2,
     "Lab" = 1
   ))
