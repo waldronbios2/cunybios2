@@ -17,11 +17,11 @@ Session
 
 </th>
 <th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
-GitHub
+Status
 
 </th>
 <th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
-Sites
+GitHub
 
 </th>
 <th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
@@ -44,7 +44,8 @@ Lab
 <a href="https://github.com/waldronbios2/session1/actions"> </a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session1.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone">git</a>
+<a href="https://github.com/waldronbios2/session1.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
+clone</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session1/articles/session_lecture.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -65,7 +66,8 @@ Lab
 <a href="https://github.com/waldronbios2/session2/actions"> </a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session2.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone">git</a>
+<a href="https://github.com/waldronbios2/session2.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
+clone</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session2/articles/session_lecture.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -86,7 +88,8 @@ Lab
 <a href="https://github.com/waldronbios2/session3/actions"> </a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session3.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone">git</a>
+<a href="https://github.com/waldronbios2/session3.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
+clone</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session3/articles/session_lecture.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
