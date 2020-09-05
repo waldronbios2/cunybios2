@@ -2,7 +2,8 @@ Package: CUNYBIOS2
 Type: Package
 Title: Lecture and lab materials for CUNY Biostatistics 2
 Version: 0.1.0
-Author: Levi Waldron
+Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0003-2725-0694"))
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
 Description: This package uses git submodules to import session-specific packages
     and helps to install all needed dependencies.
