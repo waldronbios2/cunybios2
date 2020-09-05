@@ -8,6 +8,9 @@ Maintainer: Levi Waldron <lwaldron.research@gmail.com>
 Description: This package uses git submodules to import session-specific packages
     and helps to install all needed dependencies.
 Suggests:
+    session1,
+    session2,
+    session3,
     pkgdown,
     knitr,
     kableExtra,
