@@ -1,12 +1,3 @@
----
-title: "Lecture and lab materials for CUNY SPH Biostatistics 2"
-author: "Levi Waldron"
-output: md_document
-always_allow_html: true
----
-
-
-
 <!-- badges: start -->
 ![Website and Docker](https://github.com/waldronbios2/cunybios2/workflows/Website%20and%20Docker/badge.svg)
 <!-- badges: end -->
