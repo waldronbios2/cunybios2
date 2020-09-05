@@ -62,16 +62,16 @@ jobs:
            PATH=$PATH:$HOME/bin/ Rscript -e 'knitr::knit("README.Rmd", "README.md"'
            PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site(".")'
 
-    - name: Update README.md
-      uses: github-actions-x/commit@v2.7
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        push-branch: 'master'
-        commit-message: 'Update README.md'
-        force-add: 'true'
-        files: README.md
-        name: Levi's GitHub Robot
-        email: lwaldron.research@gmail.com
+      - name: Update README.md
+        uses: github-actions-x/commit@v2.7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          push-branch: 'master'
+          commit-message: 'Update README.md'
+          force-add: 'true'
+          files: README.md
+          name: Levi's GitHub Robot
+          email: lwaldron.research@gmail.com
 
       - name: Deploy ð
         uses: JamesIves/github-pages-deploy-action@3.5.9
