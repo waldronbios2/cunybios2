@@ -70,7 +70,7 @@ labhtml = cell_spec(
 )
 )
 
-kbl(
+kableExtra::kbl(
   dt,
   format = "html",
   escape = FALSE,
@@ -87,14 +87,14 @@ kbl(
     ),
     link = paste0("https://github.com/waldronbios2/", chapters, "/actions")
   ) %>%
-  kable_styling(
+  kableExtra::kable_styling(
     bootstrap_options = "striped",
     full_width = FALSE,
     position = "center"
   ) %>%
-  add_header_above(c(
+  kableExtra::add_header_above(c(
     "Session" = 1,
-    "Status" = 1,
+    "GitHub" = 1,
     "Sites" = 1,
     "Lecture" = 2,
     "Lab" = 1
