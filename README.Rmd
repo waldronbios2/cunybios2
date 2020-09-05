@@ -31,44 +31,72 @@ chapters <- dir(pattern = "session*")
 dt <- data.frame(
   session = cell_spec(
     seq_along(chapters),
-    tooltip = sapply(chapters, function(x) packageDescription(x)$Description),
-    link = paste0("https://waldronbios2.github.io/", chapters)),
+    tooltip = sapply(chapters, function(x)
+      packageDescription(x)$Description),
+    link = paste0("https://waldronbios2.github.io/", chapters)
+  ),
+  status = "", 
   git = cell_spec(
-    "git",
-    tooltip = "use for git clone",
-    link = paste0("https://github.com/waldronbios2/", chapters, ".git")
-  ),
-  lecture = cell_spec(
-    "HTML",
-    tooltip = "lecture notes in HTML",
-    link = paste0(
-      "https://waldronbios2.github.io/",
-      chapters,
-      "/articles/session_lecture.html"
-    )
-  ),
-  lecturepdf = cell_spec(
-    "PDF",
-    tooltip = "lecture notes in PDF",
-    link = paste0(
-      "https://waldronbios2.github.io/",
-      chapters,
-      "/articles/session_lecture.pdf"
-    )
-  ),
-  labhtml = cell_spec(
-    "HTML",
-    tooltip = "lab notes in HTML",
-    link = paste0(
-      "https://waldronbios2.github.io/",
-      chapters,
-      "/articles/session_lab.html"
-    )
+  "git",
+  tooltip = "use for git clone",
+  link = paste0("https://github.com/waldronbios2/", chapters, ".git")
+),
+lecture = cell_spec(
+  "HTML",
+  tooltip = "lecture notes in HTML",
+  link = paste0(
+    "https://waldronbios2.github.io/",
+    chapters,
+    "/articles/session_lecture.html"
+  )
+),
+lecturepdf = cell_spec(
+  "PDF",
+  tooltip = "lecture notes in PDF",
+  link = paste0(
+    "https://waldronbios2.github.io/",
+    chapters,
+    "/articles/session_lecture.pdf"
+  )
+),
+labhtml = cell_spec(
+  "HTML",
+  tooltip = "lab notes in HTML",
+  link = paste0(
+    "https://waldronbios2.github.io/",
+    chapters,
+    "/articles/session_lab.html"
   )
 )
+)
 
-kbl(dt, "html", escape = FALSE, col.names = NULL, align="c") %>%
+kbl(
+  dt,
+  format = "html",
+  escape = FALSE,
+  col.names = NULL,
+  align = "c"
+) %>%
   kable_paper() %>%
-  kable_styling(bootstrap_options = "striped", full_width = FALSE, position = "center") %>%
-  add_header_above(c("Session" = 1, "Sites" = 1, "Lecture" = 2, "Lab" = 1))
+  column_spec(
+    2,
+    image = paste0(
+      "https://github.com/waldronbios2/",
+      chapters,
+      "/workflows/build/badge.svg"
+    ),
+    link = paste0("https://github.com/waldronbios2/", chapters, "/actions")
+  ) %>%
+  kable_styling(
+    bootstrap_options = "striped",
+    full_width = FALSE,
+    position = "center"
+  ) %>%
+  add_header_above(c(
+    "Session" = 1,
+    "Status" = 1,
+    "Sites" = 1,
+    "Lecture" = 2,
+    "Lab" = 1
+  ))
 ```
