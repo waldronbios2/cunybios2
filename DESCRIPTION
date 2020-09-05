@@ -10,7 +10,6 @@ Description: This package uses git submodules to import session-specific package
 Suggests:
     pkgdown,
     knitr,
-    kable,
     kableExtra,
     rmarkdown
 Remotes:
