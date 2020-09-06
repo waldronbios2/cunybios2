@@ -46,8 +46,7 @@ Lab
 <a href="https://waldronbios2.github.io/session1" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Multiple linear regression review">1</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session1/actions"> </a>
-<img src="https://github.com/waldronbios2/session1/workflows/build/badge.svg">
+<a href="https://github.com/waldronbios2/session1/actions"><img src="https://github.com/waldronbios2/session1/workflows/build/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session1.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -68,8 +67,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session2" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Linear and logistic regression as generalized linear models (GLMs)">2</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session2/actions"> </a>
-<img src="https://github.com/waldronbios2/session2/workflows/build/badge.svg">
+<a href="https://github.com/waldronbios2/session2/actions"><img src="https://github.com/waldronbios2/session2/workflows/build/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session2.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -90,8 +88,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session3" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Regression coefficients and model matrices">3</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session3/actions"> </a>
-<img src="https://github.com/waldronbios2/session3/workflows/build/badge.svg">
+<a href="https://github.com/waldronbios2/session3/actions"><img src="https://github.com/waldronbios2/session3/workflows/build/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session3.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
