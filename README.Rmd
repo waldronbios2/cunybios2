@@ -32,7 +32,7 @@ badgeimages <- paste0("https://github.com/waldronbios2/", chapters,
                  "/workflows/build/badge.svg")
 badgeimagehtml <- paste0("<img src='", badgeimages, "'>")
 badgelinks <- paste0("https://github.com/waldronbios2/", chapters, "/actions")
-badgehyper <- paste0("<a href = '", badgelinks, "'> </a>")
+badgeall <- paste0("<a href = '", badgelinks, "'>", badgeimagehtml, "</a>")
 dt <- data.frame(
   session = cell_spec(
     seq_along(chapters),
@@ -40,7 +40,7 @@ dt <- data.frame(
       packageDescription(x)$Description),
     link = paste0("https://waldronbios2.github.io/", chapters)
   ),
-  status = badgehyper,
+  status = badgeall,
   git = cell_spec(
   "git clone",
   tooltip = "use for git clone click to go to GitHub repo",
@@ -83,9 +83,6 @@ kableExtra::kbl(
   align = "c"
 ) %>%
   kable_paper() %>%
-  column_spec(2,
-    image = badgeimages
-  ) %>% 
   kableExtra::kable_styling(
     bootstrap_options = "striped",
     full_width = FALSE,
