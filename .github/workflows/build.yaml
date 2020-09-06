@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 jobs:
   job1:
     runs-on: ubuntu-18.04
-    container: rocker/tidyverse:3.6.3-ubuntu18.04
+    container: rocker/verse:latest
     steps:
       - uses: actions/checkout@v1
 
