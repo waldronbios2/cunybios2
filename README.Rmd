@@ -11,9 +11,7 @@ always_allow_html: true
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<!-- badges: start -->
-![Website and Docker](https://github.com/waldronbios2/cunybios2/workflows/Website%20and%20Docker/badge.svg)
-<!-- badges: end -->
+<!-- badges: start --> ![Website and Docker](https://github.com/waldronbios2/cunybios2/workflows/Website%20and%20Docker/badge.svg) <!-- badges: end -->
 
 This course is designed to expand on the biostatistical methods
 covered in Applied Biostatistics I. It introduces generalized linear
