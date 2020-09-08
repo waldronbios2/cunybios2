@@ -22,7 +22,7 @@ models.
 
 ```{r youtube, echo=FALSE}
 chapters <- dir(pattern = "session*")
-youtube <- read.csv("~/dockerhome/git/cunybios2/youtubeURLs.csv")[1:length(chapters), ]
+youtube <- read.csv("youtubeURLs.csv")[1:length(chapters), ]
 youtube$lecturetips <-
   ifelse(youtube$lecture == "#", "not yet available", "watch on YouTube")
 youtube$labtips <-
