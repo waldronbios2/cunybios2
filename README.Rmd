@@ -22,12 +22,20 @@ Poisson and Negative Binomial models of count data), survival
 analysis, and longitudinal data including random and mixed effect
 models.
 
+```{r youtube, echo=FALSE}
+chapters <- dir(pattern = "session*")
+youtube <- read.csv("~/dockerhome/git/cunybios2/youtubeURLs.csv")[1:length(chapters), ]
+youtube$lecturetips <-
+  ifelse(youtube$lecture == "#", "not yet available", "watch on YouTube")
+youtube$labtips <-
+  ifelse(youtube$lab == "#", "not yet available", "watch on YouTube")
+```
+
 ```{r, echo=FALSE}
 suppressPackageStartupMessages({
   library(dplyr)
   library(kableExtra)
 })
-chapters <- dir(pattern = "session*")
 badgeimages <- paste0("https://github.com/waldronbios2/", chapters, 
                  "/workflows/build/badge.svg")
 badgeimagehtml <- paste0("<img src='", badgeimages, "'>")
@@ -64,6 +72,11 @@ lecturepdf = cell_spec(
     "/articles/session_lecture.pdf"
   )
 ),
+lecturevideo = cell_spec(
+  "watch",
+  tooltip = youtube$lecturetips,
+  link = youtube$lecture[1:length(chapters)]
+  ),
 labhtml = cell_spec(
   "HTML",
   tooltip = "lab notes in HTML",
@@ -71,8 +84,13 @@ labhtml = cell_spec(
     "https://waldronbios2.github.io/",
     chapters,
     "/articles/session_lab.html"
+    )
+  ),
+labvideo = cell_spec(
+  "watch",
+  tooltip = youtube$labtips,
+  link = youtube$lab[1:length(chapters)]
   )
-)
 )
 
 kableExtra::kbl(
@@ -92,7 +110,7 @@ kableExtra::kbl(
     "Session" = 1,
     "Status" = 1,
     "GitHub" = 1,
-    "Lecture" = 2,
-    "Lab" = 1
+    "Lecture" = 3,
+    "Lab" = 2
   ))
 ```
