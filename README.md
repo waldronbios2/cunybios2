@@ -28,12 +28,12 @@ Status
 GitHub
 
 </th>
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
 
 Lecture
 
 </th>
-<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
 
 Lab
 
@@ -59,7 +59,13 @@ clone</a>
 <a href="https://waldronbios2.github.io/session1/articles/session_lecture.pdf" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
+<a href="https://youtu.be/HI17wyfgONw" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
+</td>
+<td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session1/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="https://youtu.be/nlNsp2RrIaw" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 </tr>
 <tr>
@@ -80,7 +86,13 @@ clone</a>
 <a href="https://waldronbios2.github.io/session2/articles/session_lecture.pdf" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
+<a href="https://youtu.be/NVHrZS4br4g" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
+</td>
+<td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session2/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="https://youtu.be/B8OIZVBVs5E" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 </tr>
 <tr>
@@ -101,7 +113,13 @@ clone</a>
 <a href="https://waldronbios2.github.io/session3/articles/session_lecture.pdf" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
+<a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
+</td>
+<td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session3/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
 </td>
 </tr>
 </tbody>
