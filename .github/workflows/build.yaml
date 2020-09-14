@@ -9,12 +9,12 @@ jobs:
 
       - name: Query dependencies and update old packages
         run: |
-          repos = options(c(CRAN = 'https://cran.r-project.org')); install.packages('remotes')
+          repos = install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
       - name: Cache R packages
-        if: runner.os != 'Linux'
+        if: runner.os == 'Linux'
         uses: actions/cache@v1
         with:
           path: /usr/local/lib/R/site-library
@@ -31,14 +31,14 @@ jobs:
           apt-get install -y rsync
           git submodule init
           git submodule update
-          Rscript -e "options(c(CRAN = 'https://cran.r-project.org')); remotes::install_github('r-hub/sysreqs')"
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
 
       - name: Install dependencies
         run: |
-          options(c(CRAN = 'https://cran.r-project.org')); remotes::install_deps(dependencies = TRUE)
-          options(c(CRAN = 'https://cran.r-project.org')); remotes::install_cran("rcmdcheck")
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
       - name: Check
