@@ -1,8 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 1.6.0
+pkgdown: 1.6.1
 pkgdown_sha: ~
-articles: []
-last_built: 2020-09-15T22:30Z
+articles: {}
+last_built: 2020-09-24T09:58Z
 urls:
   reference: https://bios2.waldronlab.io/reference
   article: https://bios2.waldronlab.io/articles
