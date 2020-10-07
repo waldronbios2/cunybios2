@@ -48,55 +48,55 @@ badgeall <- paste0("<a href = '", badgelinks, "'>", badgeimagehtml, "</a>")
 dt <- data.frame(
   session = cell_spec(
     seq_along(chapters),
-    tooltip = sapply(chapters, function(x)
+    tooltip = sapply(chapters, function(x) {
       pd <- packageDescription(x)
-      if(!is(pd, "packageDescription")) stop(paste0(x, " is not a package"))
-      packageDescription(x)$Description),
+      if (!is(pd, "packageDescription"))
+        stop(paste0(x, " is not a package"))
+      packageDescription(x)$Description
+    }),
     link = paste0("https://waldronbios2.github.io/", chapters)
   ),
   status = badgeall,
   git = cell_spec(
-  "git clone",
-  tooltip = "use for git clone click to go to GitHub repo",
-  link = paste0("https://github.com/waldronbios2/", chapters, ".git")
-),
-lecture = cell_spec(
-  "HTML",
-  tooltip = "lecture notes in HTML",
-  link = paste0(
-    "https://waldronbios2.github.io/",
-    chapters,
-    "/articles/session_lecture.html"
-  )
-),
-lecturepdf = cell_spec(
-  "PDF",
-  tooltip = "lecture notes in PDF",
-  link = paste0(
-    "https://waldronbios2.github.io/",
-    chapters,
-    "/articles/session_lecture.pdf"
-  )
-),
-lecturevideo = cell_spec(
-  "watch",
-  tooltip = youtube$lecturetips,
-  link = youtube$lecture[1:length(chapters)]
+    "git clone",
+    tooltip = "use for git clone click to go to GitHub repo",
+    link = paste0("https://github.com/waldronbios2/", chapters, ".git")
   ),
-labhtml = cell_spec(
-  "HTML",
-  tooltip = "lab notes in HTML",
-  link = paste0(
-    "https://waldronbios2.github.io/",
-    chapters,
-    "/articles/session_lab.html"
+  lecture = cell_spec(
+    "HTML",
+    tooltip = "lecture notes in HTML",
+    link = paste0(
+      "https://waldronbios2.github.io/",
+      chapters,
+      "/articles/session_lecture.html"
     )
   ),
-labvideo = cell_spec(
-  "watch",
-  tooltip = youtube$labtips,
-  link = youtube$lab[1:length(chapters)]
-  )
+  lecturepdf = cell_spec(
+    "PDF",
+    tooltip = "lecture notes in PDF",
+    link = paste0(
+      "https://waldronbios2.github.io/",
+      chapters,
+      "/articles/session_lecture.pdf"
+    )
+  ),
+  lecturevideo = cell_spec(
+    "watch",
+    tooltip = youtube$lecturetips,
+    link = youtube$lecture[1:length(chapters)]
+  ),
+  labhtml = cell_spec(
+    "HTML",
+    tooltip = "lab notes in HTML",
+    link = paste0(
+      "https://waldronbios2.github.io/",
+      chapters,
+      "/articles/session_lab.html"
+    )
+  ),
+  labvideo = cell_spec("watch",
+                       tooltip = youtube$labtips,
+                       link = youtube$lab[1:length(chapters)])
 )
 ```
 
