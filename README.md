@@ -70,7 +70,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session2" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Linear and logistic regression as generalized linear models (GLMs).">2</a>
+<a href="https://waldronbios2.github.io/session2" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Linear and logistic regression as generalized linear models (GLMs)">2</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session2/actions"><img src="https://github.com/waldronbios2/session2/workflows/build/badge.svg"></a>
