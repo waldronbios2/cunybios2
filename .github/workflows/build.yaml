@@ -29,9 +29,6 @@ jobs:
           key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-1-
 
-      - name: Checkout git submodules
-        uses: textbook/git-checkout-submodule-action@master
-
       - name: Checkout submodules
         uses: srt32/git-actions@v0.0.3
         with:
