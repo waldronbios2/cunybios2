@@ -28,7 +28,7 @@ jobs:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
           apt-get update
-          apt-get install -y rsync
+          apt-get install -y rsync libharfbuzz-dev libfribidi-dev
           git submodule init
           git submodule update
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
