@@ -49,6 +49,8 @@ dt <- data.frame(
   session = cell_spec(
     seq_along(chapters),
     tooltip = sapply(chapters, function(x)
+      pd <- packageDescription(x)
+      if(!is(pd, "packageDescription")) stop(paste0(x, " is not a package"))
       packageDescription(x)$Description),
     link = paste0("https://waldronbios2.github.io/", chapters)
   ),
