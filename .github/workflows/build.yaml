@@ -32,15 +32,17 @@ jobs:
       - name: Checkout git submodules
         uses: textbook/git-checkout-submodule-action@master
 
+      - name: Checkout submodules
+        uses: srt32/git-actions@v0.0.3
+        with:
+          args: git submodule update --init --recursive
+
       # This lets us augment with additional dependencies
       - name: Install system dependencies
         if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          git submodule init
-          git submodule update
-          ls -l session*
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           Rscript -e "install.packages('pkgdown')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
