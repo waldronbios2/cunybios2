@@ -40,6 +40,7 @@ jobs:
         run: |
           git submodule init
           git submodule update
+          ls -l session*
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           Rscript -e "install.packages('pkgdown')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
