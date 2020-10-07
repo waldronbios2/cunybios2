@@ -1,7 +1,7 @@
 Package: CUNYBIOS2
 Type: Package
 Title: Lecture and lab materials for CUNY Biostatistics 2
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("aut", "cre"),
       comment = c(ORCID = "0000-0003-2725-0694"))
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
@@ -11,13 +11,15 @@ Suggests:
     session1,
     session2,
     session3,
+    session4,
     knitr,
     kableExtra,
     rmarkdown
 Remotes:
     waldronbios2/session1,
     waldronbios2/session2,
-    waldronbios2/session3
+    waldronbios2/session3,
+    waldronbios2/session4
 DockerImage: waldronbios2/cunybios2:latest
 License: CC BY 4.0
 Encoding: UTF-8
