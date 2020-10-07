@@ -29,6 +29,9 @@ jobs:
           key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-1-
 
+      - name: Checkout git submodules
+        uses: textbook/git-checkout-submodule-action@master
+
       # This lets us augment with additional dependencies
       - name: Install system dependencies
         if: runner.os == 'Linux'
