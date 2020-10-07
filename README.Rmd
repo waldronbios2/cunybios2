@@ -29,16 +29,22 @@ youtube$labtips <-
   ifelse(youtube$lab == "#", "not yet available", "watch on YouTube")
 ```
 
-```{r, echo=FALSE}
+```{r packages, echo=FALSE}
 suppressPackageStartupMessages({
   library(dplyr)
   library(kableExtra)
 })
+```
+
+```{r links, echo=FALSE}
 badgeimages <- paste0("https://github.com/waldronbios2/", chapters, 
                  "/workflows/build/badge.svg")
 badgeimagehtml <- paste0("<img src='", badgeimages, "'>")
 badgelinks <- paste0("https://github.com/waldronbios2/", chapters, "/actions")
 badgeall <- paste0("<a href = '", badgelinks, "'>", badgeimagehtml, "</a>")
+```
+
+```{r, echo=FALSE}
 dt <- data.frame(
   session = cell_spec(
     seq_along(chapters),
@@ -90,7 +96,9 @@ labvideo = cell_spec(
   link = youtube$lab[1:length(chapters)]
   )
 )
+```
 
+```{r maketable, echo=FALSE}
 kableExtra::kbl(
   dt,
   format = "html",
@@ -112,3 +120,4 @@ kableExtra::kbl(
     "Lab" = 2
   ))
 ```
+
