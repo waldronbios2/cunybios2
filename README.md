@@ -140,13 +140,13 @@ clone</a>
 <a href="https://waldronbios2.github.io/session4/articles/session_lecture.pdf" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
-<a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
+<a href="https://youtu.be/IeOyc4k0IdM" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session4/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
+<a href="https://youtu.be/_cHcrGLZmi4" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 </tr>
 </tbody>
