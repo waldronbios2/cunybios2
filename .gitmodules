@@ -10,3 +10,6 @@
 [submodule "session4"]
 	path = session4
 	url = https://github.com/waldronbios2/session4.git
+[submodule "session5"]
+	path = session5
+	url = https://github.com/waldronbios2/session5.git
