@@ -149,5 +149,32 @@ clone</a>
 <a href="https://youtu.be/_cHcrGLZmi4" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 </tr>
+<tr>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session5" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Loglinear models part 2">5</a>
+</td>
+<td style="text-align:center;">
+<a href="https://github.com/waldronbios2/session5/actions"><img src="https://github.com/waldronbios2/session5/workflows/build/badge.svg"></a>
+</td>
+<td style="text-align:center;">
+<a href="https://github.com/waldronbios2/session5.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
+clone</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session5/articles/session_lecture.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session5/articles/session_lecture.pdf" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+</td>
+<td style="text-align:center;">
+<a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session5/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
+</td>
+</tr>
 </tbody>
 </table>
