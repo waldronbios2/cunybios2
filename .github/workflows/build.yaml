@@ -36,7 +36,6 @@ jobs:
       - name: What's in submodules
         run: |
           ls -R session*
-        shell: Rscript {0}
 
       # This lets us augment with additional dependencies
       - name: Install system dependencies
