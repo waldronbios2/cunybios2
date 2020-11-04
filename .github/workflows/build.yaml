@@ -13,7 +13,6 @@ jobs:
           apt-get update
           apt-get -y upgrade
           apt-get -y install rsync #for deploy
-          apt-get -y install libharfbuzz-dev libfribidi-dev #for pkgdown
  
       - name: Query dependencies and update old packages
         run: |
@@ -33,6 +32,11 @@ jobs:
         uses: srt32/git-actions@v0.0.3
         with:
           args: git submodule update --init --recursive
+
+      - name: What's in submodules
+        run: |
+          ls -R session*
+        shell: Rscript {0}
 
       # This lets us augment with additional dependencies
       - name: Install system dependencies
