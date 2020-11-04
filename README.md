@@ -70,7 +70,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session2" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Linear and logistic regression as generalized linear models (GLMs)">2</a>
+<a href="https://waldronbios2.github.io/session2" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Linear and logistic regression as generalized linear models (GLMs).">2</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session2/actions"><img src="https://github.com/waldronbios2/session2/workflows/build/badge.svg"></a>
@@ -174,6 +174,34 @@ clone</a>
 </td>
 <td style="text-align:center;">
 <a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session6" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Introduction to censored data, the Kaplan-Meier estimator of 
+    survival probability, and the log-rank test.">6</a>
+</td>
+<td style="text-align:center;">
+<a href="https://github.com/waldronbios2/session6/actions"><img src="https://github.com/waldronbios2/session6/workflows/build/badge.svg"></a>
+</td>
+<td style="text-align:center;">
+<a href="https://github.com/waldronbios2/session6.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
+clone</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session6/articles/session_lecture.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session6/articles/session_lecture.pdf" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+</td>
+<td style="text-align:center;">
+<a href="https://youtu.be/5vYkMhE1eWA" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session6/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="https://youtu.be/Z0ndPIRFtJQ" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 </tr>
 </tbody>
