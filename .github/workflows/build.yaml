@@ -12,7 +12,7 @@ jobs:
         run: |
           apt-get update
           apt-get -y upgrade
-          apt-get -y install rsync #for deploy
+          apt-get -y install rsync libv8-dev #for deploy and dagitty
  
       - name: Query dependencies and update old packages
         run: |
