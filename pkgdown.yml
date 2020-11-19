@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-pandoc: 1.19.2.1
-pkgdown: 1.6.1
-pkgdown_sha: ~
-articles: {}
-last_built: 2020-11-19T21:53Z
-=======
 pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2020-11-19T21:59Z
->>>>>>> 12cc531b717e83ddbb6c9b365f6fceddac6f6956
+last_built: 2020-11-19T22:07Z
 urls:
   reference: https://bios2.waldronlab.io/reference
   article: https://bios2.waldronlab.io/articles
