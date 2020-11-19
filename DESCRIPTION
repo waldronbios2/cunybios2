@@ -15,6 +15,7 @@ Suggests:
     session5,
     session6,
     session7,
+    session8,
     knitr,
     kableExtra,
     rmarkdown
@@ -25,7 +26,8 @@ Remotes:
     waldronbios2/session4,
     waldronbios2/session5,  
     waldronbios2/session6,  
-    waldronbios2/session7  
+    waldronbios2/session7,  
+    waldronbios2/session8  
 DockerImage: waldronbios2/cunybios2:latest
 License: CC BY 4.0
 Encoding: UTF-8
