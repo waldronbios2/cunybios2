@@ -35,6 +35,7 @@ jobs:
 
       - name: What's in submodules
         run: |
+	  git submodule status
           ls -R session*
 
       # This lets us augment with additional dependencies
