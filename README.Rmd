@@ -51,9 +51,10 @@ dt <- data.frame(
     tooltip = sapply(chapters, function(x) {
       pd <- packageDescription(x)
       if (!is(pd, "packageDescription")){
-        stop(x, " is not a package")
+        warning(x, " is not a package")
+	return(NA)
       }
-      packageDescription(x)$Description
+      return(packageDescription(x)$Description)
     }),
     link = paste0("https://waldronbios2.github.io/", chapters)
   ),
