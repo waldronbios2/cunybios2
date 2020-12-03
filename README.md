@@ -10,6 +10,10 @@ including logistic regression, loglinear models (including Poisson and
 Negative Binomial models of count data), survival analysis, and
 longitudinal data including random and mixed effect models.
 
+    ## Warning in packageDescription(x): no package 'session9' was found
+
+    ## Warning in FUN(X[[i]], ...): session9 is not a package
+
 <table class=" lightable-paper table table-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;'>
 <thead>
 <tr>
@@ -253,6 +257,33 @@ clone</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session8/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session9" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">9</a>
+</td>
+<td style="text-align:center;">
+<a href="https://github.com/waldronbios2/session9/actions"><img src="https://github.com/waldronbios2/session9/workflows/build/badge.svg"></a>
+</td>
+<td style="text-align:center;">
+<a href="https://github.com/waldronbios2/session9.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
+clone</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session9/articles/session_lecture.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session9/articles/session_lecture.pdf" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+</td>
+<td style="text-align:center;">
+<a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
+</td>
+<td style="text-align:center;">
+<a href="https://waldronbios2.github.io/session9/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="#" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="not yet available">watch</a>
