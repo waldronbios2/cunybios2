@@ -26,6 +26,7 @@ models.
 
 ```{r youtube, echo=FALSE}
 chapters <- dir(pattern = "session*")
+chapters <- chapters[order(as.integer(sub("session", "", chapters)))]
 youtube <- read.csv("youtubeURLs.csv")[1:length(chapters), ]
 youtube$lecturetips <-
   ifelse(youtube$lecture == "#", "not yet available", "watch on YouTube")
