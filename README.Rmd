@@ -13,12 +13,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <!-- badges: start --> ![Website and Docker](https://github.com/waldronbios2/cunybios2/workflows/Website%20and%20Docker/badge.svg) <!-- badges: end -->
 
+# Overview
+
 This course is designed to expand on the biostatistical methods
 covered in Applied Biostatistics I. It introduces generalized linear
 regression including logistic regression, loglinear models (including
 Poisson and Negative Binomial models of count data), survival
 analysis, and longitudinal data including random and mixed effect
 models.
+
+# Materials
 
 ```{r youtube, echo=FALSE}
 chapters <- dir(pattern = "session*")
@@ -125,3 +129,13 @@ kableExtra::kbl(
   ))
 ```
 
+# Technical notes
+
+To add a new git submodule to this repo, invoke the following from within the local waldronbios2 clone (example for session10):
+```
+git submodule add https://github.com/waldronbios2/session10.git
+git commit -am "add session10 submodule"
+git push origin master
+```
+
+Then update the file `youtubeURLs.csv` with links to lecture and lab recordings.
