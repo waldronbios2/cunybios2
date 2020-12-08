@@ -417,11 +417,14 @@
 <div id="technical-notes" class="section level1">
 <h1 class="hasAnchor">
 <a href="#technical-notes" class="anchor"></a>Technical notes</h1>
-<p>To add a new git submodule to this repo, invoke the following from within the local waldronbios2 clone (example for session10):</p>
+<p>To add a new git submodule to this repo:</p>
+<p>First, add the new session to the Suggests and Remotes sections of the DESCRIPTION file.</p>
+<p>Second, invoke the following from within the local waldronbios2 clone (example for session10):</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>git submodule add https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>waldronbios2<span class="op">/</span>session10.git</span>
-<span id="cb2-2"><a href="#cb2-2"></a>git commit <span class="op">-</span>am <span class="st">"add session10 submodule"</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>git push origin master</span></code></pre></div>
-<p>Then update the file <code>youtubeURLs.csv</code> with links to lecture and lab recordings.</p>
+<span id="cb2-2"><a href="#cb2-2"></a>git commit <span class="op">-</span>am <span class="st">"add session10 submodule"</span></span></code></pre></div>
+<p>Finally, update the file <code>youtubeURLs.csv</code> with links to lecture and lab recordings, then push changes:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>git commit <span class="op">-</span>am <span class="st">"add session10 recording links"</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>git push origin master</span></code></pre></div>
 </div>
 
   </div>
