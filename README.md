@@ -373,12 +373,19 @@ clone</a>
 Technical notes
 ===============
 
-To add a new git submodule to this repo, invoke the following from
-within the local waldronbios2 clone (example for session10):
+To add a new git submodule to this repo:
+
+First, add the new session to the Suggests and Remotes sections of the
+DESCRIPTION file.
+
+Second, invoke the following from within the local waldronbios2 clone
+(example for session10):
 
     git submodule add https://github.com/waldronbios2/session10.git
     git commit -am "add session10 submodule"
-    git push origin master
 
-Then update the file `youtubeURLs.csv` with links to lecture and lab
-recordings.
+Finally, update the file `youtubeURLs.csv` with links to lecture and lab
+recordings, then push changes:
+
+    git commit -am "add session10 recording links"
+    git push origin master
