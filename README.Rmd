@@ -54,12 +54,12 @@ dt <- data.frame(
   session = cell_spec(
     seq_along(chapters),
     tooltip = sapply(chapters, function(x) {
-      pd <- packageDescription(x, lib.loc=".")
+      pd <- packageDescription(x)
       if (!is(pd, "packageDescription")){
         warning(x, " is not a package")
 	return(NA)
       }
-      return(packageDescription(x, lib.loc=".")$Description)
+      return(packageDescription(x)$Description)
     }),
     link = paste0("https://waldronbios2.github.io/", chapters)
   ),
