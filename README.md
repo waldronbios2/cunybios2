@@ -16,56 +16,6 @@ longitudinal data including random and mixed effect models.
 Materials
 =========
 
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session1' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session1 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session2' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session2 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session3' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session3 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session4' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session4 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session5' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session5 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session6' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session6 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session7' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session7 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session8' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session8 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session9' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session9 is not a package
-
-    ## Warning in packageDescription(x, lib.loc = "."): DESCRIPTION file of package
-    ## 'session10' is missing or broken
-
-    ## Warning in FUN(X[[i]], ...): session10 is not a package
-
 <table class=" lightable-paper table table-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;'>
 <thead>
 <tr>
@@ -99,7 +49,7 @@ Lab
 <tbody>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session1" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">1</a>
+<a href="https://waldronbios2.github.io/session1" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Multiple linear regression review">1</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session1/actions"><img src="https://github.com/waldronbios2/session1/workflows/build/badge.svg"></a>
@@ -126,7 +76,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session2" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">2</a>
+<a href="https://waldronbios2.github.io/session2" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Linear and logistic regression as generalized linear models (GLMs)">2</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session2/actions"><img src="https://github.com/waldronbios2/session2/workflows/build/badge.svg"></a>
@@ -153,7 +103,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session3" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">3</a>
+<a href="https://waldronbios2.github.io/session3" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Regression coefficients and model matrices">3</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session3/actions"><img src="https://github.com/waldronbios2/session3/workflows/build/badge.svg"></a>
@@ -180,7 +130,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session4" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">4</a>
+<a href="https://waldronbios2.github.io/session4" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Loglinear regression part 1">4</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session4/actions"><img src="https://github.com/waldronbios2/session4/workflows/build/badge.svg"></a>
@@ -207,7 +157,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session5" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">5</a>
+<a href="https://waldronbios2.github.io/session5" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Loglinear models part 2">5</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session5/actions"><img src="https://github.com/waldronbios2/session5/workflows/build/badge.svg"></a>
@@ -234,7 +184,8 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session6" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">6</a>
+<a href="https://waldronbios2.github.io/session6" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Introduction to censored data, the Kaplan-Meier estimator of 
+    survival probability, and the log-rank test.">6</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session6/actions"><img src="https://github.com/waldronbios2/session6/workflows/build/badge.svg"></a>
@@ -261,7 +212,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session7" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">7</a>
+<a href="https://waldronbios2.github.io/session7" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Proportional Hazards and AFT models">7</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session7/actions"><img src="https://github.com/waldronbios2/session7/workflows/build/badge.svg"></a>
@@ -288,7 +239,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session8" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">8</a>
+<a href="https://waldronbios2.github.io/session8" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Survival analysis part 3">8</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session8/actions"><img src="https://github.com/waldronbios2/session8/workflows/build/badge.svg"></a>
@@ -315,7 +266,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session9" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">9</a>
+<a href="https://waldronbios2.github.io/session9" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Repeated Measures and Longitudinal Data Analysis I">9</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session9/actions"><img src="https://github.com/waldronbios2/session9/workflows/build/badge.svg"></a>
@@ -342,7 +293,7 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session10" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="NA">10</a>
+<a href="https://waldronbios2.github.io/session10" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Repeated Measures and Longitudinal Data Analysis II">10</a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session10/actions"><img src="https://github.com/waldronbios2/session10/workflows/build/badge.svg"></a>
