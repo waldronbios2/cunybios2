@@ -17,7 +17,7 @@ Suggests:
     session7,
     session8,
     session9,
-    session10
+    session10,
     knitr,
     kableExtra,
     rmarkdown
