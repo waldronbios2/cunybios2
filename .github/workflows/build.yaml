@@ -30,12 +30,10 @@ jobs:
 
       - name: Checkout submodules
         uses: srt32/git-actions@v0.0.3
-        with:
-          args: git submodule update --remote --merge
 
       - name: What's in submodules
         run: |
-          ls -lR session*
+          git submodule update --remote --merge
 
       # This lets us augment with additional dependencies
       - name: Install system dependencies
@@ -74,7 +72,7 @@ jobs:
           push-branch: 'master'
           commit-message: 'Update README.md'
           force-add: 'true'
-          files: README.md
+          files: README.md session*
           name: Levi's GitHub Robot
           email: lwaldron.research@gmail.com
 
