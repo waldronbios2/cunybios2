@@ -340,3 +340,5 @@ recordings, then push changes:
 
     git commit -am "add session10 recording links"
     git push origin master
+    
+The template for each session is provided at https://github.com/waldronbios2/templatesession. "Use this template", clone, and run `sedhelper.sh` to start a new lecture + lab session.
