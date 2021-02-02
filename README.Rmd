@@ -130,6 +130,10 @@ kableExtra::kbl(
   ))
 ```
 
+# Data Science Units
+
+This course is supported by free access to [DataCamp](https://www.datacamp.com/) for registered students.
+
 # Technical notes
 
 To add a new git submodule to this repo:
