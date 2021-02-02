@@ -321,6 +321,12 @@ clone</a>
 </tbody>
 </table>
 
+Data Science Units
+==================
+
+This course is supported by free access to
+[DataCamp](https://www.datacamp.com/) for registered students.
+
 Technical notes
 ===============
 
