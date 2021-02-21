@@ -366,19 +366,36 @@
 </tbody>
 </table>
 </div>
+<div id="cloning-course-materials-for-students" class="section level1">
+<h1 class="hasAnchor">
+<a href="#cloning-course-materials-for-students" class="anchor"></a>Cloning course materials (for students)</h1>
+<p>You can download course materials individually from this website, but it is more convenient to clone all course materials at once. However, cloning requires a system installation of <code>git</code>, and the installation methods depend on your operating system. Here are <a href="https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN">git installation instructions for RStudio</a>. If you are using RStudio on <a href="https://anvil.terra.bio" class="uri">https://anvil.terra.bio</a> (ask the professor for access with free compute), <code>git</code> is pre-installed so you don’t have to install it. Once you have git working from RStudio, you can do the following to obtain a local copy of all course materials:</p>
+<ol>
+<li>In RStudio, select “File - New Project” (no need to save workspace image, I never do. That’s a copy of any objects in memory in your R session, but you want to create these with your script anyways)</li>
+<li>Choose “Version Control” then “Git”.</li>
+<li>Enter the URL: <a href="https://github.com/waldronbios2/cunybios2.git" class="uri">https://github.com/waldronbios2/cunybios2.git</a> . Also enter any directory name (e.g. “lectures and labs” or “cunybios2”), and click “Browse” to choose the current directory. Then click “Create Project”</li>
+<li>On the bottom left-hand quadrant of RStudio, click “Terminal”. In the terminal, enter the following two commands:
+<ul>
+<li><code>git submodule init</code></li>
+<li><code>git submodule update</code></li>
+</ul>
+</li>
+</ol>
+<p>That’s it! You can now find 10 sessions worth of lecture and lab code, e.g. in “File - Open” or the file browser, click on “Session1” and “vignettes” to see the lecture and lab materials. Once you open an Rmd file you can click “Knit” to build it.</p>
+</div>
 <div id="data-science-units" class="section level1">
 <h1 class="hasAnchor">
 <a href="#data-science-units" class="anchor"></a>Data Science Units</h1>
 <p>This course is supported by free access to <a href="https://www.datacamp.com/">DataCamp</a> for registered students.</p>
 </div>
-<div id="technical-notes" class="section level1">
+<div id="technical-notes-for-teachers" class="section level1">
 <h1 class="hasAnchor">
-<a href="#technical-notes" class="anchor"></a>Technical notes</h1>
+<a href="#technical-notes-for-teachers" class="anchor"></a>Technical notes for teachers</h1>
 <p>To add a new git submodule to this repo:</p>
 <p>First, add the new session to the Suggests and Remotes sections of the DESCRIPTION file.</p>
 <p>Second, invoke the following from within the local waldronbios2 clone (example for session10):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>git submodule add https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>waldronbios2<span class="op">/</span>session10.git</span>
-<span id="cb1-2"><a href="#cb1-2"></a>git commit <span class="op">-</span>am <span class="st">"add session10 submodule"</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>git submodule add https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>waldronbios2<span class="op">/</span>session10.git<span class="st">`</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="dt">git commit -am "add session10 submodule"</span></span></code></pre></div>
 <p>Finally, update the file <code>youtubeURLs.csv</code> with links to lecture and lab recordings, then push changes:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>git commit <span class="op">-</span>am <span class="st">"add session10 recording links"</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>git push origin master</span></code></pre></div>
