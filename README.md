@@ -321,14 +321,48 @@ clone</a>
 </tbody>
 </table>
 
+Cloning course materials (for students)
+=======================================
+
+You can download course materials individually from this website, but it
+is more convenient to clone all course materials at once. However,
+cloning requires a system installation of `git`, and the installation
+methods depend on your operating system. Here are [git installation
+instructions for
+RStudio](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN).
+If you are using RStudio on
+<a href="https://anvil.terra.bio" class="uri">https://anvil.terra.bio</a>
+(ask the professor for access with free compute), `git` is pre-installed
+so you don’t have to install it. Once you have git working from RStudio,
+you can do the following to obtain a local copy of all course materials:
+
+1.  In RStudio, select “File - New Project” (no need to save workspace
+    image, I never do. That’s a copy of any objects in memory in your R
+    session, but you want to create these with your script anyways)
+2.  Choose “Version Control” then “Git”.
+3.  Enter the URL:
+    <a href="https://github.com/waldronbios2/cunybios2.git" class="uri">https://github.com/waldronbios2/cunybios2.git</a>
+    . Also enter any directory name (e.g. “lectures and labs” or
+    “cunybios2”), and click “Browse” to choose the current directory.
+    Then click “Create Project”
+4.  On the bottom left-hand quadrant of RStudio, click “Terminal”. In
+    the terminal, enter the following two commands:
+    -   `git submodule init`
+    -   `git submodule update`
+
+That’s it! You can now find 10 sessions worth of lecture and lab code,
+e.g. in “File - Open” or the file browser, click on “Session1” and
+“vignettes” to see the lecture and lab materials. Once you open an Rmd
+file you can click “Knit” to build it.
+
 Data Science Units
 ==================
 
 This course is supported by free access to
 [DataCamp](https://www.datacamp.com/) for registered students.
 
-Technical notes
-===============
+Technical notes for teachers
+============================
 
 To add a new git submodule to this repo:
 
@@ -338,7 +372,7 @@ DESCRIPTION file.
 Second, invoke the following from within the local waldronbios2 clone
 (example for session10):
 
-    git submodule add https://github.com/waldronbios2/session10.git
+    git submodule add https://github.com/waldronbios2/session10.git`
     git commit -am "add session10 submodule"
 
 Finally, update the file `youtubeURLs.csv` with links to lecture and lab
