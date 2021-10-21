@@ -5,7 +5,9 @@ jobs:
     runs-on: ubuntu-18.04
     container: rocker/verse:4.0.2
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GitHub_PAT }}
 
       # System dependencies
       - name: Install apt dependencies
