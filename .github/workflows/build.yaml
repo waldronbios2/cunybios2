@@ -6,6 +6,8 @@ jobs:
     container: rocker/verse:4.0.2
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GitHub_PAT }} # `GitHub_PAT` is a secret that contains your PAT
 
       # System dependencies
       - name: Install apt dependencies
@@ -15,6 +17,8 @@ jobs:
           apt-get -y install rsync libv8-dev #for deploy and dagitty
  
       - name: Query dependencies and update old packages
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           repos = install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
