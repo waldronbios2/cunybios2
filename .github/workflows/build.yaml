@@ -1,5 +1,6 @@
 name: Website and Docker
 on: [push, workflow_dispatch]
+permissions: read-all|write-all
 jobs:
   job1:
     runs-on: ubuntu-18.04
@@ -15,9 +16,6 @@ jobs:
           apt-get -y install rsync libv8-dev #for deploy and dagitty
  
       - name: Query dependencies and update old packages
-        env:
-          GITHUB_PAT: ${{ secrets.PAT_TOKEN }}
-          GITHUB_USERNAME: ${{ secrets.PAT_USERNAME }}
         run: |
           repos = install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
