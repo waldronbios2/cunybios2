@@ -16,7 +16,7 @@ jobs:
  
       - name: Query dependencies and update old packages
         env:
-          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PAT: ${{ secrets.PAT_TOKEN }}
         run: |
           repos = install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
