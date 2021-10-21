@@ -6,8 +6,6 @@ jobs:
     container: rocker/verse:4.0.2
     steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GitHub_PAT }}
 
       # System dependencies
       - name: Install apt dependencies
