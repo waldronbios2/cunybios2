@@ -15,4 +15,4 @@ RUN git submodule update
 RUN Rscript -e "install.packages('devtools', ask=FALSE, Ncpus=max(1, parallel::detectCores(), na.rm=TRUE))"
 RUN Rscript -e "devtools::install('.', dependencies=TRUE, build_vignettes=FALSE, Ncpus=max(1, parallel::detectCores(), na.rm=TRUE))"
 
-# RUN chown -R rstudio:rstudio /home/rstudio
+RUN chown -R rstudio:rstudio /home/rstudio
