@@ -4,8 +4,7 @@
 Docker](https://github.com/waldronbios2/cunybios2/workflows/Website%20and%20Docker/badge.svg)
 <!-- badges: end -->
 
-Overview
-========
+# Overview
 
 This course is designed to expand on the biostatistical methods covered
 in Applied Biostatistics I. It introduces generalized linear regression
@@ -13,10 +12,9 @@ including logistic regression, loglinear models (including Poisson and
 Negative Binomial models of count data), survival analysis, and
 longitudinal data including random and mixed effect models.
 
-Materials
-=========
+# Materials
 
-<table class=" lightable-paper table table-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;'>
+<table class=" lightable-paper table table-striped" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
@@ -321,8 +319,7 @@ clone</a>
 </tbody>
 </table>
 
-Cloning course materials (for students)
-=======================================
+# Cloning course materials (for students)
 
 You can download course materials individually from this website, but it
 is more convenient to clone all course materials at once. However,
@@ -330,19 +327,17 @@ cloning requires a system installation of `git`, and the installation
 methods depend on your operating system. Here are [git installation
 instructions for
 RStudio](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN).
-If you are using RStudio on
-<a href="https://anvil.terra.bio" class="uri">https://anvil.terra.bio</a>
-(ask the professor for access with free compute), `git` is pre-installed
-so you don’t have to install it. Once you have git working from RStudio,
-you can do the following to obtain a local copy of all course materials:
+If you are using RStudio on <https://anvil.terra.bio> (ask the professor
+for access with free compute), `git` is pre-installed so you don’t have
+to install it. Once you have git working from RStudio, you can do the
+following to obtain a local copy of all course materials:
 
 1.  In RStudio, select “File - New Project” (no need to save workspace
     image, I never do. That’s a copy of any objects in memory in your R
     session, but you want to create these with your script anyways)
 2.  Choose “Version Control” then “Git”.
-3.  Enter the URL:
-    <a href="https://github.com/waldronbios2/cunybios2.git" class="uri">https://github.com/waldronbios2/cunybios2.git</a>
-    . Also enter any directory name (e.g. “lectures and labs” or
+3.  Enter the URL: <https://github.com/waldronbios2/cunybios2.git> .
+    Also enter any directory name (e.g. “lectures and labs” or
     “cunybios2”), and click “Browse” to choose the current directory.
     Then click “Create Project”
 4.  On the bottom left-hand quadrant of RStudio, click “Terminal”. In
@@ -355,14 +350,12 @@ e.g. in “File - Open” or the file browser, click on “Session1” and
 “vignettes” to see the lecture and lab materials. Once you open an Rmd
 file you can click “Knit” to build it.
 
-Data Science Units
-==================
+# Data Science Units
 
 This course is supported by free access to
 [DataCamp](https://www.datacamp.com/) for registered students.
 
-Technical notes for teachers
-============================
+# Technical notes for teachers
 
 To add a new git submodule to this repo:
 
