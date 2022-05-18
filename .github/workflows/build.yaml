@@ -99,6 +99,9 @@ jobs:
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push
+        run: |
+          git config --global --add safe.directory /__w/cunybios2/cunybios2
+          git config --global --add safe.directory /home/rstudio
         uses: docker/build-push-action@v3
         with:
           context: .
