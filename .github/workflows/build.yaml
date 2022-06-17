@@ -29,7 +29,7 @@ jobs:
           repos = install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
-        with:
+        env:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache R packages
