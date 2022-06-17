@@ -1,6 +1,7 @@
 name: Website and Docker
 on: [push, workflow_dispatch]
 env:
+  GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
@@ -29,8 +30,6 @@ jobs:
           repos = install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
-        env:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache R packages
         if: runner.os == 'Linux'
@@ -96,9 +95,9 @@ jobs:
       - name: Deploy ð
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages # The branch the action should deploy to.
-          folder: docs # The folder the action should deploy.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: docs # The folder the action should deploy.
 
       - name: Log into the container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
