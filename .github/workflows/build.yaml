@@ -8,10 +8,13 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 jobs:
   job1:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container: rocker/verse:4.2.0
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: true
 
       # System dependencies
       - name: Install apt dependencies
@@ -37,18 +40,6 @@ jobs:
           path: /usr/local/lib/R/site-library
           key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-1-
-
-      - name: Create safe.directory
-        run: |
-          git config --global --add safe.directory /__w/cunybios2/cunybios2
-          git config --global --add safe.directory /home/rstudio
-
-      - name: Checkout submodules
-        uses: srt32/git-actions@v0.0.3
-
-      - name: What's in submodules
-        run: |
-          git submodule update --remote --merge
 
       # This lets us augment with additional dependencies
       - name: Install system dependencies
