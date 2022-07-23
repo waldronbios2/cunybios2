@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-18.04
     container: rocker/verse:4.2.0
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       # System dependencies
       - name: Install apt dependencies
@@ -38,10 +41,7 @@ jobs:
           key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-1-
 
-      - name: Checkout submodules
-        uses: srt32/git-actions@v0.0.3
-
-      - name: What's in submodules
+      - name: Update submodules
         run: |
           git submodule update --remote --merge
 
