@@ -7,8 +7,7 @@ RUN apt-get update --fix-missing && apt-get install -yq libssl-dev libpng-dev li
 
 ## get submodules
 
-RUN git submodule init
-RUN git submodule update
+RUN git config --global --add safe.directory /home/rstudio && git submodule init && git submodule update
 
 ## install R package and dependencies
 
