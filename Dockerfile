@@ -8,6 +8,6 @@ RUN apt-get update --fix-missing && apt-get install -yq libssl-dev libpng-dev li
 ## install R package and dependencies
 
 RUN Rscript -e "install.packages('devtools', ask=FALSE, Ncpus=max(1, parallel::detectCores(), na.rm=TRUE))"
-RUN Rscript -e "devtools::install('.', dependencies=TRUE, build_vignettes=FALSE, Ncpus=max(1, parallel::detectCores(), na.rm=TRUE))"
+RUN Rscript -e "devtools::install('.', dependencies=TRUE, build_vignettes=FALSE)"
 
 RUN chown -R rstudio:rstudio /home/rstudio
