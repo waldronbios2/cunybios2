@@ -8,8 +8,8 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 jobs:
   job1:
-    runs-on: ubuntu-20.04
-    container: rocker/verse:4.2.0
+    runs-on: ubuntu-22.04
+    container: rocker/verse:latest
     steps:
       - name: Checkout repository and submodules
         uses: actions/checkout@v3
@@ -79,7 +79,7 @@ jobs:
         uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: 'master'
+          push-branch: 'main'
           commit-message: 'Update README.md'
           force-add: 'true'
           files: README.md session*

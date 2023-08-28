@@ -1,9 +1,9 @@
-FROM rocker/tidyverse:4.0.2
+FROM rocker/tidyverse:latest
 WORKDIR /home/rstudio
 
 COPY --chown=rstudio:rstudio . /home/rstudio/
 
-RUN apt-get update --fix-missing && apt-get install -yq libssl-dev libpng-dev libnetcdf-dev libxml2-dev libxt6 libharfbuzz-dev libfribidi-dev libv8-dev 
+RUN apt-get update --fix-missing && apt-get install -yq libssl-dev libpng-dev libnetcdf-dev libxml2-dev libxt6 libharfbuzz-dev libfribidi-dev libv8-dev
 
 ## install R package and dependencies
 
