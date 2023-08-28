@@ -22,6 +22,8 @@ jobs:
           apt-get update
           apt-get -y upgrade
           apt-get -y install rsync libv8-dev #for deploy and dagitty
+          curl -fsSL https://get.docker.com -o install-docker.sh
+          sh install-docker.sh
 
       # Git submodule init fails with unsafe repository
       - name: Add exception for /home/rstudio
@@ -76,7 +78,7 @@ jobs:
            PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site(".")'
 
       - name: Update README.md
-        uses: github-actions-x/commit@v2.9
+        uses:     @v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           push-branch: 'main'
