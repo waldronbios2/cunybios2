@@ -112,3 +112,4 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.IMAGE_NAME }}:latest
+          github-token: ${{ secrets.GITHUB_TOKEN}}
