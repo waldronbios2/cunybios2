@@ -69,7 +69,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session1/articles/session_lab.html" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://youtu.be/nlNsp2RrIaw" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
+<a href="https://youtu.be/og7gWSvjpow" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 </tr>
 <tr>
