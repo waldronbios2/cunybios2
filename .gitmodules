@@ -1,30 +1,30 @@
 [submodule "session1"]
 	path = session1
-	url = https://github.com/waldronbios2/session1.git
+	url = git@github.com:waldronbios2/session1.git
 [submodule "session2"]
 	path = session2
-	url = https://github.com/waldronbios2/session2.git
+	url = git@github.com:waldronbios2/session2.git
 [submodule "session3"]
 	path = session3
-	url = https://github.com/waldronbios2/session3.git
+	url = git@github.com:waldronbios2/session3.git
 [submodule "session4"]
 	path = session4
-	url = https://github.com/waldronbios2/session4.git
+	url = git@github.com:waldronbios2/session4.git
 [submodule "session5"]
 	path = session5
-	url = https://github.com/waldronbios2/session5.git
+	url = git@github.com:waldronbios2/session5.git
 [submodule "session7"]
 	path = session7
-	url = https://github.com/waldronbios2/session7.git
+	url = git@github.com:waldronbios2/session7.git
 [submodule "session6"]
 	path = session6
-	url = https://github.com/waldronbios2/session6.git
+	url = git@github.com:waldronbios2/session6.git
 [submodule "session8"]
 	path = session8
-	url = https://github.com/waldronbios2/session8.git
+	url = git@github.com:waldronbios2/session8.git
 [submodule "session9"]
 	path = session9
-	url = https://github.com/waldronbios2/session9.git
+	url = git@github.com:waldronbios2/session9.git
 [submodule "session10"]
 	path = session10
-	url = https://github.com/waldronbios2/session10.git
+	url = git@github.com:waldronbios2/session10.git
