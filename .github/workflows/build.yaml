@@ -60,7 +60,7 @@ jobs:
 
 
       - name: Update README.md
-        uses: github-actions-x/commit@v6
+        uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           push-branch: 'main'
@@ -71,7 +71,7 @@ jobs:
           email: lwaldron.research@gmail.com
 
       - name: Deploy ð
-        uses: JamesIves/github-pages-deploy-action@v4.6.3
+        uses: JamesIves/github-pages-deploy-action@v4.6.4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages # The branch the action should deploy to.
