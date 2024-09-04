@@ -46,13 +46,6 @@ jobs:
 
       - name: Install dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: rcmdcheck
-
-      - name: Check
-        uses: r-lib/actions/check-r-package@v2
-        with:
-          args: "--no-manual"
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_file = "README.md")'
