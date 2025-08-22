@@ -342,8 +342,8 @@ following to obtain a local copy of all course materials:
     Then click “Create Project”
 4.  On the bottom left-hand quadrant of RStudio, click “Terminal”. In
     the terminal, enter the following two commands:
-    -   `git submodule init`
-    -   `git submodule update`
+    - `git submodule init`
+    - `git submodule update`
 
 That’s it! You can now find 10 sessions worth of lecture and lab code,
 e.g. in “File - Open” or the file browser, click on “Session1” and
