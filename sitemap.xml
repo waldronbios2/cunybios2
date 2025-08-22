@@ -1,21 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://bios2.waldronlab.io/404.html</loc>
-  </url>
-  <url>
-    <loc>https://bios2.waldronlab.io/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://bios2.waldronlab.io/about.html</loc>
-  </url>
-  <url>
-    <loc>https://bios2.waldronlab.io/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://bios2.waldronlab.io/index.html</loc>
-  </url>
-  <url>
-    <loc>https://bios2.waldronlab.io/reference/index.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://bios2.waldronlab.io/404.html</loc></url>
+<url><loc>https://bios2.waldronlab.io/LICENSE.html</loc></url>
+<url><loc>https://bios2.waldronlab.io/about.html</loc></url>
+<url><loc>https://bios2.waldronlab.io/authors.html</loc></url>
+<url><loc>https://bios2.waldronlab.io/index.html</loc></url>
+<url><loc>https://bios2.waldronlab.io/reference/index.html</loc></url>
 </urlset>
+
