@@ -18,6 +18,7 @@ Suggests:
     session8,
     session9,
     session10,
+    pkgdown,
     knitr,
     kableExtra,
     rmarkdown

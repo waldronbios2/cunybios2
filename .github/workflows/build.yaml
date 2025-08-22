@@ -1,37 +1,35 @@
 name: Website and Docker
-on: [push, workflow_dispatch]
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
 env:
-  GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+
 jobs:
-  job1:
-    runs-on: ubuntu-24.04
-    container: rocker/verse:latest
+  build-and-deploy:
+    runs-on: ubuntu-22.04 # Using LTS version for stability
+    container: rocker/verse:4.4 # Pinned version for reproducibility
+    permissions:
+      contents: write # To push README commit
+      pages: write # To deploy to GitHub Pages
+      packages: write # To push Docker image to GHCR
+
     steps:
       - name: Checkout repository and submodules
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
-      # System dependencies
-      - name: Install apt dependencies
-        run: |
-          apt-get update
-          apt-get -y upgrade
-          apt-get -y install rsync libv8-dev #for deploy and dagitty
-          curl -fsSL https://get.docker.com -o install-docker.sh
-          sh install-docker.sh
-
       # Git submodule init fails with unsafe repository
-      - name: Add exception for /home/rstudio
-        run: git config --global --add safe.directory /home/rstudio
-
-      # Workaround: https://github.com/docker/build-push-action/issues/461
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Add exception for git repository
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
@@ -39,57 +37,50 @@ jobs:
       - name: Cache R packages
         uses: actions/cache@v4
         with:
-          path: ${{ runner.tool_cache }}/R
-          key: ${{ runner.os }}-r-${{ hashFiles('**/DESCRIPTION') }}
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-4.4-${{ hashFiles('**/DESCRIPTION') }}
           restore-keys: |
-            ${{ runner.os }}-r-
+            ${{ runner.os }}-r-4.4-
 
-      - name: Install dependencies
+      - name: Install R dependencies (including pkgdown)
         uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: any::pkgdown # Example: ensure pkgdown is installed
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_file = "README.md")'
 
-      - name: Install pkgdown
-        run: Rscript -e 'install.packages("pkgdown", repos="https://cloud.r-project.org")'
-  
       - name: Build pkgdown site
         run: Rscript -e 'pkgdown::build_site()'
 
-
-      - name: Update README.md
-        uses: github-actions-x/commit@v2.9
+      - name: Commit updated README
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: 'main'
-          commit-message: 'Update README.md'
-          force-add: 'true'
-          files: README.md session*
-          name: Levi's GitHub Robot
-          email: lwaldron.research@gmail.com
+          commit_message: "Update README.md [skip ci]"
+          file_pattern: README.md
+          commit_user_name: Levi's GitHub Robot
+          commit_user_email: lwaldron.research@gmail.com
 
-      - name: Deploy ð
-        uses: JamesIves/github-pages-deploy-action@v4.6.4
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
-          push: true
-          tags: ghcr.io/${{ env.IMAGE_NAME }}:latest
-          github-token: ${{ secrets.GITHUB_TOKEN}}
+          push: ${{ github.event_name != 'pull_request' }} # Push only on merge/direct push, not PR
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
