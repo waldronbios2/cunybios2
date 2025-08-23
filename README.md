@@ -50,7 +50,7 @@ Lab
 <a href="https://waldronbios2.github.io/session1" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Multiple linear regression review">1</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session1/actions"><img src="https://github.com/waldronbios2/session1/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session1/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session1/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session1.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -77,7 +77,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session2" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Linear and logistic regression as generalized linear models (GLMs)">2</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session2/actions"><img src="https://github.com/waldronbios2/session2/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session2/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session2/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session2.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -104,7 +104,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session3" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Regression coefficients and model matrices">3</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session3/actions"><img src="https://github.com/waldronbios2/session3/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session3/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session3/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session3.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -131,7 +131,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session4" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Loglinear regression part 1">4</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session4/actions"><img src="https://github.com/waldronbios2/session4/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session4/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session4/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session4.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -158,7 +158,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session5" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Loglinear models part 2">5</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session5/actions"><img src="https://github.com/waldronbios2/session5/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session5/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session5/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session5.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -186,7 +186,7 @@ clone</a>
     survival probability, and the log-rank test.">6</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session6/actions"><img src="https://github.com/waldronbios2/session6/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session6/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session6/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session6.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -213,7 +213,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session7" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Proportional Hazards and AFT models">7</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session7/actions"><img src="https://github.com/waldronbios2/session7/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session7/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session7/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session7.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -240,7 +240,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session8" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Survival analysis part 3">8</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session8/actions"><img src="https://github.com/waldronbios2/session8/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session8/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session8/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session8.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -267,7 +267,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session9" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Repeated Measures and Longitudinal Data Analysis I">9</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session9/actions"><img src="https://github.com/waldronbios2/session9/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session9/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session9/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session9.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
@@ -294,7 +294,7 @@ clone</a>
 <a href="https://waldronbios2.github.io/session10" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="Repeated Measures and Longitudinal Data Analysis II">10</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session10/actions"><img src="https://github.com/waldronbios2/session10/workflows/build/badge.svg"></a>
+<a href="https://github.com/waldronbios2/session10/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session10/actions/workflows/pkgdown.yaml/badge.svg"></a>
 </td>
 <td style="text-align:center;">
 <a href="https://github.com/waldronbios2/session10.git" style="     " data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
