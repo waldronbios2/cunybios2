@@ -18,11 +18,12 @@ Suggests:
     session8,
     session9,
     session10,
-    dplyr,
     pkgdown,
-    knitr,
-    kableExtra,
-    rmarkdown
+    knitr
+Imports:
+    rmarkdown,
+    dplyr,
+    kableExtra
 Remotes:
     waldronbios2/session1,
     waldronbios2/session2,
