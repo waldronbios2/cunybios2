@@ -46,7 +46,7 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: any::pkgdown
-          dependencies: strong
+
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_file = "README.md")'
 
