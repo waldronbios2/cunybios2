@@ -7,19 +7,17 @@ on:
   workflow_dispatch:
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-22.04 # Using LTS version for stability
-    container: rocker/verse:4.4 # Pinned version for reproducibility
+  # JOB 1: Build the R-based assets in the rocker container
+  build:
+    runs-on: ubuntu-22.04
+    container: rocker/verse:4.4
     permissions:
       contents: write # To push README commit
-      pages: write # To deploy to GitHub Pages
-      packages: write # To push Docker image to GHCR
+      pages: write   # To deploy to GitHub Pages
 
     steps:
       - name: Checkout repository and submodules
@@ -27,7 +25,6 @@ jobs:
         with:
           submodules: true
 
-      # Git submodule init fails with unsafe repository
       - name: Add exception for git repository
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
@@ -42,7 +39,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-r-4.4-
 
-      - name: Install R dependencies (including pkgdown)
+      - name: Install R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: Render README
@@ -58,7 +55,7 @@ jobs:
           file_pattern: README.md
           commit_user_name: Levi's GitHub Robot
           commit_user_email: lwaldron.research@gmail.com
-
+      
       - name: Install rsync
         run: |
           apt-get update
@@ -67,8 +64,27 @@ jobs:
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: docs # The folder the action should deploy.
+          branch: gh-pages
+          folder: docs
+
+      - name: Upload artifact for Docker job
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-with-built-site
+          path: .
+
+  # JOB 2: Build and push the Docker image in a standard environment
+  push-docker:
+    runs-on: ubuntu-22.04
+    needs: build # This line makes this job wait for the 'build' job to finish
+    permissions:
+      packages: write # To push Docker image to GHCR
+    
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: repo-with-built-site
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
@@ -84,6 +100,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }} # Push only on merge/direct push, not PR
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-
