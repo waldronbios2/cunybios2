@@ -1,8 +1,8 @@
 pandoc: 3.7.0.2
-pkgdown: 2.1.3
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-08-22T16:22Z
+last_built: 2025-08-23T20:16Z
 urls:
   reference: https://bios2.waldronlab.io/reference
   article: https://bios2.waldronlab.io/articles
