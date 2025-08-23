@@ -18,6 +18,7 @@ Suggests:
     session8,
     session9,
     session10,
+    dplyr,
     pkgdown,
     knitr,
     kableExtra,

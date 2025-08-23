@@ -43,9 +43,9 @@ suppressPackageStartupMessages({
 
 ```{r links, echo=FALSE}
 badgeimages <- paste0("https://github.com/waldronbios2/", chapters, 
-                 "/workflows/build/badge.svg")
+                 "/actions/workflows/pkgdown.yaml/badge.svg")
 badgeimagehtml <- paste0("<img src='", badgeimages, "'>")
-badgelinks <- paste0("https://github.com/waldronbios2/", chapters, "/actions")
+badgelinks <- paste0("https://github.com/waldronbios2/", chapters, "/actions/workflows/pkgdown.yaml")
 badgeall <- paste0("<a href = '", badgelinks, "'>", badgeimagehtml, "</a>")
 ```
 
