@@ -44,8 +44,6 @@ jobs:
 
       - name: Install R dependencies (including pkgdown)
         uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: any::pkgdown
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_file = "README.md")'
