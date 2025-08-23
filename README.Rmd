@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Overview
 
 This course is designed to expand on the biostatistical methods
-covered in Applied Biostatistics I. It introduces generalized linear
+covered in Applied Biostatistics II. It introduces generalized linear
 regression including logistic regression, loglinear models (including
 Poisson and Negative Binomial models of count data), survival
 analysis, and longitudinal data including random and mixed effect
