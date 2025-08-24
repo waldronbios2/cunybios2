@@ -1,7 +1,8 @@
 <!-- badges: start -->
 
-![Website and
-Docker](https://github.com/waldronbios2/cunybios2/workflows/Website%20and%20Docker/badge.svg)
+[![pages-build-deployment](https://github.com/waldronbios2/cunybios2/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/waldronbios2/cunybios2/actions/workflows/pages/pages-build-deployment)
+[![Website and
+Docker](https://github.com/waldronbios2/cunybios2/actions/workflows/build.yaml/badge.svg)](https://github.com/waldronbios2/cunybios2/actions/workflows/build.yaml)
 <!-- badges: end -->
 
 # Overview
