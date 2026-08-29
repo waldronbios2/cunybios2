@@ -41,7 +41,7 @@ See Session 2 for some discussion about reading this file. Here we just do it.
 
 ```{r, message=FALSE}
 library(readr)
-cuse <- read_table2("cuse.dat",
+cuse <- read_table("cuse.dat",
     col_types = cols(
       age = col_factor(levels = c("<25", "25-29", "30-39", "40-49")),
       education = col_factor(levels = c("low", "high")),
