@@ -6,18 +6,22 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  # JOB 1: Build the R-based assets in the rocker container
+  # JOB 1: Build the website and render README in rocker container
   build:
     runs-on: ubuntu-22.04
-    container: rocker/verse:4.4
+    container: rocker/verse:latest
     permissions:
-      contents: write # To push README commit
-      pages: write   # To deploy to GitHub Pages
+      contents: write # To commit updated README
+      pages: write    # To deploy to GitHub Pages
 
     steps:
       - name: Checkout repository
@@ -26,19 +30,14 @@ jobs:
       - name: Add exception for git repository
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v2
-
-      - name: Cache R packages
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-4.4-${{ hashFiles('**/DESCRIPTION') }}
-          restore-keys: |
-            ${{ runner.os }}-r-4.4-
-
-      - name: Install R dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
+      - name: Install required R packages
+        run: |
+          Rscript -e "
+            pkgs <- c('pkgdown', 'kableExtra', 'dplyr', 'rmarkdown')
+            installed <- rownames(installed.packages())
+            needed <- pkgs[!pkgs %in% installed]
+            if (length(needed) > 0) install.packages(needed, Ncpus = 2)
+          "
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_file = "README.md")'
@@ -53,11 +52,6 @@ jobs:
           file_pattern: README.md
           commit_user_name: Levi's GitHub Robot
           commit_user_email: lwaldron.research@gmail.com
-      
-      - name: Install rsync
-        run: |
-          apt-get update
-          apt-get install -y rsync
 
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
@@ -65,24 +59,16 @@ jobs:
           branch: gh-pages
           folder: docs
 
-      - name: Upload artifact for Docker job
-        uses: actions/upload-artifact@v4
-        with:
-          name: repo-with-built-site
-          path: .
-
-  # JOB 2: Build and push the Docker image in a standard environment
+  # JOB 2: Build and push the Docker image with GitHub Actions layer caching
   push-docker:
     runs-on: ubuntu-22.04
-    needs: build # This line makes this job wait for the 'build' job to finish
+    needs: build
     permissions:
       packages: write # To push Docker image to GHCR
-    
+
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: repo-with-built-site
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
@@ -100,3 +86,5 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

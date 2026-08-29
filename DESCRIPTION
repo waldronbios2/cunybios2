@@ -7,34 +7,13 @@ Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
 Description: This package organizes session-specific packages
     and helps to install all needed dependencies.
-Suggests:
-    session1,
-    session2,
-    session3,
-    session4,
-    session5,
-    session6,
-    session7,
-    session8,
-    session9,
-    session10,
-    pkgdown,
-    knitr
 Imports:
     rmarkdown,
     dplyr,
     kableExtra
-Remotes:
-    waldronbios2/cunybios2/session1,
-    waldronbios2/cunybios2/session2,
-    waldronbios2/cunybios2/session3,
-    waldronbios2/cunybios2/session4,
-    waldronbios2/cunybios2/session5,  
-    waldronbios2/cunybios2/session6,  
-    waldronbios2/cunybios2/session7,  
-    waldronbios2/cunybios2/session8,
-    waldronbios2/cunybios2/session9,
-    waldronbios2/cunybios2/session10
+Suggests:
+    pkgdown,
+    knitr
 DockerImage: waldronbios2/cunybios2:latest
 License: CC BY 4.0
 Encoding: UTF-8
