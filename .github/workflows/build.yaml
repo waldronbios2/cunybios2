@@ -30,8 +30,9 @@ jobs:
       - name: Add exception for git repository
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - name: Install required R packages
+      - name: Install required dependencies
         run: |
+          apt-get update && apt-get install -y rsync
           Rscript -e "
             pkgs <- c('pkgdown', 'kableExtra', 'dplyr', 'rmarkdown')
             installed <- rownames(installed.packages())
