@@ -5,7 +5,7 @@ Version: 0.1.5
 Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("aut", "cre"),
       comment = c(ORCID = "0000-0003-2725-0694"))
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
-Description: This package uses git submodules to import session-specific packages
+Description: This package organizes session-specific packages
     and helps to install all needed dependencies.
 Suggests:
     session1,
@@ -25,16 +25,16 @@ Imports:
     dplyr,
     kableExtra
 Remotes:
-    waldronbios2/session1,
-    waldronbios2/session2,
-    waldronbios2/session3,
-    waldronbios2/session4,
-    waldronbios2/session5,  
-    waldronbios2/session6,  
-    waldronbios2/session7,  
-    waldronbios2/session8,
-    waldronbios2/session9,
-    waldronbios2/session10
+    waldronbios2/cunybios2/session1,
+    waldronbios2/cunybios2/session2,
+    waldronbios2/cunybios2/session3,
+    waldronbios2/cunybios2/session4,
+    waldronbios2/cunybios2/session5,  
+    waldronbios2/cunybios2/session6,  
+    waldronbios2/cunybios2/session7,  
+    waldronbios2/cunybios2/session8,
+    waldronbios2/cunybios2/session9,
+    waldronbios2/cunybios2/session10
 DockerImage: waldronbios2/cunybios2:latest
 License: CC BY 4.0
 Encoding: UTF-8

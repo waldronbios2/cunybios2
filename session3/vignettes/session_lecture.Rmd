@@ -1,0 +1,351 @@
+---
+title: "Session 3: Regression coefficients and model matrices"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+clean: false
+output:
+  slidy_presentation: default
+  html_document:
+    df_print: paged
+    number_sections: yes
+    theme: lumen
+    toc: yes
+  pdf_document:
+    toc: yes
+  beamer_presentation:
+    colortheme: dove
+    df_print: paged
+    fonttheme: structurebold
+    slide_level: 2
+    theme: Hannover
+  md_document:
+    preserve_yaml: false
+always_allow_html: true
+---
+
+```{r loadlibs, echo=FALSE}
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(xtable)
+})
+```
+
+# Learning objectives and outline
+
+## Learning objectives
+
+1. Interpret main effect coefficients in logistic regression
+2. Interpret interaction terms in logistic regression
+3. Define and interpret model matrices for (generalized) linear models
+
+
+## Outline
+
+1. Review of GLM
+2. Interpretation of logistic regression coefficients
+3. Introduction to model matrices
+
+# GLM review
+
+## Components of GLM
+
+* **Random component** specifies the conditional distribution for the response variable
+    + doesn’t have to be normal
+    + can be any distribution in the "exponential" family of distributions
+* **Systematic component** specifies linear function of predictors (linear predictor)
+* **Link** [denoted by g(.)] specifies the relationship between the expected value of the random component and the systematic component
+    + can be linear or nonlinear  
+
+## Logistic Regression as GLM
+
+* **The model**: 
+$$
+\begin{aligned}
+Logit(P(x)) &= log \left( \frac{P(x)}{1-P(x)} \right) \notag\\
+ &= \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi} \notag
+\end{aligned}
+$$
+
+* **Random component**: $y_i$ follows a Binomial distribution (outcome is a binary variable)
+
+* **Systematic component**: linear predictor 
+$$
+\beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
+$$
+
+* **Link function**: _logit_ (log of the odds that the event occurs)
+
+$$
+g(P(x)) = logit(P(x)) = log\left( \frac{P(x)}{1-P(x)} \right)
+$$
+
+$$
+P(x) = g^{-1}\left( \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
+ \right)
+$$
+
+## Additive vs. multiplicative models
+
+1. Linear regression is an _additive_ model
+    + _e.g._ for two binary variables $\beta_1 = 1.5$, $\beta_2 = 1.5$.
+    + If $x_1=1$ and $x_2=1$, this adds 3.0 to $E(y|x)$
+2. Logistic regression is a _multiplicative_ model
+    + It is additive on _log_-odds scale
+    + If $x_1=1$ and $x_2=1$, this adds 3.0 to $log(\frac{P}{1-P})$
+    + Odds-ratio $\frac{P}{1-P}$ increases 20-fold: $exp(1.5+1.5)$ or $exp(1.5) * exp(1.5)$
+
+# Interpretation of main effects and interactions in logistic regression
+
+## Motivating example: contraceptive use data
+
+From http://data.princeton.edu/wws509/datasets/#cuse
+
+\tiny
+```{r readcuse}
+cuse <- read.table("cuse.dat", header=TRUE)
+summary(cuse)
+```
+
+## Univariate regression on "wants more children"
+
+<p></p>
+
+\tiny
+```{r}
+fit <- glm(cbind(using, notUsing) ~ wantsMore, 
+           data=cuse, family=binomial("logit"))
+summary(fit)
+```
+
+## Interpretation of "wants more children" table
+
+* Coefficients for **(Intercept)** and **dummy variables**
+* Coefficients are normally distributed when assumptions are correct
+
+## Interpretation of "wants more children" coefficients
+
+```{r, echo=FALSE}
+## Colorblind-friendly palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+cbbPalette <- c(black="#000000", orange="#E69F00", blue="#56B4E9", green="#009E73", yellow="#F0E442", darkblue="#0072B2", salmon="#D55E00", fuscia="#CC79A7")
+```
+
+\tiny
+```{r main_coef, fig.cap="Diagram of the estimated coefficients in the GLM. The yellow arrow indicates the Intercept term, which goes from zero to the mean of the reference group (here the 'wantsMore = no' samples). The blue arrow indicates the difference in log-odds of the yes group minus the no group, which is negative in this example. The circles show the individual samples, jittered horizontally to avoid overplotting.", echo=FALSE, fig.height=5}
+logit <- function(P) log(P/(1-P))
+cuse$frac = logit(cuse$using / (cuse$using + cuse$notUsing))
+set.seed(1) #same jitter in stripchart
+stripchart(split(cuse$frac, cuse$wantsMore),
+           main="Additive coefficient interpretation on log-odds scale",
+           ylab="logit(fraction using contraception)", xlab="Wants more children",
+           vertical=TRUE, pch=1, method="jitter", las=2)
+coefs <- coef(fit)##[c("(Intercept)", "wantsMoreyes")]
+a <- -0.15
+lgth <- .1
+abline(h=0)
+arrows(1+a,0,1+a,coefs[1],lwd=3,col=cbbPalette["yellow"],length=lgth)
+abline(h=coefs[1],col=cbbPalette["yellow"])
+arrows(2+a,coefs[1],2+a,coefs[1]+coefs[2],lwd=3,col=cbbPalette["blue"],length=lgth)
+abline(h=coefs[1]+coefs[2],col=cbbPalette["blue"])
+legend("topright",names(coefs),fill=cbbPalette[c("yellow", "blue")],cex=.75,bg="white")
+```
+
+## Regression on **age**
+
+* Four age groups
+    - three dummy variables `age25-29`, `age30-39`, `age40-49`
+    - how to interpret them?
+
+## Regression on **age**
+
+\tiny
+```{r}
+fit <- glm(cbind(using, notUsing) ~ age, 
+           data=cuse, family=binomial("logit"))
+summary(fit)
+```
+
+## Recall model formulae
+
+symbol  | example | meaning
+------- | ------------ | --------------------------  
++ | + x	| include this variable  
+-	| - x	| delete this variable  
+:	| x : z	| include the interaction  
+*	| x * z	| include these variables and their interactions  
+^	| (u + v + w)^3	| include these variables and all interactions up to three way
+1 | -1 | intercept: delete the intercept  
+
+## Regression on **age** and **wantsMore**
+
+```{r}
+fit <- glm(cbind(using, notUsing) ~ age + wantsMore, 
+           data=cuse, family=binomial("logit"))
+```
+```{r, echo=FALSE}
+xtable(fit) %>%
+  knitr::kable(digits=2)
+# xtable(fit) %>%
+#   kbl(digits=2) %>%
+#   kable_styling(bootstrap_options = "basic")
+```
+
+## Interaction / Effect Modification
+
+* What if we want to know whether the effect of age is modified by whether the woman wants more children or not?
+
+Interaction is modeled as the product of two covariates:
+$$
+E[y|x] = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_{12} x_1*x_2
+$$
+
+## Interaction / Effect Modification (fit)
+
+```{r}
+fit <- glm(cbind(using, notUsing) ~ age * wantsMore, 
+           data=cuse, family=binomial("logit"))
+```
+\tiny
+```{r, echo=FALSE}
+xtable(fit) %>%
+  knitr::kable(digits=2)
+# xtable(fit) %>%
+#   kbl(digits=2) %>%
+#   kable_styling(bootstrap_options = "basic")
+```
+
+
+# The Design Matrix
+
+## What is the design matrix, and why?
+
+1. **What?** The design matrix is the most generic, flexible way to specify them
+2. **Why?** There are multiple possible and reasonable regression models for a given study design.
+
+
+## Matrix notation for the multiple linear regression model
+
+
+$$
+\,
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_N
+\end{pmatrix} = 
+\begin{pmatrix}
+1&x_1\\
+1&x_2\\
+\vdots\\
+1&x_N
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix} +
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_N
+\end{pmatrix}
+$$
+
+or simply: 
+
+$$
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}
+$$
+
+* The design matrix is $\mathbf{X}$
+* the computer will take $\mathbf{X}$ as a given when solving for $\boldsymbol{\beta}$ by minimizing the sum of squares of residuals $\boldsymbol{\varepsilon}$, or maximizing likelihood.
+    
+
+## Choice of design matrix
+    
+* The model formula encodes a default model matrix, e.g.:
+
+```{r}
+group <- factor( c(1, 1, 2, 2) )
+model.matrix(~ group)
+```
+
+## Choice of design matrix (cont'd)
+
+What if we forgot to code group as a factor?
+```{r}
+group <- c(1, 1, 2, 2)
+model.matrix(~ group)
+```
+
+## More groups, still one variable
+
+```{r}
+group <- factor(c(1,1,2,2,3,3))
+model.matrix(~ group)
+```
+
+## Changing the baseline group
+
+```{r}
+group <- factor(c(1,1,2,2,3,3))
+group <- relevel(x=group, ref=3)
+model.matrix(~ group)
+```
+
+## More than one variable
+
+\tiny
+```{r}
+agegroup <- factor(c(1,1,1,1,2,2,2,2))
+wantsMore <- factor(c("y","y","n","n","y","y","n","n"))
+model.matrix(~ agegroup + wantsMore)
+```
+
+## With an interaction term
+
+\tiny
+```{r}
+model.matrix(~ agegroup + wantsMore + agegroup:wantsMore)
+```
+
+## Design matrix to contrast what we want
+
+- Contraceptive use example
+    - The effect of wanting more children different for 40-49 year-olds than for <25 year-olds is answered by the term `age40-49:wantsMoreyes` in this default model with interaction terms
+
+```{r}
+fit <- glm(cbind(using, notUsing) ~ age * wantsMore, 
+           data=cuse, family=binomial("logit"))
+```
+\tiny
+```{r, echo=FALSE}
+xtable(fit) %>%
+  knitr::kable(digits=2) 
+```
+## Design matrix to contrast what we want (cont'd)
+
+* What if we want to ask this question for 40-49 year-olds vs. 30-39 year-olds?
+
+The desired contrast is:
+
+`age40-49:wantsMoreyes - age30-39:wantsMoreyes`
+
+There are many ways to construct this design, one is with `library(multcomp)`
+
+## Design matrix constructed with library(multcomp)
+
+\tiny
+```{r}
+coef(fit)
+contmat <- matrix(c(0,0,0,0,0,0,-1,1), 1) 
+contmat
+new.interaction <- multcomp::glht(fit, linfct=contmat) 
+summary(new.interaction)
+```
+
+## Summary
+
+1. Logistic regression coefficients are _linear_ in log-odds, _multiplicative_ in probability
+2. model formulae for easy setup of multiple regression
+3. design matrix for completely flexible setup of multiple regression

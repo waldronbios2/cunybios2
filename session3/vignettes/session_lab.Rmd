@@ -1,0 +1,258 @@
+---
+title: "Sessions 3 lab exercise: Regression analysis of contraceptive use data"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+clean: false
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+    theme: lumen
+    number_sections: yes
+  md_document:
+    preserve_yaml: false
+always_allow_html: true    
+---
+
+**Learning objectives**
+
+1. perform and interpret logistic regression
+    + interpret logistic regression coefficients
+    + make predictions based on a logistic regression model
+2. perform and interpret likelihood ratio test
+
+**Exercises**
+
+1. What is the mean fraction of women using birth control for each age group? Each education level? For women who do or don't want more children?
+     - Hint: look at the "data wrangling" cheat sheet functions `mutate`, `group_by`, and `summarize`
+2. Based on ```fit1```, write on paper the model for expected probability of using birth control.  Don't forget the logit function.
+3. Based on ```fit1```, what is the expected probability of an individual 25-29 years old, with high education, who wants more children, using birth control? Calculate it manually, and using `predict(fit1)`
+4. Based on ```fit1```: Relative to women under 25 who want to have children, what is the predicted increase in odds that a woman 40-49 years old who does _not_ want to have children will be taking birth control?
+5. Using a likelihood ratio test, is there evidence that a model with interactions improves on ```fit1``` (no interactions)?
+6. Which, if any, variables have the strongest interactions?
+7. Looking at the effect of age only, consider contrasts between *every pair* of age groups. Between which age groups is the contrast significant?
+
+# Load and explore the contraceptive use data
+
+Load the data from http://data.princeton.edu/wws509/datasets/#cuse. From this page:
+> These data show the distribution of 1607 currently married and fecund women interviewed in the Fiji Fertility Survey, according to age, education, desire for more children and current use of contraception.
+
+See Session 2 for some discussion about reading this file. Here we just do it.
+
+```{r, message=FALSE}
+library(readr)
+cuse <- read_table2("cuse.dat",
+    col_types = cols(
+      age = col_factor(levels = c("<25", "25-29", "30-39", "40-49")),
+      education = col_factor(levels = c("low", "high")),
+      wantsMore = col_factor(levels = c("no", "yes")),
+      X6 = col_skip()
+    )
+  )
+summary(cuse)
+```
+
+# What is the mean fraction of women using birth control for...
+
+What is the mean fraction of women using birth control for each age group? Each education level? For women who do or don't want more children?
+     - Hint: look at the ["Data Transformation Cheatsheet"](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf) functions `mutate`, `group_by`, and `summarize`. This is one of several very handy cheatsheets produced
+     by RStudio, see https://rstudio.com/resources/cheatsheets/ for a list.
+     
+
+**Solution**
+
+First create a new column containing the fraction using contraception:
+
+```{r, message=FALSE}
+library(dplyr)
+cuse2 <- mutate(cuse, fracusing = using / (using + notUsing))
+cuse2
+```
+
+Now, group and summarize by age:
+
+```{r}
+cuse2 %>% group_by(age) %>% summarize(mean(fracusing))
+cuse2
+```
+
+Here the `%>%` is called a "pipe", and it sends the output of the previous function to the input of the next function. This could also have been done in one step:
+
+```{r}
+mutate(cuse, fracusing = using / (using + notUsing)) %>%
+  group_by(age) %>% 
+  summarize(mean(fracusing))
+```
+
+Here the result is not stored anywhere; if you wanted to store it in a variable called `myanswer`, you could have started the above command with `myanswer <-` or `myanswer =`.
+
+Also note that the line breaks are optional: you could put this all on one line, but breaking it up makes it more readable.
+
+# Write on paper the model for expected probability of using birth control
+
+Based on ```fit1```, write on paper the model for expected probability of using birth control? Don't forget the (inverse) logit function.
+
+**Solution**
+
+```{r}
+fit1 <- glm(
+  cbind(using, notUsing) ~ age + education + wantsMore,
+  data = cuse,
+  family = binomial("logit")
+)
+```
+
+I'm going to store the coefficients of `fit1` in a new variable `b` just to save typing when writing out the formula, and round to two decimal places:
+
+```{r}
+bcoef <- round(coef(fit1), 2)
+```
+
+Here I'm going to take advantage of R Markdown's support for LaTeX formulae to write out the fitted regression model. I also use the \` r 2+2 \`     syntax (the result is `r 2+2`) for putting results of R code inline, instead of writing out numbers of the coefficients. I never wrote the number "four", but you'll have to look at the .Rmd to see how I did that! Doing this in reports allows you to update them as input data changes, without having to manually re-enter or copy numbers.
+
+$P = \textit{logit}^{-1} \left( 
+   `r bcoef["(Intercept)"]` + `r bcoef["age25-29"]` \times \textit{age25-29} + 
+   `r bcoef["age30-39"]` \times \textit{age30-39} +
+   `r bcoef["age40-49"]` \times \textit{age40-49} +
+   `r bcoef["educationhigh"]` \times \textit{educationhigh} +
+   `r bcoef["wantsMoreyes"]` \times \textit{wantsMoreyes} 
+   \right)$
+
+$\textit{logit}^{-1}(x) = \frac{1}{1+e^{-x}}$
+
+# What is the expected probability...
+
+Based on ```fit1```, what is the expected probability of an individual 25-29 years old, with high education, who wants more children, using birth control? Calculate it manually, and using `predict(fit1)`
+
+**Solution**
+
+This can be done using the `predict()` function, using a new `data.frame` giving the values that you want to predict for:
+```{r}
+invLogit <- function(x) 1/(1+exp(-x))
+q4data <- data.frame(age="25-29", education="high", wantsMore="yes")
+invLogit( predict(fit1, newdata=q4data) )
+```
+
+By default, `predict()` predicts on the original data, and taking a look, I noticed that the 7th value is the one we want to predict on:
+```{r}
+invLogit( predict(fit1)[7] )
+```
+
+If we were really doing this manually, on paper, we would just calculate the linear predictor, then use the inverse logit function. Note that education="high" is the reference group, so we don't use it here:
+
+```{r}
+invLogit( bcoef["(Intercept)"] + bcoef["age25-29"] + bcoef["wantsMoreyes"] )
+```
+
+I don't *really* care, but if the remnant "(Intercept)" name there were annoying me, I would assign this to a variable then get rid of that name:
+
+```{r}
+res <- invLogit( bcoef["(Intercept)"] + bcoef["age25-29"] + bcoef["wantsMoreyes"] )
+names(res) <- NULL
+res
+```
+
+# Predicted odds ratio
+
+
+Based on ```fit1```: Relative to women under 25 who want to have children, what is the predicted odds ratio for a woman 40-49 years old who does _not_ want to have children will be taking birth control?
+
+**Solution**
+
+```{r}
+exp( coef(fit1)["age40-49"] - coef(fit1)["wantsMoreyes"])
+```
+
+# Likelihood Ratio Test
+
+Using a likelihood ratio test, is there evidence that a model with interactions improves on ```fit1``` (no interactions)?
+
+**Solution**
+
+```{r}
+fit1.int <- glm(cbind(using, notUsing) ~ age * education * wantsMore, 
+           data=cuse, family=binomial("logit"))
+anova(fit1, fit1.int, test="LRT")
+```
+
+# A model with interactions
+
+Which, if any, variables have the strongest interactions? I use the "stargazer" package here which is extremely flexible for showing regression results from all kinds of models, capable of comparing multiple models or multiple dependent variables in the same table, and providing formatting customized to numerous journal styles.
+
+**Solution**
+
+We see here that the strongest interaction coeffient is for `age30-39:wantsMoreyes`. It is statistically significant and negative (`r round(coef(fit1.int)["age30-39:wantsMoreyes"], 2)`). It appears that being 30-39 years old and wanting more children has a multiplicative effect against using birth control, moreso than expected based on the age or wanting more children alone. 
+
+The *stargazer* package is a good way to create nicely-formatted tables 
+of regression results.
+
+```{r, echo=FALSE, results="asis", message=FALSE}
+library(stargazer)
+stargazer(fit1, fit1.int, type="html", 
+          dep.var.caption = " ",  #Otherwise the default is "Dependent Variable:"
+          dep.var.labels = "Outcome: Using Birth Control",
+          digits = 2,  #show 2 digits
+          column.labels = c("No Interaction", "With Interactions"),
+          ci=c(TRUE, TRUE), #show confidence intervals
+          single.row=TRUE, #put results on a single line
+          report="vc*s")  #report the "v"ariable name, "c"oefficient with significance "asterisks", and "s"tandard error (actually replaced by confidence interval because of ci argument above)
+```
+
+# Contrasts between every pair of age groups
+
+Create a model matrix for a fit on age only, with contrasts between *every pair* of age groups. Between which age groups is the contrast significant?
+
+**Solution**
+
+## semi-manually
+
+First, I'll do it manually, using the `multcomp` package and following an example from `?glht`. I'm not going to bother anymore creating pretty tables with `stargazer` though... 
+
+```{r}
+fit = glm(cbind(using, notUsing) ~ age, data=cuse, family=binomial("logit"))
+coef(fit)
+K <- rbind("25-29 - <25" = c(0, 1, 0, 0),
+           "30-39 - <25" = c(0, 0, 1, 0),
+           "40-49 - <25" = c(0, 0, 0, 1),
+           "30-39 - 25-29" = c(0, -1, 1, 0),
+           "40-49 - 25-29" = c(0, -1, 0, 1),
+           "40-49 - 30-39" = c(0, 0, -1, 1))
+K
+fit.all.cont = multcomp::glht(fit, linfct=K)
+summary(fit.all.cont)
+```
+
+## Using Tukey contrasts
+
+There is an easier way if you realize that these are the "Tukey" contrasts and use the `contrMat` function from the `multcomp` package. These automatic contrasts
+assume a no-intercept model, which would be hard to interpret outside the context of 
+`multcomp::contrMat`, but can be used as an intermediate step to get here.
+
+```{r}
+fitnoint = glm(cbind(using, notUsing) ~ age-1, data=cuse, family=binomial("logit"))
+K2 = multcomp::contrMat(1:4, type="Tukey")
+K2
+fit.all.cont2 = multcomp::glht(fitnoint, linfct=K2)
+summary(fit.all.cont2)
+```
+
+We didn't get the same informative coefficient names this time, but we can
+rename the rows in `K2`, for example:
+
+```{r}
+rownames(K2) = rownames(K)
+K2
+summary( multcomp::glht(fit, linfct=K2) )
+```
+
+## Other contrast schemes
+
+There are plenty of canned contrast schemes provided by `multcomp::contrMat`. Note use of the `example()` function to run all examples from the `contrmat()` function. This is a great example of how there are **many** ways to analyze one particular experimental design, but that you need to know design matrices to utilize many of them. 
+
+In these examples, the first line `n <- c(10,20,30,40)` just signifies four levels, `n = 1:4` would do exactly the same thing.
+
+```{r, message=FALSE}
+library(multcomp)
+example("contrMat")
+```
+

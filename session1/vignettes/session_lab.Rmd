@@ -1,0 +1,89 @@
+---
+title: "Session 1 lab: Association between cholesterol and age"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+    theme: lumen
+    number_sections: yes
+---
+
+**Learning objectives**
+
+1. Load a tab-separated dataset into R
+2. Create a simple scatterplot using `ggplot2`
+3. Fit and analyze a multiple linear regression model
+4. Compare two nested models using a nested Analysis of Variance (partial F test)
+
+**Exercises**
+
+1. Load the `cholesterol.tsv` dataset into R
+2. Fit linear models with age, state, and interaction terms as predictors
+3. Compare a simple linear regression to a multiple linear regression using Analysis of Variance partial F-test
+4. Use backwards selection from a full model with interactions to choose the best prediction model
+
+# Load the dataset
+
+Figure out this command using `File - Import Dataset`
+
+```{r}
+library(readr)
+chol <- read_table("cholesterol.tsv", 
+    col_types = cols(age = col_double()))
+summary(chol)
+```
+
+# Create a scatterplot of  Cholesterol vs. Age
+
+Take Data Science Module 1 "Data Visualization Basics" first if you aren't familiar with `ggplot2`:
+```{r, message=FALSE}
+library(ggplot2)
+ggplot(chol, aes(x=age, y=cholesterol, shape=state, color=state)) + 
+  geom_point(size=4) +
+  geom_smooth(method=lm, se = FALSE)
+```
+
+# Fit a linear model with age, state, and interaction as predictors
+
+`cholesterol` as the outcome variable.
+
+```{r}
+fit <- lm(cholesterol ~ age * state, data=chol)
+summary(fit)
+```
+
+# Create an ANOVA table for this fit
+
+```{r}
+anova(fit)
+```
+
+
+# Diagnostic plots for full model
+
+```{r}
+par(mfrow=c(2, 2))
+plot(fit)
+```
+
+# Partial F-test for two models
+
+
+```{r}
+fit1 <- lm(cholesterol ~ state, data=chol)
+fit2 <- lm(cholesterol ~ state + age, data = chol)
+anova(fit1, fit2)
+```
+
+# Backwards selection to select the best prediction model
+
+```{r}
+library(MASS)
+fit <- lm(cholesterol ~ age * state, data=chol)
+step <- stepAIC(fit, direction = "backward")
+```
+
+AIC = _Akaike's Information Criterion_
+

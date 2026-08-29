@@ -1,0 +1,22 @@
+Package: session6
+Type: Package
+Title: Title: Lecture and lab materials for CUNY Biostatistics 2 session 6
+Version: 0.1.0
+Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0003-2725-0694"))
+Maintainer: Levi Waldron <lwaldron.research@gmail.com>
+Description: Introduction to censored data, the Kaplan-Meier estimator of 
+    survival probability, and the log-rank test.
+Imports:
+    survminer,
+    survival,
+    tidyverse
+Suggests:
+    pkgdown,
+    knitr,
+    rmarkdown
+License: CC BY 4.0
+Encoding: UTF-8
+LazyData: true
+URL: https://waldronbios2.github.io/session6/
+VignetteBuilder: knitr

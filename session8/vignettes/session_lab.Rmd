@@ -1,0 +1,97 @@
+---
+title: "Session 8 lab exercise: What it's about"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+clean: false
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+    theme: lumen
+    number_sections: yes
+  md_document:
+    preserve_yaml: false
+always_allow_html: true
+---
+
+**Learning objectives**
+
+1. Make stratified and unstratified Kaplan-Meier plots
+2. Perform Cox proportional hazards regression
+3. Assess proportional hazards assumption
+
+**Exercises**
+
+# Load the Primary Biliary Cirrhosis (pbc) dataset from the survival package
+
+* Mayo Clinic trial in primary biliary cirrhosis (PBC) of the liver conducted between 1974 and 1984, $n=424$ patients.
+* Randomized placebo controlled trial of the drug D-penicillamine.
+    - 312 cases from RCT, plus additional 112 not from RCT.
+* Primary outcome is (censored) time to death
+
+```{r}
+library(survival)
+data(pbc)
+summary(pbc)
+```
+
+# Create a `Surv` object using variables "time" and "status", add this to the pbc dataframe
+
+Here "1" are patients who received transplants, and are thus removed from risk of death, at least due to liver cirrhosis. Transplantation may thus be related to risk, and not qualify as uninformative censoring. It could actually be considered a "competing hazard" because high-risk patients may be prioritized for liver transplant - a topic we don't get to in this course.  Instead, we will simply treat 0 (end of study) and 1 as censored, 2 (death) as an event.
+
+```{r}
+library(dplyr)
+pbc2 <- pbc %>%
+  mutate(cens = status > 1.5) %>%
+  mutate(y = Surv(time, cens))
+```
+
+
+# Plot a KM curve for all participants using `library(survminer)` function `ggsurvplot()`. 
+
+```{r}
+library(survminer)
+fit <- survfit(y ~ 1, data = pbc2)
+ggsurvplot(fit)
+```
+
+
+# Stratify by treatment and add a p-value to this plot (see `?ggsurvplot`). 
+
+```{r}
+fit2 <- survfit(y ~ trt, data = pbc2)
+ggsurvplot(fit2, pval = TRUE)
+```
+
+# Check whether these p-values correspond to results from a log-rank test.
+
+```{r}
+survdiff(y ~ trt, data = pbc2)
+```
+
+# Perform a Cox proportional hazards regression, using the "trt" variable as a predictor.
+
+```{r}
+fitcox <- coxph(y ~ trt, data = pbc2)
+summary(fitcox)
+```
+
+# Create a log-minus-log plot to test the proportional hazards assumption.
+
+Using a simpler method from survminer:
+
+```{r}
+library(survminer)
+ggsurvplot(fit2, fun = "cloglog")
+```
+
+# Plot Schoenfeld residuals and perform Schoenfeld test for the above Cox model
+
+```{r}
+fitzph <- cox.zph(fitcox)
+plot(fitzph)
+```
+
+```{r}
+fitzph
+```

@@ -1,0 +1,118 @@
+---
+title: "Session 7 lab exercise: Cox proportional Hazards"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+clean: false
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+    theme: lumen
+    number_sections: yes
+  md_document:
+    preserve_yaml: false
+always_allow_html: true
+---
+
+**Learning objectives**
+
+1. Fit a Cox proportional hazard model
+2. Create a stratified Kaplan-Meier plot
+3. Fit exponential and Weibull accelerated failure time models
+4. Fit a model using strata and a time-dependent covariate
+5. Create a DAG using dagitty
+
+**Exercises**
+
+1. Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset
+2. Create a stratified Kaplan-Meier plot
+3. Fit exponential and Weibull accelerated failure time (AFT) models
+4. Fit a stratified coxph model with a time-dependent covariate using an example from ?coxph
+5. Draw a DAG starting from dagitty.net and re-create it in R
+
+
+# Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset
+
+```{r, message=FALSE}
+library(survival)
+library(survminer)
+library(tidyverse)
+```
+
+
+```{r}
+leuk <- readr::read_csv("leuk.csv") %>%
+  mutate(group = factor(group, levels = c("Placebo", "6 MP")))
+```
+
+# Create a stratified Kaplan-Meier plot
+
+```{r}
+kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
+survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
+```
+
+# Fit exponential and Weibull accelerated failure time (AFT) models
+
+```{r}
+coxfit <- coxph(Surv(time, cens) ~ group, data = leuk)
+expfit <- survreg(Surv(time, cens) ~ group, data = leuk, dist = "exponential")
+weibullfit <- survreg(Surv(time, cens) ~ group, data = leuk, dist = "weibull")
+```
+
+ 
+```{r, results='hide'}
+summary(coxfit)
+summary(expfit)
+summary(weibullfit)
+```
+
+```{r, results='asis', message=FALSE}
+library(stargazer)
+stargazer(coxfit, expfit, weibullfit, type = "html")
+```
+
+Note, don't compare likelihoods between Cox and AFT models.
+
+# Fit a stratified coxph model with a time-dependent covariate using an example from `?coxph`
+
+Create a simple test data set:
+
+```{r}
+test1 <- data.frame(time=c(4,3,1,1,2,2,3), 
+              status=c(1,1,1,0,1,1,0), 
+              x=c(0,2,1,1,1,0,0), 
+              sex=c(0,0,0,0,1,1,1)) 
+test1
+```
+
+Fit a model stratified by `sex`, with the time-dependent covariate `x`:
+
+```{r}
+coxph(Surv(time, status) ~ x + strata(sex), test1) 
+```
+
+# Draw a DAG starting from dagitty.net and re-create it in R
+
+```{r}
+library(dagitty)
+g <- dagitty('
+dag {
+bb="-2,-3,3,3"
+collider [pos="0,1"]
+confounder [pos="0,-1"]
+exposure [exposure,pos="-1,0"]
+mediator [pos="0,0"]
+outcome [outcome,pos="1,0"]
+confounder -> exposure
+confounder -> outcome
+confounder -> mediator
+exposure -> collider
+exposure -> mediator
+mediator -> outcome
+outcome -> collider
+}
+')
+plot(g)
+```
+

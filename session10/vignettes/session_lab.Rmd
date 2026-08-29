@@ -1,0 +1,228 @@
+---
+title: "Session 10 lab exercise: Repeated Measures and Longitudinal Analysis II"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+clean: false
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+    theme: lumen
+    number_sections: yes
+  md_document:
+    preserve_yaml: false
+always_allow_html: true
+---
+
+**Learning objectives**
+
+1. Gain an intuitive understanding of ICC through simulated data
+2. Simulate correlated grouped data
+3. Use a heatmap and spaghetti plot to visualize correlated grouped data
+4. Create a custom color-blind friendly palette for any plot using https://colorbrewer2.org/ and the RColorBrewer library
+5. Fit random and mixed-effects models to correlated grouped data
+6. Make QQ plots for mixed-effects models
+7. Calculate ICC from a random or mixed-effects model
+8. Fit a population average model, aka marginal model, using GEE
+
+**Exercises**
+
+1. Simulation of correlated grouped data
+2. Create a heatmap of simulated data to visualize the group effect
+3. Create a spaghetti plot of the simulated data to visualize the group effect
+4. Fit a random effects model with no covariates and a random intercept. Does it recover the group and residual variances you simulated?
+5. Estimate ICC from the model above. Is it what you expected from the group and residual variances you simulated?
+6. Estimate ICC simply by calculating the correlation between fecfat1 and fecfat2. Is it similar to the estimate above?
+7. Load and do basic cleaning of the Georgia Birthweights dataset.
+8. Make a boxplot and spaghetti plot for the Georgia Birthweights dataset
+9. Test the null hypotheses that baseline birth weights do not vary by mother
+10. Create QQ plots of residuals and random intercepts for this model.
+11. Test the null hypotheses that the effect of birth order not modified by mother’s age at first birth or weight of first infant.
+12. Repeat above hypothesis tests using GEE
+
+# Simulation of correlated grouped data
+
+Simulate a dataset with two fecal fat measurements on each of `n` study subjects, where the measurement is the sum of a subject mean plus random measurement error. Subject means are distributed $N(10, \sigma_{subj})$ and measurement errors are distributed $N(0, \sigma_{resid})$. Start with the following values:
+```{r}
+sigma_subj <- sqrt(3)
+sigma_resid <- 1
+n <- 100
+```
+
+```{r}
+library(tidyverse)
+set.seed(1)  # try a different seed!
+df <- tibble(subj_mean = rnorm(n, mean = 10, sd = sigma_subj)) %>%
+  mutate(id = factor(1:n)) %>%
+  mutate(fecfat1 = rnorm(n, mean = 0, sd = sigma_resid) + subj_mean) %>%
+  mutate(fecfat2 = rnorm(n, mean = 0, sd = sigma_resid) + subj_mean)
+```
+
+
+```{r}
+simfun <- function(n = 100,
+                   sigma_subj = sqrt(3),
+                   sigma_resid = 1) {
+  library(dplyr)
+  df <- tibble(subj_mean = rnorm(n, mean = 10, sd = sigma_subj)) %>%
+    mutate(id = factor(1:n)) %>%
+    mutate(fecfat1 = rnorm(n, mean = 0, sd = sigma_resid) + subj_mean) %>%
+    mutate(fecfat2 = rnorm(n, mean = 0, sd = sigma_resid) + subj_mean)
+  return(df)
+}
+```
+
+```{r}
+simfun(n=10, sigma_subj = sqrt(3))
+```
+
+# Create a heatmap of simulated data to visualize the group effect
+
+```{r}
+library(pheatmap)
+library(RColorBrewer)
+mycol <- rev(colorRampPalette(colors = c('#d8b365','#f5f5f5','#5ab4ac'))(100))
+pheatmap(select(simfun(sigma_subj = sqrt(3), sigma_resid = 1), fecfat1:fecfat2), color = mycol)
+```
+
+Also play with the values of `sigma_subj` and `sigma_resid` to see what effect this has on the heatmap.
+
+# Create a spaghetti plot of the simulated data to visualize the group effect
+
+```{r}
+library(ggplot2)
+set.seed(1)
+library(tidyr)
+simfun(sigma_subj = sqrt(3), sigma_resid = sqrt(1)) %>%
+  pivot_longer(cols = starts_with("fecfat")) %>%
+  ggplot(aes(x=name, y=value, group=id)) + geom_line(alpha = 0.25)
+```
+
+Also play with the values of `sigma_subj` and `sigma_resid` to see what effect this has on the spaghetti plot
+
+# Fit a random effects model with no covariates and a random intercept. Does it recover the group and residual variances you simulated?
+
+```{r}
+set.seed(1)
+df_wide <- simfun(n = 10000, sigma_subj = sqrt(4), sigma_resid = sqrt(1))
+df <-  pivot_longer(df_wide, cols = starts_with("fecfat"))
+library(nlme)
+fit <- lme(value ~ 1, data = df, random = ~1|id)
+summary(fit)
+intervals(fit)
+```
+
+
+# Estimate ICC from the model above. Is it what you expected from the group and residual variances you simulated?
+
+Recall ICC for subject $i$, measurements $j$ and $k$:
+\begin{equation*}
+\begin{aligned}
+ICC & = corr(x_{ij}, x_{ik}) \\
+    & = \frac{\sigma_{subj}^2}{\sigma_{subj}^2 + \sigma_{\epsilon}^2} \\
+    & = \frac{\tau_{00}^2}{\tau_{00}^2 + \sigma_\epsilon^2}
+\end{aligned}
+\end{equation*}
+
+```{r}
+2.026972^2 / (2.026972^2 + 0.9988031^2)
+ICClme <- function(fit){
+  cors <- as.numeric(VarCorr(fit))
+  cors[1] / (cors[1] + cors[2])
+}
+ICClme(fit)
+```
+
+# Estimate ICC simply by calculating the correlation between `fecfat1` and `fecfat2`. Is it similar to the estimate above?
+
+```{r}
+select(df_wide, starts_with("fec")) %>% cor()
+```
+
+# Load and do basic cleaning of the Georgia Birthweights dataset. 
+
+a. Fix NA values for `momage`
+b. Create a categorical age variable with cut at age <18 vs >=18
+c. Convert `momid` to a factor
+d. Recode the low birthweight variable to a factor, with "0" to "normal" as the reference group and "1" to "low".
+
+```{r, message=FALSE}
+library(readr)
+ga <- read_csv("gababies.csv") %>% 
+  mutate(momage = na_if(momage, 99)) %>%
+  mutate(agebin = cut(initage, breaks = c(0, 17, 100))) %>% 
+  mutate(momid = factor(momid)) %>%
+  mutate(lowbrth = recode_factor(lowbrth, `0` = "normal", `1` = "low"))
+```
+
+# Make a boxplot and spaghetti plot for the Georgia Birthweights dataset
+
+```{r gaboxplot, fig.cap="Figure 3: Birth weight as a function of birth order in the Georgia birthweight dataset."}
+ggplot(ga, aes(x = birthord, y=bweight, group = birthord)) + 
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width=0.2, alpha = 0.25) +
+  labs(title = "Georgia birthweight dataset") +
+  xlab("Birth order") + ylab("Birth weight (g)") +
+  theme_grey(base_size = 16)
+```
+
+```{r}
+ggplot(ga, aes(x=birthord, y = bweight, group = momid)) +
+  geom_line(alpha = 0.25) +
+  labs(title = "Georgia birthweight dataset") +
+  xlab("Birth order") + ylab("Birth weight (g)") +
+  theme_grey(base_size = 16)
+```
+
+
+# Test the null hypotheses that baseline birth weights do not vary by mother
+
+```{r}
+library(nlme)
+gafit1 <- lme(bweight ~ birthord, data = ga, random = ~1|momid)
+intervals(gafit1)
+```
+
+# Create QQ plots of residuals and random intercepts for this model.
+
+```{r}
+qqnorm(residuals(gafit1, type = "pearson"), main = "Pearson residuals QQ plot")
+qqline(residuals(gafit1, type = "pearson"))
+qqnorm(ranef(gafit1)[, 1], main = "Random Intercepts QQ plot")
+qqline(ranef(gafit1)[, 1])
+```
+
+
+# Test the null hypotheses that the effect of birth order is not modified by mother's age at first birth or weight of first infant.
+
+```{r}
+gafit2 <- lme(bweight ~ birthord*agebin, data = ga, random = ~1|momid)
+summary(gafit2)
+```
+
+```{r}
+gafit3 <- lme(bweight ~ birthord*initwght, data = ga, random = ~1|momid)
+summary(gafit3)
+```
+
+# Repeat above hypothesis tests using GEE
+
+```{r}
+library(gee)
+gagee1 <- gee(bweight ~ birthord*agebin, data = ga, id = momid, corstr = "unstructured")
+summary(gagee1)
+```
+
+```{r}
+gagee2 <- gee(bweight ~ birthord*initwght, data = ga, id = momid, corstr = "unstructured")
+summary(gagee2)
+```
+
+# Heatmap of GA babies dataset
+
+```{r}
+pivot_wider(ga, values_from = bweight, names_from=birthord, id_cols = momid) %>%
+  select(-momid) %>%
+  pheatmap(clustering_distance_rows = "correlation", clustering_distance_cols = "correlation", scale = "column")
+```
+

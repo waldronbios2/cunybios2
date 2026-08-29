@@ -1,0 +1,157 @@
+---
+title: "Session 4 lab exercise: Poisson log-linear regression"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+clean: false
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+    theme: lumen
+    number_sections: yes
+  md_document:
+    preserve_yaml: false
+always_allow_html: true
+---
+
+**Learning objectives**
+
+1. Simulate Poisson-distributed data with a relevant covariate
+2. Fit a Poisson log-linear GLM
+3. Create and interpret diagnostic plots for a log-linear GLM
+4. Use analysis of deviance to compare two log-linear GLMs
+5. Practice recoding and creating tables and plots
+
+
+**Exercises**
+
+1. Simulate count data from a Poisson distribution (for example number of hospital visits by persons over 70 in a 3-year period), where:
+    a. 10,000 persons annotated with "race" as "white" or "non-white"
+    b. "white" persons have an average of 3.5 hospital visits during this time period
+    c. "non-white" persons have an average of 3 hospital visits
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+set.seed(1)
+N <- 10000
+simdat <- data.frame(race = sample(c("white", "non-white"), N, replace = TRUE)) %>%
+  mutate(race = factor(race, levels = c("white", "non-white"))) %>%
+  mutate(y = rpois(N, lambda = ifelse(race == "white", 3.5, 3.0)))
+```
+
+
+
+
+2. Fit a log-linear Poisson model of count outcomes with "race" as the predictor. Note, in this context I tend to use the terms "predictor" and "covariate" interchangeably, to mean any variable used as a predictor in the regression model.
+
+```{r}
+fit <- glm(y ~ race, data = simdat, family = poisson(link = "log"))
+summary(fit)
+```
+
+3. Use a chi-square test on deviance residuals to test null hypothesis of no relationship between mean hospital visits and race.
+
+
+* The difference in total deviance between two nested models is $\chi^2$ distributed under $H_0$ that the more complex model is no better at explaining the response.
+     + The difference in deviance residuals is (11041 - 10831) = 210, with a difference of 1 degrees of freedom.
+
+The critical threshold for rejection at p=0.05 is:
+```{r}
+qchisq(0.95, df=1)
+```
+
+So we reject $H_0$
+
+BEWARE OF MISSING DATA: THIS IS SAFER
+
+```{r}
+fit0 <- glm(y ~ 1, data = simdat, family = poisson(link = "log"))
+anova(fit0, fit, test = "LRT")
+```
+
+3. Create and discuss standard fit diagnostics plots
+
+```{r, echo=FALSE}
+par(mfrow = c(2, 2))
+plot(fit)
+```
+
+4. Example: Risky Drug Use Behavior
+
+* Download the "needle_sharing" dataset (see Vittinghoff 8.3.1)
+* Outcome is # times the drug user shared a syringe in the past month (`shared_syr`)
+* Predictors: sex, ethn, homeless
+
+```{r loaddata}
+library(readxl)
+needledat <- read_excel("needle_sharing.xlsx")
+summary(needledat$shared_syr)
+var(needledat$shared_syr, na.rm=TRUE)
+```
+
+Some recoding:
+```{r recode}
+suppressPackageStartupMessages(library(dplyr))
+needledat_cleaned <-
+  mutate(needledat,
+    homeless = factor(homeless, levels = 0:1, labels = c("No", "Yes")),
+    sex = factor(sex, levels = c("M", "F"), labels = c("Male", "Female")),
+    ethnicity = factor(ethn)
+  ) %>%
+  select(all_of(c("shared_syr", "ethnicity", "sex", "homeless")))
+```
+
+5. Create a table of the risky drug use behavior dataset
+
+```{r table1}
+library(table1)
+table1(~ ., data = needledat_cleaned)
+```
+
+6. Plots of Risky Drug Use Behavior
+
+a. Create a histogram number of syringe uses
+
+b. Create a scatter plot of number of syringe uses versus rank of number of syringe uses
+
+```{r histogram}
+library(ggplot2)
+ggplot(needledat, aes(shared_syr)) +
+  geom_histogram() +
+  labs(title = "Counts of Syringe Sharing Incidents Per Person") +
+  xlab("Number of Incidents") +
+  ylab("Number of people with that count")
+```
+
+```{r rankplot}
+library(dplyr)
+mutate(needledat, rnk = rank(shared_syr, ties.method = "first")) %>%
+  ggplot(aes(x = rnk, y = shared_syr)) +
+  geom_point() +
+  labs(title = "Count vs Rank Count of Syringe Sharing Incidents") +
+  xlab("rank of count") +
+  ylab("count of syringe sharing")
+```
+
+* There are a _lot_ of zeros - Poisson model is not a good fit
+
+7. Fit a Poisson model to the risky drug use behavior dataset anyways
+
+Even though we know it is a bad fit
+
+```{r glmfit}
+fit.pois <- glm(shared_syr ~ sex + ethn + homeless,
+                data = needledat,
+                family = poisson(link = "log"))
+summary(fit.pois)
+```
+
+8. Create and discuss Poisson model diagnostic plots
+
+```{r diagnostic}
+par(mfrow = c(2, 2))
+plot(fit.pois)
+```

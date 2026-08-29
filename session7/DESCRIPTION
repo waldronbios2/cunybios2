@@ -1,0 +1,23 @@
+Package: session7
+Type: Package
+Title: Lecture and lab materials for CUNY Biostatistics 2 session 7
+Version: 0.1.0
+Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0003-2725-0694"))
+Maintainer: Levi Waldron <lwaldron.research@gmail.com>
+Description: Proportional Hazards and AFT models
+Imports:
+    muhaz,
+    survminer,
+    dagitty,
+    stargazer,
+    tidyverse
+Suggests:
+    pkgdown,
+    knitr,
+    rmarkdown
+License: CC BY 4.0
+Encoding: UTF-8
+LazyData: true
+URL: https://waldronbios2.github.io/session7/
+VignetteBuilder: knitr

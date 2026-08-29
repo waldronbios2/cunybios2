@@ -1,0 +1,153 @@
+---
+title: "Session 9 lab exercises: Repeated Measures and Longitudinal Analysis I"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+clean: false
+output:
+  html_document: 
+    toc: yes
+    theme: lumen
+    number_sections: yes
+  md_document:
+    preserve_yaml: false
+always_allow_html: true
+---
+
+**Learning objectives**
+
+1. Create and interpret a notched barplot
+2. Create spaghetti / line plots for grouped data
+3. Use `pivot_wider` to create a wide-format dataframe
+4. Do a manual ICC calculation
+5. Write a function
+6. Perform a permutation simulation
+
+**Exercises**
+
+# Read the fecal fat dataset and convert pilltype and subject to factors
+```{r, message=FALSE}
+library(readr)
+library(dplyr)
+dat <- read_csv("fecfat.csv") %>%
+  mutate(pilltype = factor(pilltype, levels=c("none", "capsule", "tablet", "coated"))) %>%
+  mutate(subject = factor(subject))
+```
+
+# Create a notched boxplot of the data. 
+
+```{r}
+library(ggplot2)
+ggplot(dat, aes(x = pilltype, y = fecfat)) +
+  geom_boxplot(notch = TRUE, outlier.shape = NA) +
+  geom_jitter(width = 0.2, alpha = 0.5) +
+  theme_grey(base_size = 12) +
+  theme(legend.position = "none")
+```
+
+# Interpret the notches. What is wrong with the usual interpretation in this example?
+
+If the observations are independent (ie assumptions of a one-way AOV are met), notches can be used to visually perform a pairwise hypothesis test for difference of medians.
+
+It's wrong here because these are grouped / hierarchical data, and observations are not independent. 
+
+# Subtract subject means from the fecal fat data, manually and using residuals of a one-way AOV
+
+```{r}
+dat <- dat %>% group_by(subject) %>% 
+  mutate(fecfatminusmean = fecfat - mean(fecfat)) %>%
+  ungroup() %>%
+  mutate(fecfatminusmean2 = residuals(lm(fecfat ~ subject, data = .)))
+```
+
+
+# Make line plots for each subject, with and without subject mean centering
+
+```{r}
+p1 <- ggplot(dat, aes(x = pilltype, y = fecfat, group = subject, lty = subject)) +
+  geom_line() +
+  labs(subtitle = "Raw data") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  xlab("Treatment") + ylab("Fecal Fat (mg/day)") +
+  theme(legend.position = "none")
+p2 <- ggplot(dat, aes(x = pilltype, y = fecfatminusmean, group = subject, lty = subject)) +
+  geom_line() +
+  labs(subtitle = "Subject means subtracted") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  xlab("Treatment") + ylab("Fecal Fat (mg/day)")
+library(gridExtra)
+grid.arrange(p1, p2, ncol=2, respect=TRUE)
+```
+
+# Convert to a wide-format dataset and remove the subject column
+
+```{r}
+library(tidyr)
+dat %>%
+  select(-starts_with("fecfatminus")) %>%
+  pivot_wider(names_from =pilltype, values_from = fecfat) %>%
+  select(-subject)
+```
+
+# Write a function to calculate subject and residual variance and ICC of this dataset as a vector
+
+```{r}
+ICCfun <- function(x) {
+  fit2way <- lm(fecfat ~ subject + pilltype, data = x)
+  subjvar_uncorrected <- x %>% group_by(subject) %>%
+    summarize(MEAN = mean(fecfat), .groups = "drop") %>%
+    pull(MEAN) %>%
+    var()
+  correction <- sum(residuals(fit2way) ^ 2) / 15 / 4
+  subjvar <- subjvar_uncorrected - correction
+  residualvar <- sum(residuals(fit2way) ^ 2) / 15
+  ICC <- subjvar / (subjvar + residualvar)
+  output <- c(subjvar, residualvar, ICC)
+  names(output) <- c("subjectvar", "residualvar", "ICC")
+  return(output)
+}
+ICCfun(dat)
+```
+
+
+# Create a simulated dataset where subjects are randomized for each treatment
+
+```{r}
+set.seed(1)
+datrand <- dat %>% 
+  group_by(pilltype) %>%
+  mutate(subject = sample(subject)) %>%
+  arrange(subject)
+```
+
+# compare ICC for your original and simulated dataset
+
+```{r}
+ICCfun(dat)
+ICCfun(datrand)
+```
+
+# Repeat the simulation 999 times, and compare to your original dataset
+
+```{r}
+simulateData <- function(x){
+  x %>%
+  group_by(pilltype) %>%
+  mutate(subject = sample(subject)) %>%
+  arrange(subject)
+}
+```
+
+```{r}
+set.seed(1)
+simresults <- replicate(n=999, ICCfun(simulateData(dat))[3])
+```
+
+```{r}
+hist(simresults, xlim = c(-1, 1))
+abline(v = ICCfun(dat), col = "red")
+```
+
+```{r}
+sum(simresults > ICCfun(dat))
+```
+

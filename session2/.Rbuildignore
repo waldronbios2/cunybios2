@@ -1,0 +1,4 @@
+^\.github/workflows$
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$

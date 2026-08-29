@@ -1,0 +1,43 @@
+home:
+  strip_header: true
+  links:
+  - text: Full course notes
+    href: https://bios2.waldronlab.io
+  - text: git clone
+    href: https://github.com/waldronbios2/session6.git
+
+url: https://waldronbios2.github.io/session1/
+
+template:
+  params:
+    bootswatch: lumen
+    ganalytics: UA-176789980-1
+    bs_version: 5
+    
+navbar:
+  structure:
+    left:  [home, articles]
+    right: [github, twitter]
+  components:
+    home: 
+    articles:
+      text: Lecture and Lab
+      menu:
+      - text: Lecture notes
+        href: articles/session_lecture.html
+      - text: Lecture notes PDF
+        href: articles/session_lecture.pdf
+      - text: -------
+      - text: Lab materials
+        href: articles/session_lab.html
+    reference:
+      text: ""
+    twitter:
+      icon: "fab fa-twitter fa-lg"
+      href: https://twitter.com/leviwaldron1
+
+
+authors:
+  Levi Waldron:
+    href: https://waldronlab.io
+

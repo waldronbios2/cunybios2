@@ -20,10 +20,8 @@ jobs:
       pages: write   # To deploy to GitHub Pages
 
     steps:
-      - name: Checkout repository and submodules
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: true
 
       - name: Add exception for git repository
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"

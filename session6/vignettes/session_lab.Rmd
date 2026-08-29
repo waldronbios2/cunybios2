@@ -1,0 +1,83 @@
+---
+title: "Session 6 lab exercise: Survival Analysis part 1"
+author: "Levi Waldron"
+institute: "CUNY SPH Biostatistics 2"
+clean: false
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+    theme: lumen
+    number_sections: yes
+  md_document:
+    preserve_yaml: false
+always_allow_html: true
+---
+
+**Learning objectives**
+
+1. Calculate Kaplan-Meier estimates of survival probability over time
+2. Plot survival curves for censored time-to-event data
+3. Perform and interpret log-rank test
+4. Define "informative" censoring
+
+**Exercises**
+
+1. Calculate the follow-up table for 6 MP patients in the leukemia study
+
+```{r}
+library(readr)
+leuk <- read_csv("leuk.csv")
+```
+
+2. Plot the Kaplan-Meier estimate of the follow-up table from 1. `library(survminer)` is recommendable. 
+
+```{r}
+library(survival)
+library(survminer)
+with(leuk, Surv(time, cens))
+fit <- survminer::surv_fit(Surv(time, cens) ~ group, data = leuk)
+survminer::ggsurvplot(fit,
+           xlab = "Time (weeks)",
+           ylab = "Survival Probability",
+           risk.table = TRUE)
+```
+
+
+3. What is the 75th percentile of survival times for the 6 MP group? For the Placebo group? This is the time that 75% of the patients survive. This is also the time at which 25% of patients have had events.
+
+```{r}
+quantile(fit)
+```
+
+```{r}
+survdiff(Surv(time, cens) ~ group, data = leuk)
+```
+
+4. Suppose you were instructed to cap follow-up times at 20 weeks. Re-do the Kaplan-Meier plot for both groups, and re-do the logrank test.
+
+```{r}
+library(tidyverse)
+leuknew <- leuk %>% mutate(newtime = pmin(time, 20)) %>% 
+  mutate(newcens = ifelse(time <= 20, cens, 0))
+```
+
+Kaplan-Meier plot
+```{r}
+fit <- survminer::surv_fit(Surv(newtime, newcens) ~ group, data = leuknew)
+survminer::ggsurvplot(fit,
+           xlab = "Time (weeks)",
+           ylab = "Survival Probability",
+           risk.table = TRUE)
+```
+
+Logrank test
+```{r logrank}
+survdiff(Surv(newtime, newcens) ~ group, data = leuknew)
+```
+
+
+5. Give a hypothetical example of how censoring in this example might be "informative."
+
+If sicker patients were moved to another hospital where they weren't followed up on, and were also more likely to relapse, this would be informative censoring.
+
