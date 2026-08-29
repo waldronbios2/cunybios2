@@ -15,8 +15,6 @@ longitudinal data including random and mixed effect models.
 
 # Materials
 
-    ## Warning: package 'kableExtra' was built under R version 4.6.1
-
 <table class=" lightable-paper table table-striped" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
