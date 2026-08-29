@@ -32,12 +32,21 @@ jobs:
 
       - name: Install required dependencies
         run: |
-          apt-get update && apt-get install -y rsync
+          apt-get update && apt-get install -y rsync libv8-dev libxml2-dev libpng-dev libcurl4-openssl-dev
           Rscript -e "
-            pkgs <- c('pkgdown', 'kableExtra', 'dplyr', 'rmarkdown')
+            options(repos = c(CRAN = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest'))
+            pkgs <- unique(unlist(lapply(c('.', dir(pattern='^session[0-9]+$')), function(d) {
+              desc <- read.dcf(file.path(d, 'DESCRIPTION'))
+              fields <- intersect(c('Imports', 'Suggests', 'Depends'), colnames(desc))
+              sapply(fields, function(f) strsplit(gsub('[ \t\r\n]', '', desc[, f]), ',')[[1]])
+            })))
+            pkgs <- sort(pkgs[nzchar(pkgs) & !pkgs %in% c('R', paste0('session', 1:10))])
             installed <- rownames(installed.packages())
             needed <- pkgs[!pkgs %in% installed]
-            if (length(needed) > 0) install.packages(needed, Ncpus = 2)
+            if (length(needed) > 0) {
+              message('Installing binary dependencies: ', paste(needed, collapse = ', '))
+              install.packages(needed, Ncpus = 2)
+            }
           "
 
       - name: Render README
