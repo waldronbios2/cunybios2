@@ -38,7 +38,6 @@ Remotes:
 DockerImage: waldronbios2/cunybios2:latest
 License: CC BY 4.0
 Encoding: UTF-8
-LazyData: true
 URL: https://waldronbios2.github.io/cunybios2/
 BugReports: https://github.com/waldronbios2/cunybios2/issues/new/choose
-VignetteBuilder: knitr
+

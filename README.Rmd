@@ -44,33 +44,22 @@ suppressPackageStartupMessages({
 })
 ```
 
-```{r links, echo=FALSE}
-badgeimages <- paste0("https://github.com/waldronbios2/", chapters, 
-                 "/actions/workflows/pkgdown.yaml/badge.svg")
-badgeimagehtml <- paste0("<img src='", badgeimages, "'>")
-badgelinks <- paste0("https://github.com/waldronbios2/", chapters, "/actions/workflows/pkgdown.yaml")
-badgeall <- paste0("<a href = '", badgelinks, "'>", badgeimagehtml, "</a>")
-```
-
 ```{r, echo=FALSE}
 dt <- data.frame(
   session = cell_spec(
     seq_along(chapters),
     tooltip = sapply(chapters, function(x) {
-      pd <- packageDescription(x)
-      if (!is(pd, "packageDescription")){
-        warning(x, " is not a package")
-	return(NA)
-      }
-      return(packageDescription(x)$Description)
-    }),
-    link = paste0("https://waldronbios2.github.io/", chapters)
+      read.dcf(file.path(x, "DESCRIPTION"))[1, "Description"]
+    }, USE.NAMES = FALSE),
+    link = paste0("https://github.com/waldronbios2/cunybios2/tree/main/", chapters)
   ),
-  status = badgeall,
+  topic = sapply(chapters, function(x) {
+    read.dcf(file.path(x, "DESCRIPTION"))[1, "Description"]
+  }, USE.NAMES = FALSE),
   git = cell_spec(
-    "git clone",
-    tooltip = "use for git clone click to go to GitHub repo",
-    link = paste0("https://github.com/waldronbios2/", chapters, ".git")
+    "source",
+    tooltip = "browse session directory in monorepo",
+    link = paste0("https://github.com/waldronbios2/cunybios2/tree/main/", chapters)
   ),
   lecture = cell_spec(
     "HTML",
@@ -106,7 +95,8 @@ dt <- data.frame(
   ),
   labvideo = cell_spec("watch",
                        tooltip = youtube$labtips,
-                       link = youtube$lab[1:length(chapters)])
+                       link = youtube$lab[1:length(chapters)]),
+  row.names = NULL
 )
 ```
 
@@ -116,7 +106,8 @@ kableExtra::kbl(
   format = "html",
   escape = FALSE,
   col.names = NULL,
-  align = "c"
+  align = "c",
+  row.names = FALSE
 ) %>%
   kable_paper() %>%
   kableExtra::kable_styling(
@@ -126,7 +117,7 @@ kableExtra::kbl(
   ) %>%
   kableExtra::add_header_above(c(
     "Session" = 1,
-    "Status" = 1,
+    "Topic" = 1,
     "GitHub" = 1,
     "Lecture" = 3,
     "Lab" = 2

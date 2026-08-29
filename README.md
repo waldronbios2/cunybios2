@@ -17,46 +17,6 @@ longitudinal data including random and mixed effect models.
 
     ## Warning: package 'kableExtra' was built under R version 4.6.1
 
-    ## Warning in packageDescription(x): no package 'session1' was found
-
-    ## Warning in FUN(X[[i]], ...): session1 is not a package
-
-    ## Warning in packageDescription(x): no package 'session2' was found
-
-    ## Warning in FUN(X[[i]], ...): session2 is not a package
-
-    ## Warning in packageDescription(x): no package 'session3' was found
-
-    ## Warning in FUN(X[[i]], ...): session3 is not a package
-
-    ## Warning in packageDescription(x): no package 'session4' was found
-
-    ## Warning in FUN(X[[i]], ...): session4 is not a package
-
-    ## Warning in packageDescription(x): no package 'session5' was found
-
-    ## Warning in FUN(X[[i]], ...): session5 is not a package
-
-    ## Warning in packageDescription(x): no package 'session6' was found
-
-    ## Warning in FUN(X[[i]], ...): session6 is not a package
-
-    ## Warning in packageDescription(x): no package 'session7' was found
-
-    ## Warning in FUN(X[[i]], ...): session7 is not a package
-
-    ## Warning in packageDescription(x): no package 'session8' was found
-
-    ## Warning in FUN(X[[i]], ...): session8 is not a package
-
-    ## Warning in packageDescription(x): no package 'session9' was found
-
-    ## Warning in FUN(X[[i]], ...): session9 is not a package
-
-    ## Warning in packageDescription(x): no package 'session10' was found
-
-    ## Warning in FUN(X[[i]], ...): session10 is not a package
-
 <table class=" lightable-paper table table-striped" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -67,7 +27,7 @@ Session
 </th>
 <th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
 
-Status
+Topic
 
 </th>
 <th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
@@ -90,14 +50,13 @@ Lab
 <tbody>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session1" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">1</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session1" data-toggle="tooltip" data-container="body" data-placement="right" title="Multiple linear regression review">1</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session1/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session1/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Multiple linear regression review
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session1.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session1" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session1/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -117,14 +76,13 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session2" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">2</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session2" data-toggle="tooltip" data-container="body" data-placement="right" title="Linear and logistic regression as generalized linear models (GLMs)">2</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session2/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session2/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Linear and logistic regression as generalized linear models (GLMs)
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session2.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session2" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session2/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -144,14 +102,13 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session3" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">3</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session3" data-toggle="tooltip" data-container="body" data-placement="right" title="Regression coefficients and model matrices">3</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session3/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session3/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Regression coefficients and model matrices
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session3.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session3" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session3/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -171,14 +128,13 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session4" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">4</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session4" data-toggle="tooltip" data-container="body" data-placement="right" title="Loglinear regression part 1">4</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session4/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session4/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Loglinear regression part 1
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session4.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session4" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session4/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -198,14 +154,13 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session5" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">5</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session5" data-toggle="tooltip" data-container="body" data-placement="right" title="Loglinear models part 2">5</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session5/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session5/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Loglinear models part 2
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session5.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session5" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session5/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -225,14 +180,15 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session6" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">6</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session6" data-toggle="tooltip" data-container="body" data-placement="right" title="Introduction to censored data, the Kaplan-Meier estimator of
+survival probability, and the log-rank test.">6</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session6/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session6/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Introduction to censored data, the Kaplan-Meier estimator of survival
+probability, and the log-rank test.
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session6.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session6" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session6/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -252,14 +208,13 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session7" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">7</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session7" data-toggle="tooltip" data-container="body" data-placement="right" title="Proportional Hazards and AFT models">7</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session7/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session7/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Proportional Hazards and AFT models
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session7.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session7" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session7/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -279,14 +234,13 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session8" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">8</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session8" data-toggle="tooltip" data-container="body" data-placement="right" title="Survival analysis part 3">8</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session8/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session8/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Survival analysis part 3
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session8.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session8" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session8/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -306,14 +260,13 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session9" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">9</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session9" data-toggle="tooltip" data-container="body" data-placement="right" title="Repeated Measures and Longitudinal Data Analysis I">9</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session9/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session9/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Repeated Measures and Longitudinal Data Analysis I
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session9.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session9" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session9/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
@@ -333,14 +286,13 @@ clone</a>
 </tr>
 <tr>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session10" data-toggle="tooltip" data-container="body" data-placement="right" title="NA">10</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session10" data-toggle="tooltip" data-container="body" data-placement="right" title="Repeated Measures and Longitudinal Data Analysis II">10</a>
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session10/actions/workflows/pkgdown.yaml"><img src="https://github.com/waldronbios2/session10/actions/workflows/pkgdown.yaml/badge.svg"></a>
+Repeated Measures and Longitudinal Data Analysis II
 </td>
 <td style="text-align:center;">
-<a href="https://github.com/waldronbios2/session10.git" data-toggle="tooltip" data-container="body" data-placement="right" title="use for git clone click to go to GitHub repo">git
-clone</a>
+<a href="https://github.com/waldronbios2/cunybios2/tree/main/session10" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
 <a href="https://waldronbios2.github.io/session10/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>

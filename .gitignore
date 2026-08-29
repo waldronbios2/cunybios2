@@ -17,4 +17,6 @@ vignettes/*.pdf
 session*/vignettes/*.html
 session*/vignettes/*.pdf
 session*/*.Rproj.user
+docs/
+session*/docs/
 

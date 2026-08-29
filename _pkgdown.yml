@@ -1,9 +1,10 @@
 home:
   strip_header: true
 
-url: https://bios2.waldronlab.io
+url: https://waldronbios2.github.io/cunybios2/
 
 template:
+  bootstrap: 5
   params:
     bootswatch: lumen
     ganalytics: UA-176789980-1
@@ -22,6 +23,7 @@ navbar:
     twitter:
       icon: "fab fa-twitter fa-lg"
       href: https://twitter.com/leviwaldron1
+      aria-label: "Twitter profile"
 
 
 authors:

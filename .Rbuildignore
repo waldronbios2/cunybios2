@@ -1,3 +1,11 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.github
+^\.github$
+^session[0-9]+$
+^youtubeURLs\.csv$
+^_pkgdown\.yml$
+^about\.md$
+^Dockerfile$
+^README\.Rmd$
+^LICENSE\.md$
+^docs$
