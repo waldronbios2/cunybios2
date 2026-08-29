@@ -65,7 +65,7 @@ dt <- data.frame(
     "HTML",
     tooltip = "lecture notes in HTML",
     link = paste0(
-      "https://waldronbios2.github.io/",
+      "https://waldronbios2.github.io/cunybios2/",
       chapters,
       "/articles/session_lecture.html"
     )
@@ -74,7 +74,7 @@ dt <- data.frame(
     "PDF",
     tooltip = "lecture notes in PDF",
     link = paste0(
-      "https://waldronbios2.github.io/",
+      "https://waldronbios2.github.io/cunybios2/",
       chapters,
       "/articles/session_lecture.pdf"
     )
@@ -88,7 +88,7 @@ dt <- data.frame(
     "HTML",
     tooltip = "lab notes in HTML",
     link = paste0(
-      "https://waldronbios2.github.io/",
+      "https://waldronbios2.github.io/cunybios2/",
       chapters,
       "/articles/session_lab.html"
     )

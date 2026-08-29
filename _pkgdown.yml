@@ -11,19 +11,44 @@ template:
 
 navbar:
   structure:
-    left:  [home, about]
+    left:  [home, about, sessions]
     right: [github, twitter]
   components:
     home: ~
-    articles:
+    about:
       text: About
       href: about.html
-    reference:
-      text: ""
+    sessions:
+      text: Sessions
+      menu:
+      - text: "Session 1: Multiple linear regression review"
+        href: https://waldronbios2.github.io/cunybios2/session1/
+      - text: "Session 2: Linear and logistic regression as GLMs"
+        href: https://waldronbios2.github.io/cunybios2/session2/
+      - text: "Session 3: Regression coefficients and model matrices"
+        href: https://waldronbios2.github.io/cunybios2/session3/
+      - text: "Session 4: Loglinear regression (Part 1)"
+        href: https://waldronbios2.github.io/cunybios2/session4/
+      - text: "Session 5: Loglinear models & count data (Part 2)"
+        href: https://waldronbios2.github.io/cunybios2/session5/
+      - text: "Session 6: Censored data, Kaplan-Meier & Log-rank"
+        href: https://waldronbios2.github.io/cunybios2/session6/
+      - text: "Session 7: Proportional Hazards & AFT models"
+        href: https://waldronbios2.github.io/cunybios2/session7/
+      - text: "Session 8: Survival analysis (Part 3)"
+        href: https://waldronbios2.github.io/cunybios2/session8/
+      - text: "Session 9: Repeated Measures & Longitudinal Data I"
+        href: https://waldronbios2.github.io/cunybios2/session9/
+      - text: "Session 10: Repeated Measures & Longitudinal Data II"
+        href: https://waldronbios2.github.io/cunybios2/session10/
     twitter:
       icon: "fab fa-twitter fa-lg"
       href: https://twitter.com/leviwaldron1
       aria-label: "Twitter profile"
+    github:
+      icon: "fab fa-github fa-lg"
+      href: https://github.com/waldronbios2/cunybios2
+      aria-label: "GitHub repository"
 
 
 authors:

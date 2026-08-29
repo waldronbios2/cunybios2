@@ -15,6 +15,8 @@ longitudinal data including random and mixed effect models.
 
 # Materials
 
+    ## Warning: package 'kableExtra' was built under R version 4.6.1
+
 <table class=" lightable-paper table table-striped" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -57,16 +59,16 @@ Multiple linear regression review
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session1" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session1/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session1/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session1/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session1/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/HI17wyfgONw" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session1/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session1/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/og7gWSvjpow" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -83,16 +85,16 @@ Linear and logistic regression as generalized linear models (GLMs)
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session2" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session2/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session2/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session2/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session2/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/NVHrZS4br4g" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session2/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session2/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/B8OIZVBVs5E" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -109,16 +111,16 @@ Regression coefficients and model matrices
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session3" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session3/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session3/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session3/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session3/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/aJreHZjrGYY" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session3/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session3/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/P4Zt2XLnbb8" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -135,16 +137,16 @@ Loglinear regression part 1
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session4" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session4/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session4/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session4/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session4/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/IeOyc4k0IdM" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session4/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session4/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/_cHcrGLZmi4" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -161,16 +163,16 @@ Loglinear models part 2
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session5" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session5/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session5/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session5/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session5/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/-ZJ0Ah1im-E" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session5/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session5/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/_-zzDE9OMSk" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -189,16 +191,16 @@ probability, and the log-rank test.
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session6" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session6/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session6/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session6/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session6/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/5vYkMhE1eWA" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session6/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session6/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/Z0ndPIRFtJQ" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -215,16 +217,16 @@ Proportional Hazards and AFT models
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session7" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session7/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session7/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session7/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session7/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/bR56jvOfzVc" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session7/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session7/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/usKWHEj-SLg" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -241,16 +243,16 @@ Survival analysis part 3
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session8" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session8/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session8/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session8/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session8/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/tVrVD_383lM" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session8/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session8/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/rdMim5WtLx8" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -267,16 +269,16 @@ Repeated Measures and Longitudinal Data Analysis I
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session9" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session9/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session9/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session9/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session9/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/GzLpF31QP4Q" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session9/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session9/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/Npl2Mwdx1Do" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
@@ -293,16 +295,16 @@ Repeated Measures and Longitudinal Data Analysis II
 <a href="https://github.com/waldronbios2/cunybios2/tree/main/session10" data-toggle="tooltip" data-container="body" data-placement="right" title="browse session directory in monorepo">source</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session10/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session10/articles/session_lecture.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session10/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
+<a href="https://waldronbios2.github.io/cunybios2/session10/articles/session_lecture.pdf" data-toggle="tooltip" data-container="body" data-placement="right" title="lecture notes in PDF">PDF</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/7j1WRswRdYs" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>
 </td>
 <td style="text-align:center;">
-<a href="https://waldronbios2.github.io/session10/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
+<a href="https://waldronbios2.github.io/cunybios2/session10/articles/session_lab.html" data-toggle="tooltip" data-container="body" data-placement="right" title="lab notes in HTML">HTML</a>
 </td>
 <td style="text-align:center;">
 <a href="https://youtu.be/nHbn9birRt8" data-toggle="tooltip" data-container="body" data-placement="right" title="watch on YouTube">watch</a>

@@ -43,8 +43,13 @@ jobs:
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_file = "README.md")'
 
-      - name: Build pkgdown site
-        run: Rscript -e 'pkgdown::build_site()'
+      - name: Build pkgdown sites (main site and all sessions)
+        run: |
+          Rscript -e 'pkgdown::build_site()'
+          for i in $(seq 1 10); do
+            echo "=== Building Session $i pkgdown site ==="
+            (cd session$i && Rscript -e "pkgdown::build_site(override = list(destination = '../docs/session$i'))")
+          done
 
       - name: Commit updated README
         uses: stefanzweifel/git-auto-commit-action@v5

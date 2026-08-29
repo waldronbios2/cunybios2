@@ -1,43 +1,70 @@
 home:
   strip_header: true
   links:
-  - text: Full course notes
-    href: https://bios2.waldronlab.io
-  - text: git clone
-    href: https://github.com/waldronbios2/session4.git
+  - text: Full course overview
+    href: https://waldronbios2.github.io/cunybios2/
+  - text: Source code
+    href: https://github.com/waldronbios2/cunybios2/tree/main/session4
 
-url: https://waldronbios2.github.io/session1/
+url: https://waldronbios2.github.io/cunybios2/session4/
 
 template:
+  bootstrap: 5
   params:
     bootswatch: lumen
     ganalytics: UA-176789980-1
-    bs_version: 5
-    
+
 navbar:
   structure:
-    left:  [home, articles]
+    left:  [home, articles, sessions]
     right: [github, twitter]
   components:
-    home: 
+    home: ~
     articles:
       text: Lecture and Lab
       menu:
-      - text: Lecture notes
+      - text: Lecture notes (HTML)
         href: articles/session_lecture.html
-      - text: Lecture notes PDF
+      - text: Lecture notes (PDF)
         href: articles/session_lecture.pdf
       - text: -------
-      - text: Lab materials
+      - text: Lab materials (HTML)
         href: articles/session_lab.html
-    reference:
-      text: ""
+    sessions:
+      text: Sessions
+      menu:
+      - text: Course Overview (All Sessions)
+        href: https://waldronbios2.github.io/cunybios2/
+      - text: -------
+      - text: "Session 1: Multiple linear regression review"
+        href: https://waldronbios2.github.io/cunybios2/session1/
+      - text: "Session 2: Linear and logistic regression as GLMs"
+        href: https://waldronbios2.github.io/cunybios2/session2/
+      - text: "Session 3: Regression coefficients and model matrices"
+        href: https://waldronbios2.github.io/cunybios2/session3/
+      - text: "Session 4: Loglinear regression (Part 1)"
+        href: https://waldronbios2.github.io/cunybios2/session4/
+      - text: "Session 5: Loglinear models & count data (Part 2)"
+        href: https://waldronbios2.github.io/cunybios2/session5/
+      - text: "Session 6: Censored data, Kaplan-Meier & Log-rank"
+        href: https://waldronbios2.github.io/cunybios2/session6/
+      - text: "Session 7: Proportional Hazards & AFT models"
+        href: https://waldronbios2.github.io/cunybios2/session7/
+      - text: "Session 8: Survival analysis (Part 3)"
+        href: https://waldronbios2.github.io/cunybios2/session8/
+      - text: "Session 9: Repeated Measures & Longitudinal Data I"
+        href: https://waldronbios2.github.io/cunybios2/session9/
+      - text: "Session 10: Repeated Measures & Longitudinal Data II"
+        href: https://waldronbios2.github.io/cunybios2/session10/
     twitter:
       icon: "fab fa-twitter fa-lg"
       href: https://twitter.com/leviwaldron1
-
+      aria-label: "Twitter profile"
+    github:
+      icon: "fab fa-github fa-lg"
+      href: https://github.com/waldronbios2/cunybios2
+      aria-label: "GitHub repository"
 
 authors:
   Levi Waldron:
     href: https://waldronlab.io
-
