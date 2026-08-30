@@ -7,13 +7,12 @@ Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
 Description: Multiple linear regression review
 Imports:
-    tidyverse,
-    MASS
+    tidyverse
 Suggests:
     pkgdown,
     knitr,
     rmarkdown
 License: CC BY 4.0
 Encoding: UTF-8
-URL: https://waldronbios2.github.io/session1/
+URL: https://waldronbios2.github.io/cunybios2/session1/
 VignetteBuilder: knitr
