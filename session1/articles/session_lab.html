@@ -92,59 +92,104 @@ Waldron</h4>
     
 <p><strong>Learning objectives</strong></p>
 <ol style="list-style-type: decimal">
-<li>Load a tab-separated dataset into R</li>
-<li>Create a simple scatterplot using <code>ggplot2</code>
+<li>Download and load a local tab-separated dataset
+(<code>cholesterol.tsv</code>) into R</li>
+<li>Create exploratory scatterplots with regression lines using
+<code>ggplot2</code>
 </li>
-<li>Fit and analyze a multiple linear regression model</li>
-<li>Compare two nested models using a nested Analysis of Variance
-(partial F test)</li>
+<li>Fit and interpret multiple linear regression models with interaction
+terms</li>
+<li>Evaluate regression assumptions using diagnostic residual plots</li>
+<li>Compare nested models using Analysis of Variance (partial
+F-test)</li>
 </ol>
-<p><strong>Exercises</strong></p>
+<div class="section level2">
+<h2 id="downloading-and-locating-the-data-file">Downloading and Locating the Data File<a class="anchor" aria-label="anchor" href="#downloading-and-locating-the-data-file"></a>
+</h2>
+<p>To practice loading datasets from your local machine, download the
+<code>cholesterol.tsv</code> data file before proceeding:</p>
+<ul>
+<li>
+<strong>Direct Download Link:</strong> <a href="https://raw.githubusercontent.com/waldronbios2/cunybios2/main/session1/vignettes/cholesterol.tsv" class="external-link">cholesterol.tsv</a>
+</li>
+<li>
+<strong>GitHub Repository Location:</strong> Inside the
+<code>session1/vignettes/</code> folder of the course repository.</li>
+</ul>
+<div class="section level4">
+<h4 id="steps-to-download-and-set-up">Steps to download and set up:<a class="anchor" aria-label="anchor" href="#steps-to-download-and-set-up"></a>
+</h4>
 <ol style="list-style-type: decimal">
-<li>Load the <code>cholesterol.tsv</code> dataset into R</li>
-<li>Fit linear models with age, state, and interaction terms as
-predictors</li>
-<li>Compare a simple linear regression to a multiple linear regression
-using Analysis of Variance partial F-test</li>
-<li>Use backwards selection from a full model with interactions to
-choose the best prediction model</li>
+<li><p>Right-click the link above and choose <strong>“Save Link
+As…”</strong> (or <strong>“Download Linked File As…”</strong>) to save
+<code>cholesterol.tsv</code> into your R working directory.</p></li>
+<li>
+<p>In R / RStudio, you can check your current working directory
+with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</li>
+<li>
+<p>Alternatively, you can download the file directly into your
+working directory from R:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span></span>
+<span>  url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/waldronbios2/cunybios2/main/session1/vignettes/cholesterol.tsv"</span>,</span>
+<span>  destfile <span class="op">=</span> <span class="st">"cholesterol.tsv"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</li>
 </ol>
+</div>
+</div>
 <div class="section level2">
 <h2 id="load-the-dataset">Load the dataset<a class="anchor" aria-label="anchor" href="#load-the-dataset"></a>
 </h2>
-<p>Figure out this command using <code>File - Import Dataset</code></p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p>You can practice loading this file using RStudio’s graphical helper
+(<strong>File → Import Dataset → From Text (readr)…</strong>) or by
+writing the code directly using the <code>readr</code> package:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span></span>
-<span><span class="va">chol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html" class="external-link">read_table</a></span><span class="op">(</span><span class="st">"cholesterol.tsv"</span>, </span>
-<span>    col_types <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html" class="external-link">cols</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">chol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="st">"cholesterol.tsv"</span>, </span>
+<span>                 col_types <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html" class="external-link">cols</a></span><span class="op">(</span></span>
+<span>                   cholesterol <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                   age <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                   state <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html" class="external-link">col_factor</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>                 <span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">chol</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   cholesterol         age              state   </span></span>
-<span><span class="co">##  Min.   :112.0   Min.   :18.00   Length   :30  </span></span>
-<span><span class="co">##  1st Qu.:181.2   1st Qu.:39.50   N.unique : 2  </span></span>
-<span><span class="co">##  Median :199.0   Median :48.00   N.blank  : 0  </span></span>
-<span><span class="co">##  Mean   :213.7   Mean   :48.57   Min.nchar: 4  </span></span>
-<span><span class="co">##  3rd Qu.:247.0   3rd Qu.:58.00   Max.nchar: 8  </span></span>
+<pre><code><span><span class="co">##   cholesterol         age             state   </span></span>
+<span><span class="co">##  Min.   :112.0   Min.   :18.00   Iowa    :11  </span></span>
+<span><span class="co">##  1st Qu.:181.2   1st Qu.:39.50   Nebraska:19  </span></span>
+<span><span class="co">##  Median :199.0   Median :48.00                </span></span>
+<span><span class="co">##  Mean   :213.7   Mean   :48.57                </span></span>
+<span><span class="co">##  3rd Qu.:247.0   3rd Qu.:58.00                </span></span>
 <span><span class="co">##  Max.   :356.0   Max.   :78.00</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="create-a-scatterplot-of-cholesterol-vs--age">Create a scatterplot of Cholesterol vs. Age<a class="anchor" aria-label="anchor" href="#create-a-scatterplot-of-cholesterol-vs--age"></a>
 </h2>
-<p>Take Data Science Module 1 “Data Visualization Basics” first if you
-aren’t familiar with <code>ggplot2</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>Explore the relationship between age and cholesterol levels,
+stratified by state:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">chol</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">age</span>, y<span class="op">=</span><span class="va">cholesterol</span>, shape<span class="op">=</span><span class="va">state</span>, color<span class="op">=</span><span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="va">lm</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="session_lab_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="" width="700"></p>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">chol</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">cholesterol</span>, shape <span class="op">=</span> <span class="va">state</span>, color <span class="op">=</span> <span class="va">state</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="va">lm</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Cholesterol vs. Age by State"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Age (years)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Total Cholesterol (mg/dL)"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
-<h2 id="fit-a-linear-model-with-age-state-and-interaction-as-predictors">Fit a linear model with age, state, and interaction as
-predictors<a class="anchor" aria-label="anchor" href="#fit-a-linear-model-with-age-state-and-interaction-as-predictors"></a>
+<h2 id="fit-a-linear-model-with-age-state-and-interaction">Fit a linear model with age, state, and interaction<a class="anchor" aria-label="anchor" href="#fit-a-linear-model-with-age-state-and-interaction"></a>
 </h2>
-<p><code>cholesterol</code> as the outcome variable.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">cholesterol</span> <span class="op">~</span> <span class="va">age</span> <span class="op">*</span> <span class="va">state</span>, data<span class="op">=</span><span class="va">chol</span><span class="op">)</span></span>
+<p>Fit a multiple linear regression model with <code>cholesterol</code>
+as the continuous outcome, and <code>age</code>, <code>state</code>, and
+their interaction (<code>age * state</code>) as predictors:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">cholesterol</span> <span class="op">~</span> <span class="va">age</span> <span class="op">*</span> <span class="va">state</span>, data <span class="op">=</span> <span class="va">chol</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -170,7 +215,7 @@ predictors<a class="anchor" aria-label="anchor" href="#fit-a-linear-model-with-a
 <div class="section level2">
 <h2 id="create-an-anova-table-for-this-fit">Create an ANOVA table for this fit<a class="anchor" aria-label="anchor" href="#create-an-anova-table-for-this-fit"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Analysis of Variance Table</span></span>
 <span><span class="co">## </span></span>
@@ -184,18 +229,22 @@ predictors<a class="anchor" aria-label="anchor" href="#fit-a-linear-model-with-a
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 </div>
 <div class="section level2">
-<h2 id="diagnostic-plots-for-full-model">Diagnostic plots for full model<a class="anchor" aria-label="anchor" href="#diagnostic-plots-for-full-model"></a>
+<h2 id="diagnostic-plots-for-the-full-model">Diagnostic plots for the full model<a class="anchor" aria-label="anchor" href="#diagnostic-plots-for-the-full-model"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<p>Examine the standard regression diagnostic plots (Residuals vs
+Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage):</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<p><img src="session_lab_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
-<h2 id="partial-f-test-for-two-models">Partial F-test for two models<a class="anchor" aria-label="anchor" href="#partial-f-test-for-two-models"></a>
+<h2 id="partial-f-test-for-nested-models">Partial F-test for nested models<a class="anchor" aria-label="anchor" href="#partial-f-test-for-nested-models"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">cholesterol</span> <span class="op">~</span> <span class="va">state</span>, data<span class="op">=</span><span class="va">chol</span><span class="op">)</span></span>
+<p>Compare a simpler model containing only <code>state</code> against a
+model containing both <code>state</code> and <code>age</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">cholesterol</span> <span class="op">~</span> <span class="va">state</span>, data <span class="op">=</span> <span class="va">chol</span><span class="op">)</span></span>
 <span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">cholesterol</span> <span class="op">~</span> <span class="va">state</span> <span class="op">+</span> <span class="va">age</span>, data <span class="op">=</span> <span class="va">chol</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Analysis of Variance Table</span></span>
@@ -207,29 +256,61 @@ predictors<a class="anchor" aria-label="anchor" href="#fit-a-linear-model-with-a
 <span><span class="co">## 2     27  49104  1     53820 29.593 9.361e-06 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
+<hr>
 </div>
 <div class="section level2">
-<h2 id="backwards-selection-to-select-the-best-prediction-model">Backwards selection to select the best prediction model<a class="anchor" aria-label="anchor" href="#backwards-selection-to-select-the-best-prediction-model"></a>
+<h2 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">cholesterol</span> <span class="op">~</span> <span class="va">age</span> <span class="op">*</span> <span class="va">state</span>, data<span class="op">=</span><span class="va">chol</span><span class="op">)</span></span>
-<span><span class="va">step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html" class="external-link">stepAIC</a></span><span class="op">(</span><span class="va">fit</span>, direction <span class="op">=</span> <span class="st">"backward"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Start:  AIC=229.58</span></span>
-<span><span class="co">## cholesterol ~ age * state</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##             Df Sum of Sq   RSS    AIC</span></span>
-<span><span class="co">## - age:state  1    709.05 49104 228.01</span></span>
-<span><span class="co">## &lt;none&gt;                   48395 229.58</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Step:  AIC=228.01</span></span>
-<span><span class="co">## cholesterol ~ age + state</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##         Df Sum of Sq    RSS    AIC</span></span>
-<span><span class="co">## &lt;none&gt;                49104 228.01</span></span>
-<span><span class="co">## - state  1      5456  54560 229.18</span></span>
-<span><span class="co">## - age    1     53820 102924 248.22</span></span></code></pre>
-<p>AIC = <em>Akaike’s Information Criterion</em></p>
+<p>Now apply what you’ve learned to answer the following questions:</p>
+<div class="section level4">
+<h4 id="question-1-testing-for-interaction">Question 1: Testing for Interaction<a class="anchor" aria-label="anchor" href="#question-1-testing-for-interaction"></a>
+</h4>
+<p>Fit an additive model (<code>fit_additive</code>) without the
+interaction term:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_additive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">cholesterol</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">state</span>, data <span class="op">=</span> <span class="va">chol</span><span class="op">)</span></span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Use <code>anova(fit_additive, fit)</code> to conduct a partial
+F-test comparing the additive model to the interaction model.</li>
+<li>Based on the p-value, is there statistically significant evidence
+that the slope (effect of age on cholesterol) differs between Iowa and
+Nebraska? Which model would you prefer?</li>
+</ol>
+</div>
+<div class="section level4">
+<h4 id="question-2-model-interpretation-prediction">Question 2: Model Interpretation &amp; Prediction<a class="anchor" aria-label="anchor" href="#question-2-model-interpretation-prediction"></a>
+</h4>
+<p>Using the additive model (<code>fit_additive</code>):</p>
+<ol style="list-style-type: decimal">
+<li>Interpret the regression coefficient for <code>age</code>: what is
+the estimated change in mean cholesterol for every 1-year increase in
+age, holding state constant?</li>
+<li>What is the estimated difference in mean cholesterol between
+residents of Nebraska and Iowa of the same age?</li>
+<li>Using the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function, predict the expected
+cholesterol level for:
+<ul>
+<li>A 50-year-old living in Iowa</li>
+<li>A 50-year-old living in Nebraska</li>
+</ul>
+</li>
+</ol>
+<p><em>Hint:</em></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>,</span>
+<span>  state <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Iowa"</span>, <span class="st">"Nebraska"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">chol</span><span class="op">$</span><span class="va">state</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_additive</span>, newdata <span class="op">=</span> <span class="va">new_data</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="question-3-residual-diagnostics">Question 3: Residual Diagnostics<a class="anchor" aria-label="anchor" href="#question-3-residual-diagnostics"></a>
+</h4>
+<p>Generate diagnostic plots for the additive model
+(<code>plot(fit_additive)</code>). Do the assumptions of linearity,
+equal variance (homoscedasticity), and normality of residuals appear
+reasonably satisfied?</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

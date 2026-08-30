@@ -2,50 +2,72 @@
 
 **Learning objectives**
 
-1.  Load a tab-separated dataset into R
-2.  Create a simple scatterplot using `ggplot2`
-3.  Fit and analyze a multiple linear regression model
-4.  Compare two nested models using a nested Analysis of Variance
-    (partial F test)
+1.  Download and load a local tab-separated dataset (`cholesterol.tsv`)
+    into R
+2.  Create exploratory scatterplots with regression lines using
+    `ggplot2`
+3.  Fit and interpret multiple linear regression models with interaction
+    terms
+4.  Evaluate regression assumptions using diagnostic residual plots
+5.  Compare nested models using Analysis of Variance (partial F-test)
 
-**Exercises**
+## Downloading and Locating the Data File
 
-1.  Load the `cholesterol.tsv` dataset into R
-2.  Fit linear models with age, state, and interaction terms as
-    predictors
-3.  Compare a simple linear regression to a multiple linear regression
-    using Analysis of Variance partial F-test
-4.  Use backwards selection from a full model with interactions to
-    choose the best prediction model
+To practice loading datasets from your local machine, download the
+`cholesterol.tsv` data file before proceeding:
+
+- **Direct Download Link:**
+  [cholesterol.tsv](https://raw.githubusercontent.com/waldronbios2/cunybios2/main/session1/vignettes/cholesterol.tsv)
+- **GitHub Repository Location:** Inside the `session1/vignettes/`
+  folder of the course repository.
+
+#### Steps to download and set up:
+
+1.  Right-click the link above and choose **“Save Link As…”** (or
+    **“Download Linked File As…”**) to save `cholesterol.tsv` into your
+    R working directory.
+
+2.  In R / RStudio, you can check your current working directory with:
+
+    [`getwd`](https://rdrr.io/r/base/getwd.html)`(``)`
+
+3.  Alternatively, you can download the file directly into your working
+    directory from R:
+
+    [`download.file`](https://rdrr.io/r/utils/download.file.html)`(`` `` url ``=`` ``"https://raw.githubusercontent.com/waldronbios2/cunybios2/main/session1/vignettes/cholesterol.tsv"``,`` `` destfile ``=`` ``"cholesterol.tsv"`` ``)`
 
 ## Load the dataset
 
-Figure out this command using `File - Import Dataset`
+You can practice loading this file using RStudio’s graphical helper
+(**File → Import Dataset → From Text (readr)…**) or by writing the code
+directly using the `readr` package:
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`` ``chol`` ``<-`` `[`read_table`](https://readr.tidyverse.org/reference/read_table.html)`(``"cholesterol.tsv"``, `` `` col_types ``=`` `[`cols`](https://readr.tidyverse.org/reference/cols.html)`(``age ``=`` `[`col_double`](https://readr.tidyverse.org/reference/parse_atomic.html)`(``)``)``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``chol``)`
+[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`` ``chol`` ``<-`` `[`read_tsv`](https://readr.tidyverse.org/reference/read_delim.html)`(``"cholesterol.tsv"``, `` `` col_types ``=`` `[`cols`](https://readr.tidyverse.org/reference/cols.html)`(`` `` cholesterol ``=`` `[`col_double`](https://readr.tidyverse.org/reference/parse_atomic.html)`(``)``,`` `` age ``=`` `[`col_double`](https://readr.tidyverse.org/reference/parse_atomic.html)`(``)``,`` `` state ``=`` `[`col_factor`](https://readr.tidyverse.org/reference/parse_factor.html)`(``)`` `` ``)``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``chol``)`
 
-    ##   cholesterol         age              state   
-    ##  Min.   :112.0   Min.   :18.00   Length   :30  
-    ##  1st Qu.:181.2   1st Qu.:39.50   N.unique : 2  
-    ##  Median :199.0   Median :48.00   N.blank  : 0  
-    ##  Mean   :213.7   Mean   :48.57   Min.nchar: 4  
-    ##  3rd Qu.:247.0   3rd Qu.:58.00   Max.nchar: 8  
+    ##   cholesterol         age             state   
+    ##  Min.   :112.0   Min.   :18.00   Iowa    :11  
+    ##  1st Qu.:181.2   1st Qu.:39.50   Nebraska:19  
+    ##  Median :199.0   Median :48.00                
+    ##  Mean   :213.7   Mean   :48.57                
+    ##  3rd Qu.:247.0   3rd Qu.:58.00                
     ##  Max.   :356.0   Max.   :78.00
 
 ## Create a scatterplot of Cholesterol vs. Age
 
-Take Data Science Module 1 “Data Visualization Basics” first if you
-aren’t familiar with `ggplot2`:
+Explore the relationship between age and cholesterol levels, stratified
+by state:
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``chol``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x``=``age``, y``=``cholesterol``, shape``=``state``, color``=``state``)``)`` ``+`` `` `` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``size``=``4``)`` ``+`` `` `[`geom_smooth`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)`(``method``=``lm``, se ``=`` ``FALSE``)`
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``chol``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``age``, y ``=`` ``cholesterol``, shape ``=`` ``state``, color ``=`` ``state``)``)`` ``+`` `` `` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``size ``=`` ``4``)`` ``+`` `` `[`geom_smooth`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)`(``method ``=`` ``lm``, se ``=`` ``FALSE``)`` ``+`` `` `[`theme_bw`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``)`` ``+`` `` `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(`` `` title ``=`` ``"Cholesterol vs. Age by State"``,`` `` x ``=`` ``"Age (years)"``,`` `` y ``=`` ``"Total Cholesterol (mg/dL)"`` `` ``)`
 
-![](session_lab_files/figure-html/unnamed-chunk-2-1.png)
+![](session_lab_files/figure-html/unnamed-chunk-4-1.png)
 
-## Fit a linear model with age, state, and interaction as predictors
+## Fit a linear model with age, state, and interaction
 
-`cholesterol` as the outcome variable.
+Fit a multiple linear regression model with `cholesterol` as the
+continuous outcome, and `age`, `state`, and their interaction
+(`age * state`) as predictors:
 
-`fit`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``age`` ``*`` ``state``, data``=``chol``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
+`fit`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``age`` ``*`` ``state``, data ``=`` ``chol``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
 
     ## 
     ## Call:
@@ -83,15 +105,21 @@ aren’t familiar with `ggplot2`:
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-## Diagnostic plots for full model
+## Diagnostic plots for the full model
 
-[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``2``)``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``fit``)`
+Examine the standard regression diagnostic plots (Residuals vs Fitted,
+Normal Q-Q, Scale-Location, and Residuals vs Leverage):
 
-![](session_lab_files/figure-html/unnamed-chunk-5-1.png)
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``2``)``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``fit``)`
 
-## Partial F-test for two models
+![](session_lab_files/figure-html/unnamed-chunk-7-1.png)
 
-`fit1`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``state``, data``=``chol``)`` ``fit2`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``state`` ``+`` ``age``, data ``=`` ``chol``)`` `[`anova`](https://rdrr.io/r/stats/anova.html)`(``fit1``, ``fit2``)`
+## Partial F-test for nested models
+
+Compare a simpler model containing only `state` against a model
+containing both `state` and `age`:
+
+`fit1`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``state``, data ``=`` ``chol``)`` ``fit2`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``state`` ``+`` ``age``, data ``=`` ``chol``)`` `[`anova`](https://rdrr.io/r/stats/anova.html)`(``fit1``, ``fit2``)`
 
     ## Analysis of Variance Table
     ## 
@@ -103,23 +131,44 @@ aren’t familiar with `ggplot2`:
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-## Backwards selection to select the best prediction model
+------------------------------------------------------------------------
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`MASS`](http://www.stats.ox.ac.uk/pub/MASS4/)`)`` ``fit`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``age`` ``*`` ``state``, data``=``chol``)`` ``step`` ``<-`` `[`stepAIC`](https://rdrr.io/pkg/MASS/man/stepAIC.html)`(``fit``, direction ``=`` ``"backward"``)`
+## Exercises
 
-    ## Start:  AIC=229.58
-    ## cholesterol ~ age * state
-    ## 
-    ##             Df Sum of Sq   RSS    AIC
-    ## - age:state  1    709.05 49104 228.01
-    ## <none>                   48395 229.58
-    ## 
-    ## Step:  AIC=228.01
-    ## cholesterol ~ age + state
-    ## 
-    ##         Df Sum of Sq    RSS    AIC
-    ## <none>                49104 228.01
-    ## - state  1      5456  54560 229.18
-    ## - age    1     53820 102924 248.22
+Now apply what you’ve learned to answer the following questions:
 
-AIC = *Akaike’s Information Criterion*
+#### Question 1: Testing for Interaction
+
+Fit an additive model (`fit_additive`) without the interaction term:
+
+`fit_additive`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``age`` ``+`` ``state``, data ``=`` ``chol``)`
+
+1.  Use `anova(fit_additive, fit)` to conduct a partial F-test comparing
+    the additive model to the interaction model.
+2.  Based on the p-value, is there statistically significant evidence
+    that the slope (effect of age on cholesterol) differs between Iowa
+    and Nebraska? Which model would you prefer?
+
+#### Question 2: Model Interpretation & Prediction
+
+Using the additive model (`fit_additive`):
+
+1.  Interpret the regression coefficient for `age`: what is the
+    estimated change in mean cholesterol for every 1-year increase in
+    age, holding state constant?
+2.  What is the estimated difference in mean cholesterol between
+    residents of Nebraska and Iowa of the same age?
+3.  Using the [`predict()`](https://rdrr.io/r/stats/predict.html)
+    function, predict the expected cholesterol level for:
+    - A 50-year-old living in Iowa
+    - A 50-year-old living in Nebraska
+
+*Hint:*
+
+`new_data`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` age ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``50``, ``50``)``,`` `` state ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"Iowa"``, ``"Nebraska"``)``, levels ``=`` `[`levels`](https://rdrr.io/r/base/levels.html)`(``chol``$``state``)``)`` ``)`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit_additive``, newdata ``=`` ``new_data``)`
+
+#### Question 3: Residual Diagnostics
+
+Generate diagnostic plots for the additive model (`plot(fit_additive)`).
+Do the assumptions of linearity, equal variance (homoscedasticity), and
+normality of residuals appear reasonably satisfied?

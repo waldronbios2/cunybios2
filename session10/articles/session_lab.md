@@ -126,7 +126,7 @@ effect this has on the spaghetti plot
     ## 
     ## Standardized Within-Group Residuals:
     ##          Min           Q1          Med           Q3          Max 
-    ## -2.695148348 -0.506748351  0.004597957  0.511724333  2.743338993 
+    ## -2.695148176 -0.506748373  0.004597944  0.511724285  2.743338857 
     ## 
     ## Number of Observations: 20000
     ## Number of Groups: 10000
@@ -141,12 +141,12 @@ effect this has on the spaghetti plot
     ## 
     ##  Random Effects:
     ##   Level: id 
-    ##                    lower     est.    upper
-    ## sd((Intercept)) 1.995761 2.026972 2.058671
+    ##                   lower     est.    upper
+    ## sd((Intercept)) 1.99574 2.026972 2.058692
     ## 
     ##  Within-group standard error:
     ##     lower      est.     upper 
-    ## 0.9884511 0.9988032 1.0092636
+    ## 0.9860565 0.9988032 1.0117147
 
 ## Estimate ICC from the model above. Is it what you expected from the group and residual variances you simulated?
 
@@ -167,7 +167,7 @@ ICC & = corr(x_{ij}, x_{ik}) \\
 
 `ICClme`` ``<-`` ``function``(``fit``)``{`` `` ``cors`` ``<-`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(`[`VarCorr`](https://rdrr.io/pkg/nlme/man/VarCorr.html)`(``fit``)``)`` `` ``cors``[``1``]`` ``/`` ``(``cors``[``1``]`` ``+`` ``cors``[``2``]``)`` ``}`` ``ICClme``(``fit``)`
 
-    ## [1] 0.804629
+    ## [1] 0.8046289
 
 ## Estimate ICC simply by calculating the correlation between `fecfat1` and `fecfat2`. Is it similar to the estimate above?
 
