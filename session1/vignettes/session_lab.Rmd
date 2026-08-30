@@ -12,45 +12,72 @@ output:
 
 **Learning objectives**
 
-1. Load a tab-separated dataset into R
-2. Create a simple scatterplot using `ggplot2`
-3. Fit and analyze a multiple linear regression model
-4. Compare two nested models using a nested Analysis of Variance (partial F test)
+1. Download and load a local tab-separated dataset (`cholesterol.tsv`) into R
+2. Create exploratory scatterplots with regression lines using `ggplot2`
+3. Fit and interpret multiple linear regression models with interaction terms
+4. Evaluate regression assumptions using diagnostic residual plots
+5. Compare nested models using Analysis of Variance (partial F-test)
 
-**Exercises**
+# Downloading and Locating the Data File
 
-1. Load the `cholesterol.tsv` dataset into R
-2. Fit linear models with age, state, and interaction terms as predictors
-3. Compare a simple linear regression to a multiple linear regression using Analysis of Variance partial F-test
-4. Use backwards selection from a full model with interactions to choose the best prediction model
+To practice loading datasets from your local machine, download the `cholesterol.tsv` data file before proceeding:
+
+* **Direct Download Link:** [cholesterol.tsv](https://raw.githubusercontent.com/waldronbios2/cunybios2/main/session1/vignettes/cholesterol.tsv)
+* **GitHub Repository Location:** Inside the `session1/vignettes/` folder of the course repository.
+
+### Steps to download and set up:
+
+1. Right-click the link above and choose **"Save Link As..."** (or **"Download Linked File As..."**) to save `cholesterol.tsv` into your R working directory.
+2. In R / RStudio, you can check your current working directory with:
+   ```{r, eval=FALSE}
+   getwd()
+   ```
+3. Alternatively, you can download the file directly into your working directory from R:
+   ```{r, eval=FALSE}
+   download.file(
+     url = "https://raw.githubusercontent.com/waldronbios2/cunybios2/main/session1/vignettes/cholesterol.tsv",
+     destfile = "cholesterol.tsv"
+   )
+   ```
 
 # Load the dataset
 
-Figure out this command using `File - Import Dataset`
+You can practice loading this file using RStudio's graphical helper (**File → Import Dataset → From Text (readr)...**) or by writing the code directly using the `readr` package:
 
-```{r}
+```{r, message=FALSE}
 library(readr)
-chol <- read_table("cholesterol.tsv", 
-    col_types = cols(age = col_double()))
+chol <- read_tsv("cholesterol.tsv", 
+                 col_types = cols(
+                   cholesterol = col_double(),
+                   age = col_double(),
+                   state = col_factor()
+                 ))
 summary(chol)
 ```
 
-# Create a scatterplot of  Cholesterol vs. Age
+# Create a scatterplot of Cholesterol vs. Age
 
-Take Data Science Module 1 "Data Visualization Basics" first if you aren't familiar with `ggplot2`:
+Explore the relationship between age and cholesterol levels, stratified by state:
+
 ```{r, message=FALSE}
 library(ggplot2)
-ggplot(chol, aes(x=age, y=cholesterol, shape=state, color=state)) + 
-  geom_point(size=4) +
-  geom_smooth(method=lm, se = FALSE)
+ggplot(chol, aes(x = age, y = cholesterol, shape = state, color = state)) + 
+  geom_point(size = 4) +
+  geom_smooth(method = lm, se = FALSE) +
+  theme_bw() +
+  labs(
+    title = "Cholesterol vs. Age by State",
+    x = "Age (years)",
+    y = "Total Cholesterol (mg/dL)"
+  )
 ```
 
-# Fit a linear model with age, state, and interaction as predictors
+# Fit a linear model with age, state, and interaction
 
-`cholesterol` as the outcome variable.
+Fit a multiple linear regression model with `cholesterol` as the continuous outcome, and `age`, `state`, and their interaction (`age * state`) as predictors:
 
 ```{r}
-fit <- lm(cholesterol ~ age * state, data=chol)
+fit <- lm(cholesterol ~ age * state, data = chol)
 summary(fit)
 ```
 
@@ -60,30 +87,60 @@ summary(fit)
 anova(fit)
 ```
 
+# Diagnostic plots for the full model
 
-# Diagnostic plots for full model
+Examine the standard regression diagnostic plots (Residuals vs Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage):
 
 ```{r}
-par(mfrow=c(2, 2))
+par(mfrow = c(2, 2))
 plot(fit)
 ```
 
-# Partial F-test for two models
+# Partial F-test for nested models
 
+Compare a simpler model containing only `state` against a model containing both `state` and `age`:
 
 ```{r}
-fit1 <- lm(cholesterol ~ state, data=chol)
+fit1 <- lm(cholesterol ~ state, data = chol)
 fit2 <- lm(cholesterol ~ state + age, data = chol)
 anova(fit1, fit2)
 ```
 
-# Backwards selection to select the best prediction model
+---
 
-```{r}
-library(MASS)
-fit <- lm(cholesterol ~ age * state, data=chol)
-step <- stepAIC(fit, direction = "backward")
+# Exercises
+
+Now apply what you've learned to answer the following questions:
+
+### Question 1: Testing for Interaction
+
+Fit an additive model (`fit_additive`) without the interaction term:
+```{r, eval=FALSE}
+fit_additive <- lm(cholesterol ~ age + state, data = chol)
 ```
 
-AIC = _Akaike's Information Criterion_
+1. Use `anova(fit_additive, fit)` to conduct a partial F-test comparing the additive model to the interaction model.
+2. Based on the p-value, is there statistically significant evidence that the slope (effect of age on cholesterol) differs between Iowa and Nebraska? Which model would you prefer?
 
+### Question 2: Model Interpretation & Prediction
+
+Using the additive model (`fit_additive`):
+
+1. Interpret the regression coefficient for `age`: what is the estimated change in mean cholesterol for every 1-year increase in age, holding state constant?
+2. What is the estimated difference in mean cholesterol between residents of Nebraska and Iowa of the same age?
+3. Using the `predict()` function, predict the expected cholesterol level for:
+   * A 50-year-old living in Iowa
+   * A 50-year-old living in Nebraska
+
+*Hint:*
+```{r, eval=FALSE}
+new_data <- data.frame(
+  age = c(50, 50),
+  state = factor(c("Iowa", "Nebraska"), levels = levels(chol$state))
+)
+predict(fit_additive, newdata = new_data)
+```
+
+### Question 3: Residual Diagnostics
+
+Generate diagnostic plots for the additive model (`plot(fit_additive)`). Do the assumptions of linearity, equal variance (homoscedasticity), and normality of residuals appear reasonably satisfied?
