@@ -11,13 +11,16 @@ template:
 
 navbar:
   structure:
-    left:  [home, about, sessions]
+    left:  [home, about, assistant, sessions]
     right: [github, twitter]
   components:
     home: ~
     about:
       text: About
       href: about.html
+    assistant:
+      text: AI Assistant
+      href: POSIT_ASSISTANT_SETUP.html
     sessions:
       text: Sessions
       menu:
