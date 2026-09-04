@@ -20,3 +20,4 @@ session*/*.Rproj.user
 docs/
 session*/docs/
 
+.posit/assistant

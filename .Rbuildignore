@@ -9,3 +9,6 @@
 ^README\.Rmd$
 ^LICENSE\.md$
 ^docs$
+^\.posit/assistant$
+^AGENTS\.md$
+^POSIT_ASSISTANT_SETUP\.md$
