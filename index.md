@@ -46,6 +46,19 @@ code in the project files. Open any session folder
 (e.g. `session1/vignettes/session_lecture.Rmd`) and click “Knit” to
 build the lecture slides or lab notes.
 
+# Coding Agent Assistance (Posit Assistant)
+
+Students can configure Posit Assistant in RStudio to act as an
+interactive AI Assistant connected to the free CUNY AI Lab (CAIL)
+service. See the [Posit Assistant Setup
+Guide](https://waldronbios2.github.io/cunybios2/POSIT_ASSISTANT_SETUP.md)
+for step-by-step instructions. I will provide API keys.
+
+The course context file
+[`AGENTS.md`](https://waldronbios2.github.io/cunybios2/AGENTS.md) is
+included in this repository and will automatically load whenever you
+open this project in RStudio.
+
 # Data Science Units
 
 This course is supported by free access to

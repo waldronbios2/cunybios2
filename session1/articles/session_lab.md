@@ -141,10 +141,9 @@ Now apply what you’ve learned to answer the following questions:
 
 Fit an additive model (`fit_additive`) without the interaction term:
 
-`fit_additive`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``cholesterol`` ``~`` ``age`` ``+`` ``state``, data ``=`` ``chol``)`
-
 1.  Use `anova(fit_additive, fit)` to conduct a partial F-test comparing
     the additive model to the interaction model.
+
 2.  Based on the p-value, is there statistically significant evidence
     that the slope (effect of age on cholesterol) differs between Iowa
     and Nebraska? Which model would you prefer?
