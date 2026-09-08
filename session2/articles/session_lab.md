@@ -213,7 +213,9 @@ you’re at it, change the y label to reflect this change.
 embedded captions. But for publication the caption usually needs to be
 in separated text.
 
-## Try yourself: plot percentages instead of counts
+## Exercises
+
+### 1. Plot percentages instead of counts
 
 Here’s some code to calculate the percentages.
 
@@ -235,5 +237,56 @@ Here’s some code to calculate the percentages.
     ## 10 25-29 low       no        not using        19   15.7 
     ## # ℹ 22 more rows
 
-Now, can you repeat the barplot, but showing percentages instead of
-counts?
+Now, repeat the barplot, but showing percentages instead of counts.
+
+### 2. Tidy a repeated-measures table
+
+The table below is intentionally messy. It contains blood pressure and
+medication measurements for two visits, but the visits and measurement
+types are encoded in the column names.
+
+`messy_bp`` ``<-`` ``tibble``::`[`tribble`](https://tibble.tidyverse.org/reference/tribble.html)`(`` `` ``~``participant``, ``~``group``, ``~``week1_bp``, ``~``week2_bp``, ``~``week1_med``, ``~``week2_med``,`` `` ``"A01"``, ``"control"``, ``128``, ``126``, ``"no"``, ``"no"``,`` `` ``"A02"``, ``"control"``, ``142``, ``138``, ``"yes"``, ``"yes"``,`` `` ``"B01"``, ``"treatment"``, ``135``, ``129``, ``"no"``, ``"no"``,`` `` ``"B02"``, ``"treatment"``, ``150``, ``144``, ``"yes"``, ``"no"`` ``)`` ``messy_bp`
+
+    ## # A tibble: 4 × 6
+    ##   participant group     week1_bp week2_bp week1_med week2_med
+    ##   <chr>       <chr>        <dbl>    <dbl> <chr>     <chr>    
+    ## 1 A01         control        128      126 no        no       
+    ## 2 A02         control        142      138 yes       yes      
+    ## 3 B01         treatment      135      129 no        no       
+    ## 4 B02         treatment      150      144 yes       no
+
+1.  Identify every non-tidy feature of `messy_bp`. Use the three
+    tidy-data rules above in your explanation.
+2.  Tidy the data so that each row represents one participant at one
+    visit. The result must have exactly these columns, in this order:
+    `participant`, `group`, `week`, `blood_pressure`, and `medication`.
+    Keep `blood_pressure` numeric and `medication` character. Because
+    the two measurements have different types, you will need to handle
+    that explicitly while pivoting or immediately afterward.
+3.  Name the result `tidy_bp`, then print it after sorting by
+    `participant` and `week`.
+
+*Hint*: You can reshape this in a single
+[`pivot_longer()`](https://tidyr.tidyverse.org/reference/pivot_longer.html)
+call using the special `".value"` sentinel in `names_to` (e.g.,
+`names_to = c("week", ".value")` with `names_sep = "_"`).
+
+Your result is verifiable if it has eight rows, four unique
+participants, two unique weeks, and no duplicate `participant`-`week`
+combinations. It should print as follows (the order of rows and columns
+should match):
+
+| participant | group     | week  | blood_pressure | medication |
+|:------------|:----------|:------|---------------:|:-----------|
+| A01         | control   | week1 |            128 | no         |
+| A01         | control   | week2 |            126 | no         |
+| A02         | control   | week1 |            142 | yes        |
+| A02         | control   | week2 |            138 | yes        |
+| B01         | treatment | week1 |            135 | no         |
+| B01         | treatment | week2 |            129 | no         |
+| B02         | treatment | week1 |            150 | yes        |
+| B02         | treatment | week2 |            144 | no         |
+
+You can verify the structure with:
+
+[`stopifnot`](https://rdrr.io/r/base/stopifnot.html)`(`` `` `[`identical`](https://rdrr.io/r/base/identical.html)`(`[`names`](https://rdrr.io/r/base/names.html)`(``tidy_bp``)``,`` `` `[`c`](https://rdrr.io/r/base/c.html)`(``"participant"``, ``"group"``, ``"week"``, ``"blood_pressure"``, ``"medication"``)``)``,`` `` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``tidy_bp``)`` ``==`` ``8``,`` `` `[`n_distinct`](https://dplyr.tidyverse.org/reference/n_distinct.html)`(``tidy_bp``$``participant``)`` ``==`` ``4``,`` `` `[`n_distinct`](https://dplyr.tidyverse.org/reference/n_distinct.html)`(``tidy_bp``$``week``)`` ``==`` ``2``,`` `` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(`[`distinct`](https://dplyr.tidyverse.org/reference/distinct.html)`(``tidy_bp``, ``participant``, ``week``)``)`` ``==`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``tidy_bp``)`` ``)`

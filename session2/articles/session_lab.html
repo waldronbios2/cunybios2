@@ -488,8 +488,11 @@ smaller, embedded captions. But for publication the caption usually
 needs to be in separated text.</p>
 </div>
 <div class="section level2">
-<h2 id="try-yourself-plot-percentages-instead-of-counts">Try yourself: plot percentages instead of counts<a class="anchor" aria-label="anchor" href="#try-yourself-plot-percentages-instead-of-counts"></a>
+<h2 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
 </h2>
+<div class="section level3">
+<h3 id="plot-percentages-instead-of-counts">1. Plot percentages instead of counts<a class="anchor" aria-label="anchor" href="#plot-percentages-instead-of-counts"></a>
+</h3>
 <p>Here’s some code to calculate the percentages.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cusebyage</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">cusebyage</span>, <span class="va">age</span>, <span class="va">wantsMore</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -510,8 +513,132 @@ needs to be in separated text.</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 25-29 low       no        using            10    8.26</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> 25-29 low       no        not using        19   15.7 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 22 more rows</span></span></span></code></pre>
-<p>Now, can you repeat the barplot, but showing percentages instead of
-counts?</p>
+<p>Now, repeat the barplot, but showing percentages instead of
+counts.</p>
+</div>
+<div class="section level3">
+<h3 id="tidy-a-repeated-measures-table">2. Tidy a repeated-measures table<a class="anchor" aria-label="anchor" href="#tidy-a-repeated-measures-table"></a>
+</h3>
+<p>The table below is intentionally messy. It contains blood pressure
+and medication measurements for two visits, but the visits and
+measurement types are encoded in the column names.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">messy_bp</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">participant</span>, <span class="op">~</span><span class="va">group</span>,      <span class="op">~</span><span class="va">week1_bp</span>, <span class="op">~</span><span class="va">week2_bp</span>, <span class="op">~</span><span class="va">week1_med</span>, <span class="op">~</span><span class="va">week2_med</span>,</span>
+<span>  <span class="st">"A01"</span>,        <span class="st">"control"</span>,          <span class="fl">128</span>,       <span class="fl">126</span>,        <span class="st">"no"</span>,        <span class="st">"no"</span>,</span>
+<span>  <span class="st">"A02"</span>,        <span class="st">"control"</span>,          <span class="fl">142</span>,       <span class="fl">138</span>,       <span class="st">"yes"</span>,       <span class="st">"yes"</span>,</span>
+<span>  <span class="st">"B01"</span>,        <span class="st">"treatment"</span>,        <span class="fl">135</span>,       <span class="fl">129</span>,        <span class="st">"no"</span>,        <span class="st">"no"</span>,</span>
+<span>  <span class="st">"B02"</span>,        <span class="st">"treatment"</span>,        <span class="fl">150</span>,       <span class="fl">144</span>,       <span class="st">"yes"</span>,        <span class="st">"no"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">messy_bp</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 6</span></span></span>
+<span><span class="co">##   participant group     week1_bp week2_bp week1_med week2_med</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A01         control        128      126 no        no       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> A02         control        142      138 yes       yes      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> B01         treatment      135      129 no        no       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> B02         treatment      150      144 yes       no</span></span></code></pre>
+<ol style="list-style-type: decimal">
+<li>Identify every non-tidy feature of <code>messy_bp</code>. Use the
+three tidy-data rules above in your explanation.</li>
+<li>Tidy the data so that each row represents one participant at one
+visit. The result must have exactly these columns, in this order:
+<code>participant</code>, <code>group</code>, <code>week</code>,
+<code>blood_pressure</code>, and <code>medication</code>. Keep
+<code>blood_pressure</code> numeric and <code>medication</code>
+character. Because the two measurements have different types, you will
+need to handle that explicitly while pivoting or immediately
+afterward.</li>
+<li>Name the result <code>tidy_bp</code>, then print it after sorting by
+<code>participant</code> and <code>week</code>.</li>
+</ol>
+<p><em>Hint</em>: You can reshape this in a single
+<code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer()</a></code> call using the special <code>".value"</code>
+sentinel in <code>names_to</code> (e.g.,
+<code>names_to = c("week", ".value")</code> with
+<code>names_sep = "_"</code>).</p>
+<p>Your result is verifiable if it has eight rows, four unique
+participants, two unique weeks, and no duplicate
+<code>participant</code>-<code>week</code> combinations. It should print
+as follows (the order of rows and columns should match):</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">participant</th>
+<th align="left">group</th>
+<th align="left">week</th>
+<th align="right">blood_pressure</th>
+<th align="left">medication</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">A01</td>
+<td align="left">control</td>
+<td align="left">week1</td>
+<td align="right">128</td>
+<td align="left">no</td>
+</tr>
+<tr class="even">
+<td align="left">A01</td>
+<td align="left">control</td>
+<td align="left">week2</td>
+<td align="right">126</td>
+<td align="left">no</td>
+</tr>
+<tr class="odd">
+<td align="left">A02</td>
+<td align="left">control</td>
+<td align="left">week1</td>
+<td align="right">142</td>
+<td align="left">yes</td>
+</tr>
+<tr class="even">
+<td align="left">A02</td>
+<td align="left">control</td>
+<td align="left">week2</td>
+<td align="right">138</td>
+<td align="left">yes</td>
+</tr>
+<tr class="odd">
+<td align="left">B01</td>
+<td align="left">treatment</td>
+<td align="left">week1</td>
+<td align="right">135</td>
+<td align="left">no</td>
+</tr>
+<tr class="even">
+<td align="left">B01</td>
+<td align="left">treatment</td>
+<td align="left">week2</td>
+<td align="right">129</td>
+<td align="left">no</td>
+</tr>
+<tr class="odd">
+<td align="left">B02</td>
+<td align="left">treatment</td>
+<td align="left">week1</td>
+<td align="right">150</td>
+<td align="left">yes</td>
+</tr>
+<tr class="even">
+<td align="left">B02</td>
+<td align="left">treatment</td>
+<td align="left">week2</td>
+<td align="right">144</td>
+<td align="left">no</td>
+</tr>
+</tbody>
+</table>
+<p>You can verify the structure with:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tidy_bp</span><span class="op">)</span>,</span>
+<span>                  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant"</span>, <span class="st">"group"</span>, <span class="st">"week"</span>, <span class="st">"blood_pressure"</span>, <span class="st">"medication"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tidy_bp</span><span class="op">)</span> <span class="op">==</span> <span class="fl">8</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html" class="external-link">n_distinct</a></span><span class="op">(</span><span class="va">tidy_bp</span><span class="op">$</span><span class="va">participant</span><span class="op">)</span> <span class="op">==</span> <span class="fl">4</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html" class="external-link">n_distinct</a></span><span class="op">(</span><span class="va">tidy_bp</span><span class="op">$</span><span class="va">week</span><span class="op">)</span> <span class="op">==</span> <span class="fl">2</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">tidy_bp</span>, <span class="va">participant</span>, <span class="va">week</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tidy_bp</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
