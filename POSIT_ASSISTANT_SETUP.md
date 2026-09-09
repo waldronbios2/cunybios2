@@ -24,14 +24,15 @@ This guide provides step-by-step instructions for configuring **Posit Assistant*
 2. Click **Connect** (or **Edit** if already connected).
 3. Fill in the fields:
    - **Base URL**: `https://tools.ailab.gc.cuny.edu/v1`
-   - **API Key (optional)**: Paste your assigned `CAIL_API_KEY` (starts with `sk-...`).
+   - **API Key**: Paste your assigned `CAIL_API_KEY` (starts with `sk-...`). **An API key is required to connect.**
 4. Click the **Test** button to confirm connectivity.
 5. Click **Save**, then click **Close** (or **Refresh models**).
 
 ### Step 4: Select the Recommended Model
-In the Posit Assistant chat panel, click the model selection dropdown at the bottom:
-- **Recommended Default**: **`google/gemini-2.5-flash`** (or **`openai/gpt-4o-mini`**)
-- **Important**: **Do NOT select `qwen/qwen3-32b` or models ending in `-thinking`**. These share an upstream free pool subject to severe concurrency rate limits (`HTTP 429`) with this free service, and their internal reasoning tokens can exhaust the output length and truncate your code answers.
+In the Posit Assistant chat panel, click the model selection dropdown at the bottom and choose one of the following:
+- **`deepseek/deepseek-v4-flash-0731`** (reasoning model)
+- **`google/gemini-2.5-flash`**
+- **`openai/gpt-4o-mini`**
 
 ---
 

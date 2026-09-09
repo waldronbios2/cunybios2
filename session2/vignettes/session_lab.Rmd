@@ -28,7 +28,7 @@ participants using contraceptives among those who do and do not want more childr
 
 # Load the contraceptive use data
 
-Load the data from http://data.princeton.edu/wws509/datasets/#cuse. From this page:
+Load the data from https://github.com/waldronbios2/cunybios2/blob/main/session2/vignettes/cuse.dat. From this page:
 
 > These data show the distribution of 1607 currently married and fecund women interviewed in the Fiji Fertility Survey, according to age, education, desire for more children and current use of contraception.
 
