@@ -278,7 +278,7 @@ ICC & = \frac{\tau_{00}^2}{\tau_{00}^2 + \sigma_\epsilon^2}
 ```{r makewide, echo=FALSE, message=FALSE, results='hide'}
 library(tidyr)
 dat.wide <- dat %>% 
-  select(-fecfatminusmean) %>%
+  dplyr::select(-fecfatminusmean) %>%
   pivot_wider(names_from = pilltype, values_from = fecfat) %>%
   mutate(MEAN = (none+tablet+capsule+coated)/4)
 ```

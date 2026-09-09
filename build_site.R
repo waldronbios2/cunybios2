@@ -1,0 +1,40 @@
+#!/usr/bin/env Rscript
+
+# Ensure docs output directory exists
+dir.create("docs", showWarnings = FALSE, recursive = TRUE)
+dest_root <- normalizePath("docs", mustWork = TRUE)
+
+message("=== Building main pkgdown site ===")
+pkgdown::build_site(override = list(destination = dest_root), preview = FALSE)
+
+# Build pkgdown sites and lecture PDFs for each session
+for (i in 1:10) {
+  session_name <- paste0("session", i)
+  session_dest <- file.path(dest_root, session_name)
+  articles_dest <- file.path(session_dest, "articles")
+
+  message(sprintf("=== Building %s pkgdown site ===", session_name))
+  pkgdown::build_site(
+    pkg = session_name,
+    override = list(destination = session_dest),
+    preview = FALSE
+  )
+
+  lecture_rmd <- file.path(session_name, "vignettes", "session_lecture.Rmd")
+  if (file.exists(lecture_rmd)) {
+    message(sprintf("=== Rendering %s Lecture PDF ===", session_name))
+    dir.create(articles_dest, showWarnings = FALSE, recursive = TRUE)
+    rmarkdown::render(
+      input = lecture_rmd,
+      output_format = "beamer_presentation",
+      output_file = "session_lecture.pdf",
+      output_dir = articles_dest,
+      clean = TRUE,
+      quiet = TRUE
+    )
+  }
+}
+
+# Preserve custom domain for GitHub Pages
+writeLines("bios2.waldronlab.io", file.path(dest_root, "CNAME"))
+message("=== Successfully built site and lecture PDFs for all sessions ===")

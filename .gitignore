@@ -19,5 +19,6 @@ session*/vignettes/*.pdf
 session*/*.Rproj.user
 docs/
 session*/docs/
-
 .posit/assistant
+settings.json
+.vscode/

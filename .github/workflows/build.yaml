@@ -47,18 +47,16 @@ jobs:
               message('Installing binary dependencies: ', paste(needed, collapse = ', '))
               install.packages(needed, Ncpus = 2)
             }
+            if (requireNamespace('tinytex', quietly = TRUE) && tinytex::is_tinytex()) {
+              try(tinytex::tlmgr_install(c('xltabular', 'ltablex')))
+            }
           "
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_file = "README.md")'
 
-      - name: Build pkgdown sites (main site and all sessions)
-        run: |
-          Rscript -e 'pkgdown::build_site()'
-          for i in $(seq 1 10); do
-            echo "=== Building Session $i pkgdown site ==="
-            (cd session$i && Rscript -e "pkgdown::build_site(override = list(destination = '../docs/session$i'))")
-          done
+      - name: Build website and lecture PDFs (main site and all sessions)
+        run: Rscript build_site.R
 
       - name: Commit updated README
         uses: stefanzweifel/git-auto-commit-action@v5

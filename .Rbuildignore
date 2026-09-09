@@ -12,3 +12,5 @@
 ^\.posit/assistant$
 ^AGENTS\.md$
 ^POSIT_ASSISTANT_SETUP\.md$
+^\.vscode$
+^build_site\.R$
