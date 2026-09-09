@@ -33,6 +33,15 @@ jobs:
       - name: Install required dependencies
         run: |
           apt-get update && apt-get install -y rsync libv8-dev libxml2-dev libpng-dev libcurl4-openssl-dev
+          export PATH="/usr/local/texlive/bin/linux:/opt/TinyTeX/bin/x86_64-linux:/root/.TinyTeX/bin/x86_64-linux:$PATH"
+          TLMGR=$(which tlmgr 2>/dev/null || find /usr/local/texlive /opt/TinyTeX /root/.TinyTeX -name tlmgr 2>/dev/null | head -n 1)
+          if [ -n "$TLMGR" ]; then
+            echo "Found tlmgr at $TLMGR"
+            TLDIR=$(dirname "$TLMGR")
+            echo "$TLDIR" >> "$GITHUB_PATH"
+            export PATH="$TLDIR:$PATH"
+            "$TLMGR" install beamer pgf translator xltabular ltablex || true
+          fi
           Rscript -e "
             options(repos = c(CRAN = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest'))
             pkgs <- unique(unlist(lapply(c('.', dir(pattern='^session[0-9]+$')), function(d) {
@@ -47,8 +56,8 @@ jobs:
               message('Installing binary dependencies: ', paste(needed, collapse = ', '))
               install.packages(needed, Ncpus = 2)
             }
-            if (requireNamespace('tinytex', quietly = TRUE) && tinytex::is_tinytex()) {
-              try(tinytex::tlmgr_install(c('xltabular', 'ltablex')))
+            if (requireNamespace('tinytex', quietly = TRUE)) {
+              try(tinytex::tlmgr_install(c('beamer', 'pgf', 'translator', 'xltabular', 'ltablex')))
             }
           "
 
