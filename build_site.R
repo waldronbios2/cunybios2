@@ -4,13 +4,14 @@
 tlmgr_bin <- Sys.which("tlmgr")
 if (tlmgr_bin == "") {
   candidates <- c(
+    "/usr/local/texlive/bin/linux/tlmgr",
     Sys.glob("/usr/local/texlive/bin/*/tlmgr"),
-    Sys.glob("/usr/local/texlive/bin/linux/tlmgr"),
     Sys.glob("/opt/TinyTeX/bin/*/tlmgr"),
     Sys.glob("~/.TinyTeX/bin/*/tlmgr"),
     Sys.glob("~/Library/TinyTeX/bin/*/tlmgr")
   )
-  if (length(candidates) > 0 && file.exists(candidates[1])) {
+  candidates <- candidates[file.exists(candidates)]
+  if (length(candidates) > 0) {
     tlmgr_bin <- candidates[1]
     Sys.setenv(PATH = paste(dirname(tlmgr_bin), Sys.getenv("PATH"), sep = ":"))
   }
@@ -19,8 +20,9 @@ if (tlmgr_bin == "") {
 if (tlmgr_bin != "") {
   message("Found tlmgr at: ", tlmgr_bin)
   tex_pkgs <- c("beamer", "pgf", "translator", "xltabular", "ltablex")
-  message("Ensuring LaTeX packages are installed: ", paste(tex_pkgs, collapse = ", "))
-  try(system2(tlmgr_bin, c("install", tex_pkgs), stdout = TRUE, stderr = TRUE), silent = TRUE)
+  repo <- "https://mirror.math.princeton.edu/pub/CTAN/systems/texlive/tlnet"
+  message("Ensuring LaTeX packages are installed via ", repo, ": ", paste(tex_pkgs, collapse = ", "))
+  try(system2(tlmgr_bin, c("--verify-repo=none", "install", "--repository", repo, tex_pkgs), stdout = TRUE, stderr = TRUE), silent = TRUE)
 }
 
 # Ensure docs output directory exists
