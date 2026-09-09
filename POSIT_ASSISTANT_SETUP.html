@@ -81,14 +81,15 @@
 <strong>Base URL</strong>: <code>https://tools.ailab.gc.cuny.edu/v1</code>
 </li>
 <li>
-<strong>API Key (optional)</strong>: Paste your assigned <code>CAIL_API_KEY</code> (starts with <code>sk-...</code>).</li>
+<strong>API Key</strong>: Paste your assigned <code>CAIL_API_KEY</code> (starts with <code>sk-...</code>). <strong>An API key is required to connect.</strong>
+</li>
 </ul></li>
 <li>Click the <strong>Test</strong> button to confirm connectivity.</li>
 <li>Click <strong>Save</strong>, then click <strong>Close</strong> (or <strong>Refresh models</strong>).</li>
 </ol></div>
 <div class="section level3">
 <h3 id="step-4-select-the-recommended-model">Step 4: Select the Recommended Model<a class="anchor" aria-label="anchor" href="#step-4-select-the-recommended-model"></a></h3>
-<p>In the Posit Assistant chat panel, click the model selection dropdown at the bottom: - <strong>Recommended Default</strong>: <strong><code>google/gemini-2.5-flash</code></strong> (or <strong><code>openai/gpt-4o-mini</code></strong>) - <strong>Important</strong>: <strong>Do NOT select <code>qwen/qwen3-32b</code> or models ending in <code>-thinking</code></strong>. These share an upstream free pool subject to severe concurrency rate limits (<code>HTTP 429</code>) with this free service, and their internal reasoning tokens can exhaust the output length and truncate your code answers.</p>
+<p>In the Posit Assistant chat panel, click the model selection dropdown at the bottom and choose one of the following: - <strong><code>deepseek/deepseek-v4-flash-0731</code></strong> (reasoning model) - <strong><code>google/gemini-2.5-flash</code></strong> - <strong><code>openai/gpt-4o-mini</code></strong></p>
 <hr></div>
 </div>
 <div class="section level2">

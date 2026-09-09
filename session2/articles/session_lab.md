@@ -19,7 +19,8 @@
 
 ## Load the contraceptive use data
 
-Load the data from <http://data.princeton.edu/wws509/datasets/#cuse>.
+Load the data from
+<https://github.com/waldronbios2/cunybios2/blob/main/session2/vignettes/cuse.dat>.
 From this page:
 
 > These data show the distribution of 1607 currently married and fecund
