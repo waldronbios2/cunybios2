@@ -20,8 +20,11 @@ if (tlmgr_bin == "") {
 if (tlmgr_bin != "") {
   message("Found tlmgr at: ", tlmgr_bin)
   tex_pkgs <- c(
-    "beamer", "pgf", "translator", "xltabular", "ltablex",
-    "booktabs", "collection-latexrecommended", "collection-fontsrecommended"
+    "beamer", "pgf", "translator", "booktabs",
+    "collection-latexrecommended", "collection-fontsrecommended",
+    "xltabular", "ltablex", "multirow", "makecell", "wrapfig", "tabu",
+    "threeparttable", "threeparttablex", "colortbl", "pdflscape", "dcolumn",
+    "environ", "trimspaces", "collection-latexextra"
   )
   repo <- "https://mirror.math.princeton.edu/pub/CTAN/systems/texlive/tlnet"
   message("Ensuring LaTeX packages are installed via ", repo, ": ", paste(tex_pkgs, collapse = ", "))
