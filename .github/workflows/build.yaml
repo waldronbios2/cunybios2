@@ -33,16 +33,6 @@ jobs:
       - name: Install required dependencies
         run: |
           apt-get update && apt-get install -y rsync libv8-dev libxml2-dev libpng-dev libcurl4-openssl-dev
-          export PATH="/usr/local/texlive/bin/linux:/opt/TinyTeX/bin/x86_64-linux:/root/.TinyTeX/bin/x86_64-linux:$PATH"
-          TLMGR=$(which tlmgr 2>/dev/null || [ -x /usr/local/texlive/bin/linux/tlmgr ] && echo /usr/local/texlive/bin/linux/tlmgr || true)
-          if [ -n "$TLMGR" ]; then
-            echo "Found tlmgr at $TLMGR"
-            TLDIR=$(dirname "$TLMGR")
-            echo "$TLDIR" >> "$GITHUB_PATH"
-            export PATH="$TLDIR:$PATH"
-            "$TLMGR" option repository https://mirror.math.princeton.edu/pub/CTAN/systems/texlive/tlnet || true
-            "$TLMGR" --verify-repo=none install --repository https://mirror.math.princeton.edu/pub/CTAN/systems/texlive/tlnet beamer pgf translator xltabular ltablex || true
-          fi
           Rscript -e "
             options(repos = c(CRAN = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest'))
             pkgs <- unique(unlist(lapply(c('.', dir(pattern='^session[0-9]+$')), function(d) {

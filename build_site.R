@@ -19,10 +19,14 @@ if (tlmgr_bin == "") {
 
 if (tlmgr_bin != "") {
   message("Found tlmgr at: ", tlmgr_bin)
-  tex_pkgs <- c("beamer", "pgf", "translator", "xltabular", "ltablex")
+  tex_pkgs <- c(
+    "beamer", "pgf", "translator", "xltabular", "ltablex",
+    "booktabs", "collection-latexrecommended", "collection-fontsrecommended"
+  )
   repo <- "https://mirror.math.princeton.edu/pub/CTAN/systems/texlive/tlnet"
   message("Ensuring LaTeX packages are installed via ", repo, ": ", paste(tex_pkgs, collapse = ", "))
-  try(system2(tlmgr_bin, c("--verify-repo=none", "install", "--repository", repo, tex_pkgs), stdout = TRUE, stderr = TRUE), silent = TRUE)
+  res <- system2(tlmgr_bin, c("--verify-repo=none", "install", "--repository", repo, tex_pkgs), stdout = TRUE, stderr = TRUE)
+  message(paste(res, collapse = "\n"))
 }
 
 # Ensure docs output directory exists
