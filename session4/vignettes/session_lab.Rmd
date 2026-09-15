@@ -23,9 +23,11 @@ always_allow_html: true
 5. Practice recoding and creating tables and plots
 
 
-**Exercises**
+**Activities**
 
-1. Simulate count data from a Poisson distribution (for example number of hospital visits by persons over 70 in a 3-year period), where:
+## 1. Simulate count data from a Poisson distribution
+
+(For example, number of hospital visits by persons over 70 in a 3-year period), where:
     a. 10,000 persons annotated with "race" as "white" or "non-white"
     b. "white" persons have an average of 3.5 hospital visits during this time period
     c. "non-white" persons have an average of 3 hospital visits
@@ -45,14 +47,18 @@ simdat <- data.frame(race = sample(c("white", "non-white"), N, replace = TRUE)) 
 
 
 
-2. Fit a log-linear Poisson model of count outcomes with "race" as the predictor. Note, in this context I tend to use the terms "predictor" and "covariate" interchangeably, to mean any variable used as a predictor in the regression model.
+## 2. Fit a log-linear Poisson model of count outcomes
+
+With "race" as the predictor. Note, in this context I tend to use the terms "predictor" and "covariate" interchangeably, to mean any variable used as a predictor in the regression model.
 
 ```{r}
 fit <- glm(y ~ race, data = simdat, family = poisson(link = "log"))
 summary(fit)
 ```
 
-3. Use a chi-square test on deviance residuals to test null hypothesis of no relationship between mean hospital visits and race.
+## 3. Use a chi-square test on deviance residuals
+
+To test null hypothesis of no relationship between mean hospital visits and race.
 
 
 * The difference in total deviance between two nested models is $\chi^2$ distributed under $H_0$ that the more complex model is no better at explaining the response.
@@ -60,7 +66,7 @@ summary(fit)
 
 The critical threshold for rejection at p=0.05 is:
 ```{r}
-qchisq(0.95, df=1)
+qchisq(0.95, df = 1)
 ```
 
 So we reject $H_0$
@@ -72,14 +78,14 @@ fit0 <- glm(y ~ 1, data = simdat, family = poisson(link = "log"))
 anova(fit0, fit, test = "LRT")
 ```
 
-3. Create and discuss standard fit diagnostics plots
+## 4. Create and discuss standard fit diagnostics plots
 
 ```{r, echo=FALSE}
 par(mfrow = c(2, 2))
 plot(fit)
 ```
 
-4. Example: Risky Drug Use Behavior
+## 5. Example: Risky Drug Use Behavior
 
 * Download the "needle_sharing" dataset (see Vittinghoff 8.3.1)
 * Outcome is # times the drug user shared a syringe in the past month (`shared_syr`)
@@ -89,7 +95,7 @@ plot(fit)
 library(readxl)
 needledat <- read_excel("needle_sharing.xlsx")
 summary(needledat$shared_syr)
-var(needledat$shared_syr, na.rm=TRUE)
+var(needledat$shared_syr, na.rm = TRUE)
 ```
 
 Some recoding:
@@ -104,14 +110,14 @@ needledat_cleaned <-
   select(all_of(c("shared_syr", "ethnicity", "sex", "homeless")))
 ```
 
-5. Create a table of the risky drug use behavior dataset
+## 6. Create a table of the risky drug use behavior dataset
 
 ```{r table1}
 library(table1)
-table1(~ ., data = needledat_cleaned)
+table1(~., data = needledat_cleaned)
 ```
 
-6. Plots of Risky Drug Use Behavior
+## 7. Plots of Risky Drug Use Behavior
 
 a. Create a histogram number of syringe uses
 
@@ -138,20 +144,54 @@ mutate(needledat, rnk = rank(shared_syr, ties.method = "first")) %>%
 
 * There are a _lot_ of zeros - Poisson model is not a good fit
 
-7. Fit a Poisson model to the risky drug use behavior dataset anyways
+## 8. Fit a Poisson model to the risky drug use behavior dataset anyways
 
 Even though we know it is a bad fit
 
 ```{r glmfit}
 fit.pois <- glm(shared_syr ~ sex + ethn + homeless,
-                data = needledat,
-                family = poisson(link = "log"))
+  data = needledat,
+  family = poisson(link = "log")
+)
 summary(fit.pois)
 ```
 
-8. Create and discuss Poisson model diagnostic plots
+## 9. Create and discuss Poisson model diagnostic plots
 
 ```{r diagnostic}
 par(mfrow = c(2, 2))
 plot(fit.pois)
+```
+
+## Interpreting Poisson Coefficients
+
+In a Poisson log-linear model, exponentiating the coefficients ($\exp(\beta)$) yields the Incidence Rate Ratios (IRRs). For example, if we exponentiate the coefficients from `fit.pois`:
+
+```{r}
+# Exponentiate the coefficients to get IRRs
+exp(coef(fit.pois))
+```
+This tells us the multiplicative effect of each predictor on the expected count of syringe sharing incidents, holding other variables constant.
+
+# Exercises
+
+## Exercise 1: Calculate Incidence Rate Ratios (IRRs)
+Extract the coefficients from `fit.pois` (the model on risky drug use), exponentiate them to obtain the Incidence Rate Ratios (IRRs), and compute their 95% confidence intervals.
+
+```{r}
+
+```
+
+## Exercise 2: Model Comparison (LRT)
+Fit a reduced Poisson model by removing the `homeless` predictor from the previous risky drug use model. Then, perform a Likelihood Ratio Test (using `anova(..., test="LRT")`) to compare this reduced model against the full model `fit.pois`. Interpret the result. Does the `homeless` variable significantly improve the model fit?
+
+```{r}
+
+```
+
+## Exercise 3: Check for Overdispersion
+Calculate the ratio of the residual deviance to the residual degrees of freedom for `fit.pois`. Interpret what this value means for the model assumptions. Is there evidence of overdispersion?
+
+```{r}
+
 ```

@@ -18,7 +18,7 @@ output:
 4. Create a customized bar plot using the `ggplot2` package
 
 
-**Exercises**
+**Activities**
 
 1. Load the contraceptive use dataset into R
 2. Create an "Epi Table 1" of sample characteristics
