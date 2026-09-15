@@ -42,13 +42,13 @@ See Session 2 for some discussion about reading this file. Here we just do it.
 ```{r, message=FALSE}
 library(readr)
 cuse <- read_table("cuse.dat",
-    col_types = cols(
-      age = col_factor(levels = c("<25", "25-29", "30-39", "40-49")),
-      education = col_factor(levels = c("low", "high")),
-      wantsMore = col_factor(levels = c("no", "yes")),
-      X6 = col_skip()
-    )
+  col_types = cols(
+    age = col_factor(levels = c("<25", "25-29", "30-39", "40-49")),
+    education = col_factor(levels = c("low", "high")),
+    wantsMore = col_factor(levels = c("no", "yes")),
+    X6 = col_skip()
   )
+)
 summary(cuse)
 ```
 
@@ -72,15 +72,32 @@ cuse2
 Now, group and summarize by age:
 
 ```{r}
-cuse2 %>% group_by(age) %>% summarize(mean(fracusing))
-cuse2
+cuse2 %>%
+  group_by(age) %>%
+  summarize(mean_fracusing = mean(fracusing))
+```
+
+Similarly, group and summarize by education level:
+
+```{r}
+cuse2 %>%
+  group_by(education) %>%
+  summarize(mean_fracusing = mean(fracusing))
+```
+
+And group and summarize by desire for more children:
+
+```{r}
+cuse2 %>%
+  group_by(wantsMore) %>%
+  summarize(mean_fracusing = mean(fracusing))
 ```
 
 Here the `%>%` is called a "pipe", and it sends the output of the previous function to the input of the next function. This could also have been done in one step:
 
 ```{r}
 mutate(cuse, fracusing = using / (using + notUsing)) %>%
-  group_by(age) %>% 
+  group_by(age) %>%
   summarize(mean(fracusing))
 ```
 
@@ -128,29 +145,30 @@ Based on ```fit1```, what is the expected probability of an individual 25-29 yea
 
 This can be done using the `predict()` function, using a new `data.frame` giving the values that you want to predict for:
 ```{r}
-invLogit <- function(x) 1/(1+exp(-x))
-q4data <- data.frame(age="25-29", education="high", wantsMore="yes")
-invLogit( predict(fit1, newdata=q4data) )
+invLogit <- function(x) 1 / (1 + exp(-x))
+q4data <- data.frame(age = "25-29", education = "high", wantsMore = "yes")
+invLogit(predict(fit1, newdata = q4data))
 ```
 
 By default, `predict()` predicts on the original data, and taking a look, I noticed that the 7th value is the one we want to predict on:
 ```{r}
-invLogit( predict(fit1)[7] )
+invLogit(predict(fit1)[7])
 ```
 
-If we were really doing this manually, on paper, we would just calculate the linear predictor, then use the inverse logit function. Note that education="high" is the reference group, so we don't use it here:
+If we were really doing this manually, on paper, we would calculate the linear predictor ($\eta$), then evaluate the inverse logit function:
+$$P = \textit{logit}^{-1}(\eta) = \frac{1}{1 + e^{-\eta}}$$
+
+Note that `education` has reference level `"low"`, so for an individual with high education, the indicator variable `educationhigh` equals 1 and its coefficient must be included:
 
 ```{r}
-invLogit( bcoef["(Intercept)"] + bcoef["age25-29"] + bcoef["wantsMoreyes"] )
+eta <- bcoef["(Intercept)"] + bcoef["age25-29"] + bcoef["educationhigh"] + bcoef["wantsMoreyes"]
+invLogit(eta)
 ```
 
-I don't *really* care, but if the remnant "(Intercept)" name there were annoying me, I would assign this to a variable then get rid of that name:
+Notice that this manual calculation matches our `predict()` result above (`r round(invLogit(eta), 3)`).
 
-```{r}
-res <- invLogit( bcoef["(Intercept)"] + bcoef["age25-29"] + bcoef["wantsMoreyes"] )
-names(res) <- NULL
-res
-```
+*(Tip: In `predict()`, specifying `type = "response"` directly returns predicted probabilities on the scale of the response variable, without needing a manual inverse-logit transformation: `predict(fit1, newdata = q4data, type = "response")`)*
+
 
 # Predicted odds ratio
 
@@ -160,7 +178,7 @@ Based on ```fit1```: Relative to women under 25 who want to have children, what 
 **Solution**
 
 ```{r}
-exp( coef(fit1)["age40-49"] - coef(fit1)["wantsMoreyes"])
+exp(coef(fit1)["age40-49"] - coef(fit1)["wantsMoreyes"])
 ```
 
 # Likelihood Ratio Test
@@ -170,10 +188,22 @@ Using a likelihood ratio test, is there evidence that a model with interactions 
 **Solution**
 
 ```{r}
-fit1.int <- glm(cbind(using, notUsing) ~ age * education * wantsMore, 
-           data=cuse, family=binomial("logit"))
-anova(fit1, fit1.int, test="LRT")
+fit1.2way <- glm(
+  cbind(using, notUsing) ~ (age + education + wantsMore)^2,
+  data = cuse,
+  family = binomial("logit")
+)
+
+fit1.int <- glm(
+  cbind(using, notUsing) ~ age * education * wantsMore,
+  data = cuse,
+  family = binomial("logit")
+)
+
+anova(fit1, fit1.2way, fit1.int, test = "LRT")
 ```
+
+The likelihood ratio test shows that adding all two-way interactions (`fit1.2way`) significantly improves model fit over the additive model (`fit1`, $p = 0.00027$). However, adding three-way interactions (`fit1.int`) yields no statistically significant improvement ($p = 0.486$) and costs 3 additional degrees of freedom (yielding a fully saturated model with 0 residual degrees of freedom). Therefore, the two-way interaction model is much more parsimonious.
 
 # A model with interactions
 
@@ -181,21 +211,25 @@ Which, if any, variables have the strongest interactions? I use the "stargazer" 
 
 **Solution**
 
-We see here that the strongest interaction coeffient is for `age30-39:wantsMoreyes`. It is statistically significant and negative (`r round(coef(fit1.int)["age30-39:wantsMoreyes"], 2)`). It appears that being 30-39 years old and wanting more children has a multiplicative effect against using birth control, moreso than expected based on the age or wanting more children alone. 
+In the two-way interaction model (`fit1.2way`), the strongest interaction coefficients are between age and wanting more children: `age30-39:wantsMoreyes` (`r round(coef(fit1.2way)["age30-39:wantsMoreyes"], 2)`) and `age40-49:wantsMoreyes` (`r round(coef(fit1.2way)["age40-49:wantsMoreyes"], 2)`). Both are statistically significant and negative ($p < 0.05$). This indicates that for women aged 30 and older, wanting more children exerts a substantially stronger deterrent effect against using birth control than would be predicted from age or wanting more children acting purely additively on the log-odds scale.
+
+*(Note on the 3-way model: In the fully saturated model `fit1.int`, these interaction effects get partitioned across the three-way interaction terms, diluting the two-way coefficients and inflating standard errors because there are 16 parameters for 16 data rows.)*
 
 The *stargazer* package is a good way to create nicely-formatted tables 
 of regression results.
 
 ```{r, echo=FALSE, results="asis", message=FALSE}
 library(stargazer)
-stargazer(fit1, fit1.int, type="html", 
-          dep.var.caption = " ",  #Otherwise the default is "Dependent Variable:"
-          dep.var.labels = "Outcome: Using Birth Control",
-          digits = 2,  #show 2 digits
-          column.labels = c("No Interaction", "With Interactions"),
-          ci=c(TRUE, TRUE), #show confidence intervals
-          single.row=TRUE, #put results on a single line
-          report="vc*s")  #report the "v"ariable name, "c"oefficient with significance "asterisks", and "s"tandard error (actually replaced by confidence interval because of ci argument above)
+stargazer(fit1, fit1.2way, fit1.int,
+  type = "html",
+  dep.var.caption = " ", # Otherwise the default is "Dependent Variable:"
+  dep.var.labels = "Outcome: Using Birth Control",
+  digits = 2, # show 2 digits
+  column.labels = c("Additive", "Two-Way", "Full Three-Way"),
+  ci = c(TRUE, TRUE, TRUE), # show confidence intervals
+  single.row = TRUE, # put results on a single line
+  report = "vc*s"
+) # report the "v"ariable name, "c"oefficient with significance "asterisks", and "s"tandard error (actually replaced by confidence interval because of ci argument above)
 ```
 
 # Contrasts between every pair of age groups
@@ -209,16 +243,18 @@ Create a model matrix for a fit on age only, with contrasts between *every pair*
 First, I'll do it manually, using the `multcomp` package and following an example from `?glht`. I'm not going to bother anymore creating pretty tables with `stargazer` though... 
 
 ```{r}
-fit = glm(cbind(using, notUsing) ~ age, data=cuse, family=binomial("logit"))
+fit <- glm(cbind(using, notUsing) ~ age, data = cuse, family = binomial("logit"))
 coef(fit)
-K <- rbind("25-29 - <25" = c(0, 1, 0, 0),
-           "30-39 - <25" = c(0, 0, 1, 0),
-           "40-49 - <25" = c(0, 0, 0, 1),
-           "30-39 - 25-29" = c(0, -1, 1, 0),
-           "40-49 - 25-29" = c(0, -1, 0, 1),
-           "40-49 - 30-39" = c(0, 0, -1, 1))
+K <- rbind(
+  "25-29 - <25" = c(0, 1, 0, 0),
+  "30-39 - <25" = c(0, 0, 1, 0),
+  "40-49 - <25" = c(0, 0, 0, 1),
+  "30-39 - 25-29" = c(0, -1, 1, 0),
+  "40-49 - 25-29" = c(0, -1, 0, 1),
+  "40-49 - 30-39" = c(0, 0, -1, 1)
+)
 K
-fit.all.cont = multcomp::glht(fit, linfct=K)
+fit.all.cont <- multcomp::glht(fit, linfct = K)
 summary(fit.all.cont)
 ```
 
@@ -229,10 +265,10 @@ assume a no-intercept model, which would be hard to interpret outside the contex
 `multcomp::contrMat`, but can be used as an intermediate step to get here.
 
 ```{r}
-fitnoint = glm(cbind(using, notUsing) ~ age-1, data=cuse, family=binomial("logit"))
-K2 = multcomp::contrMat(1:4, type="Tukey")
+fitnoint <- glm(cbind(using, notUsing) ~ age - 1, data = cuse, family = binomial("logit"))
+K2 <- multcomp::contrMat(1:4, type = "Tukey")
 K2
-fit.all.cont2 = multcomp::glht(fitnoint, linfct=K2)
+fit.all.cont2 <- multcomp::glht(fitnoint, linfct = K2)
 summary(fit.all.cont2)
 ```
 
@@ -240,10 +276,19 @@ We didn't get the same informative coefficient names this time, but we can
 rename the rows in `K2`, for example:
 
 ```{r}
-rownames(K2) = rownames(K)
+rownames(K2) <- rownames(K)
 K2
-summary( multcomp::glht(fit, linfct=K2) )
+summary(multcomp::glht(fitnoint, linfct = K2))
 ```
+
+> **Important Note on Contrasts and Intercepts:**
+> Notice that `K2` must be tested using `fitnoint` (`multcomp::glht(fitnoint, linfct=K2)`), **not** `fit`. Because `contrMat()` constructs contrasts assuming each column corresponds to a separate group mean/log-odds ($\beta_1, \beta_2, \beta_3, \beta_4$ in a no-intercept model), applying `K2` to a model with an intercept (`fit`) mistakenly treats column 1 as the intercept ($\beta_0$) rather than the first group. The row `c(-1, 1, 0, 0)` would then compute $-\beta_0 + \beta_{25-29}$ (yielding $1.97$) instead of $\beta_{25-29} - \beta_{<25}$ ($0.46$). Using `fitnoint` ensures columns match the four group levels, correctly reproducing the exact estimates and p-values from our manual matrix `K` applied to `fit`.
+
+### Conclusion: Between which age groups is the contrast significant?
+
+Looking at the simultaneous tests with adjusted $p$-values:
+- All pairwise differences in contraceptive use between age groups are statistically significant ($p < 0.05$), **except** between the **40–49** and **30–39** age groups (difference in log-odds = $0.376$, adjusted $p = 0.104$). Contraceptive use increases steadily with age from `<25` up to `30–39`, but plateaus between `30–39` and `40–49`.
+
 
 ## Other contrast schemes
 
@@ -255,4 +300,39 @@ In these examples, the first line `n <- c(10,20,30,40)` just signifies four leve
 library(multcomp)
 example("contrMat")
 ```
+
+---
+
+# Exercises
+
+### Model Comparison & Parsimony via Likelihood Ratio Test
+
+In the lab walkthrough, we compared the additive model (`fit1`) to the all-two-way model 
+(`fit1.2way`) and the full three-way model (`fit1.int`). A researcher suggests that the 
+only interaction of substantive interest is between age and desire for more children:
+
+$$\text{cbind(using, notUsing)} \sim \text{age} \times \text{wantsMore} + \text{education}$$
+
+1. Fit this model and name it `fit_agewants`.
+
+```{r}
+
+```
+
+2. Conduct a Likelihood Ratio Test comparing the additive model (`fit1`) against 
+`fit_agewants` using `anova(fit1, fit_agewants, test = "Chisq")`. Is the inclusion 
+of the `age * wantsMore` interaction statistically justified?
+
+```{r}
+
+```
+
+3. Compare `fit_agewants` against the model with all two-way interactions (`fit1.2way`) 
+using `anova(fit_agewants, fit1.2way, test = "Chisq")`. Which model would you select as 
+your final model? Why?
+
+```{r}
+
+```
+
 
