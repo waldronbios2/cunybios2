@@ -11,7 +11,10 @@ Waldron L (2026). *session8: Lecture and lab materials for CUNY
 Biostatistics 2 session 8*. R package version 0.1.0,
 <https://waldronbios2.github.io/session8/>.
 
-@Manual{, title = {session8: Lecture and lab materials for CUNY
-Biostatistics 2 session 8}, author = {Levi Waldron}, year = {2026}, note
-= {R package version 0.1.0}, url =
-{https://waldronbios2.github.io/session8/}, }
+@Manual{,\
+  title = {session8: Lecture and lab materials for CUNY Biostatistics 2 session 8},\
+  author = {Levi Waldron},\
+  year = {2026},\
+  note = {R package version 0.1.0},\
+  url = {https://waldronbios2.github.io/session8/},\
+}

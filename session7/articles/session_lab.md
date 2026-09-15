@@ -20,9 +20,14 @@
 
 ## Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`survival`](https://github.com/therneau/survival)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`survival`](https://github.com/therneau/survival)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`
 
-`leuk`` ``<-`` ``readr``::`[`read_csv`](https://readr.tidyverse.org/reference/read_delim.html)`(``"leuk.csv"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``group ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``group``, levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Placebo"``, ``"6 MP"``)``)``)`
+\
+`leuk`` ``<-`` ``readr``::`[`read_csv`](https://readr.tidyverse.org/reference/read_delim.html)`(``"leuk.csv"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``group ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``group``, levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Placebo"``, ``"6 MP"``)``)``)`
 
     ## Rows: 42 Columns: 3
     ## ── Column specification ────────────────────────────────────────────────────────
@@ -35,7 +40,9 @@
 
 ## Create a stratified Kaplan-Meier plot
 
-`kmfit`` ``<-`` ``survival``::`[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``)`` ``survminer``::`[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``kmfit``, risk.table ``=`` ``TRUE``, linetype``=``1``:``2``)`
+\
+`kmfit`` ``<-`` ``survival``::`[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``)`\
+`survminer``::`[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``kmfit``, risk.table ``=`` ``TRUE``, linetype``=``1``:``2``)`
 
     ## Ignoring unknown labels:
     ## • colour : "Strata"
@@ -44,11 +51,19 @@
 
 ## Fit exponential and Weibull accelerated failure time (AFT) models
 
-`coxfit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``)`` ``expfit`` ``<-`` `[`survreg`](https://rdrr.io/pkg/survival/man/survreg.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``, dist ``=`` ``"exponential"``)`` ``weibullfit`` ``<-`` `[`survreg`](https://rdrr.io/pkg/survival/man/survreg.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``, dist ``=`` ``"weibull"``)`
+\
+`coxfit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``)`\
+`expfit`` ``<-`` `[`survreg`](https://rdrr.io/pkg/survival/man/survreg.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``, dist ``=`` ``"exponential"``)`\
+`weibullfit`` ``<-`` `[`survreg`](https://rdrr.io/pkg/survival/man/survreg.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``, dist ``=`` ``"weibull"``)`
 
-[`summary`](https://rdrr.io/r/base/summary.html)`(``coxfit``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``expfit``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``weibullfit``)`
+\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``coxfit``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``expfit``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``weibullfit``)`
 
-[`library`](https://rdrr.io/r/base/library.html)`(``stargazer``)`` `[`stargazer`](https://rdrr.io/pkg/stargazer/man/stargazer.html)`(``coxfit``, ``expfit``, ``weibullfit``, type ``=`` ``"html"``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(``stargazer``)`\
+[`stargazer`](https://rdrr.io/pkg/stargazer/man/stargazer.html)`(``coxfit``, ``expfit``, ``weibullfit``, type ``=`` ``"html"``)`
 
 |  |  |  |  |
 |----|----|----|----|
@@ -84,7 +99,12 @@ Note, don’t compare likelihoods between Cox and AFT models.
 
 Create a simple test data set:
 
-`test1`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``time``=`[`c`](https://rdrr.io/r/base/c.html)`(``4``,``3``,``1``,``1``,``2``,``2``,``3``)``, `` `` status``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``1``,``0``,``1``,``1``,``0``)``, `` `` x``=`[`c`](https://rdrr.io/r/base/c.html)`(``0``,``2``,``1``,``1``,``1``,``0``,``0``)``, `` `` sex``=`[`c`](https://rdrr.io/r/base/c.html)`(``0``,``0``,``0``,``0``,``1``,``1``,``1``)``)`` `` ``test1`
+\
+`test1`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``time``=`[`c`](https://rdrr.io/r/base/c.html)`(``4``,``3``,``1``,``1``,``2``,``2``,``3``)``, `\
+`              status``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``1``,``0``,``1``,``1``,``0``)``, `\
+`              x``=`[`c`](https://rdrr.io/r/base/c.html)`(``0``,``2``,``1``,``1``,``1``,``0``,``0``)``, `\
+`              sex``=`[`c`](https://rdrr.io/r/base/c.html)`(``0``,``0``,``0``,``0``,``1``,``1``,``1``)``)`` `\
+`test1`
 
     ##   time status x sex
     ## 1    4      1 0   0
@@ -97,7 +117,8 @@ Create a simple test data set:
 
 Fit a model stratified by `sex`, with the time-dependent covariate `x`:
 
-[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``status``)`` ``~`` ``x`` ``+`` `[`strata`](https://rdrr.io/pkg/survival/man/strata.html)`(``sex``)``, ``test1``)`` `
+\
+[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``status``)`` ``~`` ``x`` ``+`` `[`strata`](https://rdrr.io/pkg/survival/man/strata.html)`(``sex``)``, ``test1``)`` `
 
     ## Call:
     ## coxph(formula = Surv(time, status) ~ x + strata(sex), data = test1)
@@ -110,6 +131,25 @@ Fit a model stratified by `sex`, with the time-dependent covariate `x`:
 
 ## Draw a DAG starting from dagitty.net and re-create it in R
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`dagitty`](https://www.dagitty.net)`)`` ``g`` ``<-`` `[`dagitty`](https://rdrr.io/pkg/dagitty/man/dagitty.html)`(``'`` ``dag {`` ``bb="-2,-3,3,3"`` ``collider [pos="0,1"]`` ``confounder [pos="0,-1"]`` ``exposure [exposure,pos="-1,0"]`` ``mediator [pos="0,0"]`` ``outcome [outcome,pos="1,0"]`` ``confounder -> exposure`` ``confounder -> outcome`` ``confounder -> mediator`` ``exposure -> collider`` ``exposure -> mediator`` ``mediator -> outcome`` ``outcome -> collider`` ``}`` ``'``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``g``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dagitty`](https://www.dagitty.net)`)`\
+`g`` ``<-`` `[`dagitty`](https://rdrr.io/pkg/dagitty/man/dagitty.html)`(``'`\
+`dag {`\
+`bb="-2,-3,3,3"`\
+`collider [pos="0,1"]`\
+`confounder [pos="0,-1"]`\
+`exposure [exposure,pos="-1,0"]`\
+`mediator [pos="0,0"]`\
+`outcome [outcome,pos="1,0"]`\
+`confounder -> exposure`\
+`confounder -> outcome`\
+`confounder -> mediator`\
+`exposure -> collider`\
+`exposure -> mediator`\
+`mediator -> outcome`\
+`outcome -> collider`\
+`}`\
+`'``)`\
+[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``g``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-9-1.png)

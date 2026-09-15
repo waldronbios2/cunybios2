@@ -44,8 +44,12 @@ measurement error. Subject means are distributed
 $`N(10, \sigma_{subj})`$ and measurement errors are distributed
 $`N(0, \sigma_{resid})`$. Start with the following values:
 
-`sigma_subj`` ``<-`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)`` ``sigma_resid`` ``<-`` ``1`` ``n`` ``<-`` ``100`
+\
+`sigma_subj`` ``<-`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)`\
+`sigma_resid`` ``<-`` ``1`\
+`n`` ``<-`` ``100`
 
+\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`
 
     ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
@@ -59,11 +63,27 @@ $`N(0, \sigma_{resid})`$. Start with the following values:
     ## ✖ dplyr::lag()    masks stats::lag()
     ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``# try a different seed!`` ``df`` ``<-`` `[`tibble`](https://tibble.tidyverse.org/reference/tibble.html)`(``subj_mean ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``10``, sd ``=`` ``sigma_subj``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``id ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``1``:``n``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``fecfat1 ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``0``, sd ``=`` ``sigma_resid``)`` ``+`` ``subj_mean``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``fecfat2 ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``0``, sd ``=`` ``sigma_resid``)`` ``+`` ``subj_mean``)`
+\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)``  ``# try a different seed!`\
+`df`` ``<-`` `[`tibble`](https://tibble.tidyverse.org/reference/tibble.html)`(``subj_mean ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``10``, sd ``=`` ``sigma_subj``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``id ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``1``:``n``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``fecfat1 ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``0``, sd ``=`` ``sigma_resid``)`` ``+`` ``subj_mean``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``fecfat2 ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``0``, sd ``=`` ``sigma_resid``)`` ``+`` ``subj_mean``)`
 
-`simfun`` ``<-`` ``function``(``n`` ``=`` ``100``,`` `` ``sigma_subj`` ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)``,`` `` ``sigma_resid`` ``=`` ``1``)`` ``{`` `` `[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`` `` ``df`` ``<-`` `[`tibble`](https://tibble.tidyverse.org/reference/tibble.html)`(``subj_mean ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``10``, sd ``=`` ``sigma_subj``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``id ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``1``:``n``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``fecfat1 ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``0``, sd ``=`` ``sigma_resid``)`` ``+`` ``subj_mean``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``fecfat2 ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``0``, sd ``=`` ``sigma_resid``)`` ``+`` ``subj_mean``)`` `` `[`return`](https://rdrr.io/r/base/function.html)`(``df``)`` ``}`
+\
+`simfun`` ``<-`` ``function``(``n`` ``=`` ``100``,`\
+`                   ``sigma_subj`` ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)``,`\
+`                   ``sigma_resid`` ``=`` ``1``)`` ``{`\
+`  `[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
+`  ``df`` ``<-`` `[`tibble`](https://tibble.tidyverse.org/reference/tibble.html)`(``subj_mean ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``10``, sd ``=`` ``sigma_subj``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``id ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``1``:``n``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``fecfat1 ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``0``, sd ``=`` ``sigma_resid``)`` ``+`` ``subj_mean``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``fecfat2 ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, mean ``=`` ``0``, sd ``=`` ``sigma_resid``)`` ``+`` ``subj_mean``)`\
+`  `[`return`](https://rdrr.io/r/base/function.html)`(``df``)`\
+`}`
 
-`simfun``(``n``=``10``, sigma_subj ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)``)`
+\
+`simfun``(``n``=``10``, sigma_subj ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)``)`
 
     ## # A tibble: 10 × 4
     ##    subj_mean id    fecfat1 fecfat2
@@ -81,7 +101,11 @@ $`N(0, \sigma_{resid})`$. Start with the following values:
 
 ## Create a heatmap of simulated data to visualize the group effect
 
-[`library`](https://rdrr.io/r/base/library.html)`(``pheatmap``)`` `[`library`](https://rdrr.io/r/base/library.html)`(``RColorBrewer``)`` ``mycol`` ``<-`` `[`rev`](https://rdrr.io/r/base/rev.html)`(`[`colorRampPalette`](https://rdrr.io/r/grDevices/colorRamp.html)`(``colors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``'#d8b365'``,``'#f5f5f5'``,``'#5ab4ac'``)``)``(``100``)``)`` `[`pheatmap`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html)`(`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``simfun``(``sigma_subj ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)``, sigma_resid ``=`` ``1``)``, ``fecfat1``:``fecfat2``)``, color ``=`` ``mycol``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(``pheatmap``)`\
+[`library`](https://rdrr.io/r/base/library.html)`(``RColorBrewer``)`\
+`mycol`` ``<-`` `[`rev`](https://rdrr.io/r/base/rev.html)`(`[`colorRampPalette`](https://rdrr.io/r/grDevices/colorRamp.html)`(``colors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``'#d8b365'``,``'#f5f5f5'``,``'#5ab4ac'``)``)``(``100``)``)`\
+[`pheatmap`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html)`(`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``simfun``(``sigma_subj ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)``, sigma_resid ``=`` ``1``)``, ``fecfat1``:``fecfat2``)``, color ``=`` ``mycol``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-5-1.png)
 
@@ -90,7 +114,13 @@ effect this has on the heatmap.
 
 ## Create a spaghetti plot of the simulated data to visualize the group effect
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`tidyr`](https://tidyr.tidyverse.org)`)`` ``simfun``(``sigma_subj ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)``, sigma_resid ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``1``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`pivot_longer`](https://tidyr.tidyverse.org/reference/pivot_longer.html)`(``cols ``=`` `[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"fecfat"``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x``=``name``, y``=``value``, group``=``id``)``)`` ``+`` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``alpha ``=`` ``0.25``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tidyr`](https://tidyr.tidyverse.org)`)`\
+`simfun``(``sigma_subj ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``3``)``, sigma_resid ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``1``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`pivot_longer`](https://tidyr.tidyverse.org/reference/pivot_longer.html)`(``cols ``=`` `[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"fecfat"``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x``=``name``, y``=``value``, group``=``id``)``)`` ``+`` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``alpha ``=`` ``0.25``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-6-1.png)
 
@@ -99,7 +129,11 @@ effect this has on the spaghetti plot
 
 ## Fit a random effects model with no covariates and a random intercept. Does it recover the group and residual variances you simulated?
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``df_wide`` ``<-`` ``simfun``(``n ``=`` ``10000``, sigma_subj ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``4``)``, sigma_resid ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``1``)``)`` ``df`` ``<-`` `[`pivot_longer`](https://tidyr.tidyverse.org/reference/pivot_longer.html)`(``df_wide``, cols ``=`` `[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"fecfat"``)``)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`nlme`](https://svn.r-project.org/R-packages/trunk/nlme/)`)`
+\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`\
+`df_wide`` ``<-`` ``simfun``(``n ``=`` ``10000``, sigma_subj ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``4``)``, sigma_resid ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``1``)``)`\
+`df`` ``<-``  `[`pivot_longer`](https://tidyr.tidyverse.org/reference/pivot_longer.html)`(``df_wide``, cols ``=`` `[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"fecfat"``)``)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`nlme`](https://svn.r-project.org/R-packages/trunk/nlme/)`)`
 
     ## 
     ## Attaching package: 'nlme'
@@ -108,7 +142,9 @@ effect this has on the spaghetti plot
     ## 
     ##     collapse
 
-`fit`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``value`` ``~`` ``1``, data ``=`` ``df``, random ``=`` ``~``1``|``id``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
+\
+`fit`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``value`` ``~`` ``1``, data ``=`` ``df``, random ``=`` ``~``1``|``id``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
 
     ## Linear mixed-effects model fit by REML
     ##   Data: df 
@@ -131,6 +167,7 @@ effect this has on the spaghetti plot
     ## Number of Observations: 20000
     ## Number of Groups: 10000
 
+\
 [`intervals`](https://rdrr.io/pkg/nlme/man/intervals.html)`(``fit``)`
 
     ## Approximate 95% confidence intervals
@@ -161,17 +198,24 @@ ICC & = corr(x_{ij}, x_{ik}) \\
 \end{equation*}
 ```
 
-`2.026972``^``2`` ``/`` ``(``2.026972``^``2`` ``+`` ``0.9988031``^``2``)`
+\
+`2.026972``^``2`` ``/`` ``(``2.026972``^``2`` ``+`` ``0.9988031``^``2``)`
 
     ## [1] 0.8046291
 
-`ICClme`` ``<-`` ``function``(``fit``)``{`` `` ``cors`` ``<-`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(`[`VarCorr`](https://rdrr.io/pkg/nlme/man/VarCorr.html)`(``fit``)``)`` `` ``cors``[``1``]`` ``/`` ``(``cors``[``1``]`` ``+`` ``cors``[``2``]``)`` ``}`` ``ICClme``(``fit``)`
+\
+`ICClme`` ``<-`` ``function``(``fit``)``{`\
+`  ``cors`` ``<-`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(`[`VarCorr`](https://rdrr.io/pkg/nlme/man/VarCorr.html)`(``fit``)``)`\
+`  ``cors``[``1``]`` ``/`` ``(``cors``[``1``]`` ``+`` ``cors``[``2``]``)`\
+`}`\
+`ICClme``(``fit``)`
 
     ## [1] 0.804629
 
 ## Estimate ICC simply by calculating the correlation between `fecfat1` and `fecfat2`. Is it similar to the estimate above?
 
-[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``df_wide``, `[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"fec"``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`cor`](https://rdrr.io/r/stats/cor.html)`(``)`
+\
+[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``df_wide``, `[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"fec"``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`cor`](https://rdrr.io/r/stats/cor.html)`(``)`
 
     ##          fecfat1  fecfat2
     ## fecfat1 1.000000 0.804624
@@ -185,11 +229,23 @@ ICC & = corr(x_{ij}, x_{ik}) \\
 4.  Recode the low birthweight variable to a factor, with “0” to
     “normal” as the reference group and “1” to “low”.
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`` ``ga`` ``<-`` `[`read_csv`](https://readr.tidyverse.org/reference/read_delim.html)`(``"gababies.csv"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``momage ``=`` `[`na_if`](https://dplyr.tidyverse.org/reference/na_if.html)`(``momage``, ``99``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``agebin ``=`` `[`cut`](https://rdrr.io/r/base/cut.html)`(``initage``, breaks ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``17``, ``100``)``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``momid ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``momid``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``lowbrth ``=`` `[`recode_factor`](https://dplyr.tidyverse.org/reference/recode.html)`(``lowbrth``` , `0`  ```=`` ``"normal"``` , `1`  ```=`` ``"low"``)``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`\
+`ga`` ``<-`` `[`read_csv`](https://readr.tidyverse.org/reference/read_delim.html)`(``"gababies.csv"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``momage ``=`` `[`na_if`](https://dplyr.tidyverse.org/reference/na_if.html)`(``momage``, ``99``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``agebin ``=`` `[`cut`](https://rdrr.io/r/base/cut.html)`(``initage``, breaks ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``17``, ``100``)``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``momid ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``momid``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``lowbrth ``=`` `[`recode_factor`](https://dplyr.tidyverse.org/reference/recode.html)`(``lowbrth``` , `0`  ```=`` ``"normal"``` , `1`  ```=`` ``"low"``)``)`
 
 ## Make a boxplot and spaghetti plot for the Georgia Birthweights dataset
 
-[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``ga``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``birthord``, y``=``bweight``, group ``=`` ``birthord``)``)`` ``+`` `` `` `[`geom_boxplot`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html)`(``outlier.shape ``=`` ``NA``)`` ``+`` `` `[`geom_jitter`](https://ggplot2.tidyverse.org/reference/geom_jitter.html)`(``width``=``0.2``, alpha ``=`` ``0.25``)`` ``+`` `` `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Georgia birthweight dataset"``)`` ``+`` `` `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Birth order"``)`` ``+`` `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Birth weight (g)"``)`` ``+`` `` `[`theme_grey`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``base_size ``=`` ``16``)`
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``ga``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``birthord``, y``=``bweight``, group ``=`` ``birthord``)``)`` ``+`` `\
+`  `[`geom_boxplot`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html)`(``outlier.shape ``=`` ``NA``)`` ``+`\
+`  `[`geom_jitter`](https://ggplot2.tidyverse.org/reference/geom_jitter.html)`(``width``=``0.2``, alpha ``=`` ``0.25``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Georgia birthweight dataset"``)`` ``+`\
+`  `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Birth order"``)`` ``+`` `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Birth weight (g)"``)`` ``+`\
+`  `[`theme_grey`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``base_size ``=`` ``16``)`
 
 ![Figure 3: Birth weight as a function of birth order in the Georgia
 birthweight dataset.](session_lab_files/figure-html/gaboxplot-1.png)
@@ -197,13 +253,21 @@ birthweight dataset.](session_lab_files/figure-html/gaboxplot-1.png)
 Figure 3: Birth weight as a function of birth order in the Georgia
 birthweight dataset.
 
-[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``ga``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x``=``birthord``, y ``=`` ``bweight``, group ``=`` ``momid``)``)`` ``+`` `` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``alpha ``=`` ``0.25``)`` ``+`` `` `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Georgia birthweight dataset"``)`` ``+`` `` `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Birth order"``)`` ``+`` `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Birth weight (g)"``)`` ``+`` `` `[`theme_grey`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``base_size ``=`` ``16``)`
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``ga``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x``=``birthord``, y ``=`` ``bweight``, group ``=`` ``momid``)``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``alpha ``=`` ``0.25``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Georgia birthweight dataset"``)`` ``+`\
+`  `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Birth order"``)`` ``+`` `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Birth weight (g)"``)`` ``+`\
+`  `[`theme_grey`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``base_size ``=`` ``16``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-11-1.png)
 
 ## Test the null hypotheses that baseline birth weights do not vary by mother
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`nlme`](https://svn.r-project.org/R-packages/trunk/nlme/)`)`` ``gafit1`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``bweight`` ``~`` ``birthord``, data ``=`` ``ga``, random ``=`` ``~``1``|``momid``)`` `[`intervals`](https://rdrr.io/pkg/nlme/man/intervals.html)`(``gafit1``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`nlme`](https://svn.r-project.org/R-packages/trunk/nlme/)`)`\
+`gafit1`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``bweight`` ``~`` ``birthord``, data ``=`` ``ga``, random ``=`` ``~``1``|``momid``)`\
+[`intervals`](https://rdrr.io/pkg/nlme/man/intervals.html)`(``gafit1``)`
 
     ## Approximate 95% confidence intervals
     ## 
@@ -223,17 +287,23 @@ birthweight dataset.
 
 ## Create QQ plots of residuals and random intercepts for this model.
 
-[`qqnorm`](https://rdrr.io/r/stats/qqnorm.html)`(`[`residuals`](https://rdrr.io/r/stats/residuals.html)`(``gafit1``, type ``=`` ``"pearson"``)``, main ``=`` ``"Pearson residuals QQ plot"``)`` `[`qqline`](https://rdrr.io/r/stats/qqnorm.html)`(`[`residuals`](https://rdrr.io/r/stats/residuals.html)`(``gafit1``, type ``=`` ``"pearson"``)``)`
+\
+[`qqnorm`](https://rdrr.io/r/stats/qqnorm.html)`(`[`residuals`](https://rdrr.io/r/stats/residuals.html)`(``gafit1``, type ``=`` ``"pearson"``)``, main ``=`` ``"Pearson residuals QQ plot"``)`\
+[`qqline`](https://rdrr.io/r/stats/qqnorm.html)`(`[`residuals`](https://rdrr.io/r/stats/residuals.html)`(``gafit1``, type ``=`` ``"pearson"``)``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-13-1.png)
 
-[`qqnorm`](https://rdrr.io/r/stats/qqnorm.html)`(`[`ranef`](https://rdrr.io/pkg/nlme/man/random.effects.html)`(``gafit1``)``[``, ``1``]``, main ``=`` ``"Random Intercepts QQ plot"``)`` `[`qqline`](https://rdrr.io/r/stats/qqnorm.html)`(`[`ranef`](https://rdrr.io/pkg/nlme/man/random.effects.html)`(``gafit1``)``[``, ``1``]``)`
+\
+[`qqnorm`](https://rdrr.io/r/stats/qqnorm.html)`(`[`ranef`](https://rdrr.io/pkg/nlme/man/random.effects.html)`(``gafit1``)``[``, ``1``]``, main ``=`` ``"Random Intercepts QQ plot"``)`\
+[`qqline`](https://rdrr.io/r/stats/qqnorm.html)`(`[`ranef`](https://rdrr.io/pkg/nlme/man/random.effects.html)`(``gafit1``)``[``, ``1``]``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-13-2.png)
 
 ## Test the null hypotheses that the effect of birth order is not modified by mother’s age at first birth or weight of first infant.
 
-`gafit2`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``bweight`` ``~`` ``birthord``*``agebin``, data ``=`` ``ga``, random ``=`` ``~``1``|``momid``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``gafit2``)`
+\
+`gafit2`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``bweight`` ``~`` ``birthord``*``agebin``, data ``=`` ``ga``, random ``=`` ``~``1``|``momid``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``gafit2``)`
 
     ## Linear mixed-effects model fit by REML
     ##   Data: ga 
@@ -264,7 +334,9 @@ birthweight dataset.
     ## Number of Observations: 1000
     ## Number of Groups: 200
 
-`gafit3`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``bweight`` ``~`` ``birthord``*``initwght``, data ``=`` ``ga``, random ``=`` ``~``1``|``momid``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``gafit3``)`
+\
+`gafit3`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``bweight`` ``~`` ``birthord``*``initwght``, data ``=`` ``ga``, random ``=`` ``~``1``|``momid``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``gafit3``)`
 
     ## Linear mixed-effects model fit by REML
     ##   Data: ga 
@@ -297,7 +369,9 @@ birthweight dataset.
 
 ## Repeat above hypothesis tests using GEE
 
-[`library`](https://rdrr.io/r/base/library.html)`(``gee``)`` ``gagee1`` ``<-`` `[`gee`](https://rdrr.io/pkg/gee/man/gee.html)`(``bweight`` ``~`` ``birthord``*``agebin``, data ``=`` ``ga``, id ``=`` ``momid``, corstr ``=`` ``"unstructured"``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(``gee``)`\
+`gagee1`` ``<-`` `[`gee`](https://rdrr.io/pkg/gee/man/gee.html)`(``bweight`` ``~`` ``birthord``*``agebin``, data ``=`` ``ga``, id ``=`` ``momid``, corstr ``=`` ``"unstructured"``)`
 
     ## Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27
 
@@ -308,6 +382,7 @@ birthweight dataset.
     ## birthord:agebin(17,100] 
     ##                21.59605
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``gagee1``)`
 
     ## 
@@ -346,7 +421,8 @@ birthweight dataset.
     ## [4,] 0.2545510 0.4351138 0.6344401 1.0000000 0.4484055
     ## [5,] 0.3836927 0.3949443 0.4349807 0.4484055 1.0000000
 
-`gagee2`` ``<-`` `[`gee`](https://rdrr.io/pkg/gee/man/gee.html)`(``bweight`` ``~`` ``birthord``*``initwght``, data ``=`` ``ga``, id ``=`` ``momid``, corstr ``=`` ``"unstructured"``)`
+\
+`gagee2`` ``<-`` `[`gee`](https://rdrr.io/pkg/gee/man/gee.html)`(``bweight`` ``~`` ``birthord``*``initwght``, data ``=`` ``ga``, id ``=`` ``momid``, corstr ``=`` ``"unstructured"``)`
 
     ## Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27
 
@@ -355,6 +431,7 @@ birthweight dataset.
     ##       (Intercept)          birthord          initwght birthord:initwght 
     ##       600.3298240       409.8405317         0.7940549        -0.1204130
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``gagee2``)`
 
     ## 
@@ -395,6 +472,9 @@ birthweight dataset.
 
 ## Heatmap of GA babies dataset
 
-[`pivot_wider`](https://tidyr.tidyverse.org/reference/pivot_wider.html)`(``ga``, values_from ``=`` ``bweight``, names_from``=``birthord``, id_cols ``=`` ``momid``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-``momid``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`pheatmap`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html)`(``clustering_distance_rows ``=`` ``"correlation"``, clustering_distance_cols ``=`` ``"correlation"``, scale ``=`` ``"column"``)`
+\
+[`pivot_wider`](https://tidyr.tidyverse.org/reference/pivot_wider.html)`(``ga``, values_from ``=`` ``bweight``, names_from``=``birthord``, id_cols ``=`` ``momid``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-``momid``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`pheatmap`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html)`(``clustering_distance_rows ``=`` ``"correlation"``, clustering_distance_cols ``=`` ``"correlation"``, scale ``=`` ``"column"``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-18-1.png)

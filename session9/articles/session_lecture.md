@@ -82,7 +82,8 @@ Fecal Fat dataset
 
 ### Option 1: non-hierarchical analysis (wrong)
 
-`fit1way`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``fecfat`` ``~`` ``pilltype``, data``=``dat``)`
+\
+`fit1way`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``fecfat`` ``~`` ``pilltype``, data``=``dat``)`
 
 |           |  Df |  Sum Sq | Mean Sq | F value | Pr(\>F) |
 |-----------|----:|--------:|--------:|--------:|--------:|
@@ -114,7 +115,8 @@ border="1"}
 
 ### Option 2: 2-way AOV
 
-`fit1way`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``fecfat`` ``~`` ``pilltype``, data``=``dat``)`
+\
+`fit1way`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``fecfat`` ``~`` ``pilltype``, data``=``dat``)`
 
 |           |  Df |  Sum Sq | Mean Sq | F value | Pr(\>F) |
 |-----------|----:|--------:|--------:|--------:|--------:|
@@ -124,7 +126,8 @@ border="1"}
 One-way analysis of variance table for fecal fat dataset {.table
 border="1"}
 
-`fit2way`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``fecfat`` ``~`` ``subject`` ``+`` ``pilltype``, data``=``dat``)`
+\
+`fit2way`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``fecfat`` ``~`` ``subject`` ``+`` ``pilltype``, data``=``dat``)`
 
 Two-way analysis of variance table. Note the similarity of the pilltype
 row.

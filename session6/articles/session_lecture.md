@@ -172,7 +172,8 @@ example, death)
 - With censoring, we need to use the Kaplan-Meier estimate of the
   survival function $`\hat S(t)`$
 
-[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``~``group``, data``=``leuk``)`
+\
+[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``~``group``, data``=``leuk``)`
 
     ## Call: survfit(formula = Surv(time, cens) ~ group, data = leuk)
     ## 
@@ -191,7 +192,8 @@ of events*.
 - With events, a simple median will *under-estimate* the potential
   follow-up time. Use a reverse Kaplan-Meier estimate instead:
 
-[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``1``-``cens``)``~``group``, data``=``leuk``)`
+\
+[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``1``-``cens``)``~``group``, data``=``leuk``)`
 
     ## Call: survfit(formula = Surv(time, 1 - cens) ~ group, data = leuk)
     ## 
@@ -242,7 +244,8 @@ equal to t. Note $`F(t) = 1-S(t)`$.
 Logrank test is just a chisquare test on the observed and expected
 number of events:
 
-[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``~``group``, data``=``leuk``)`
+\
+[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``~``group``, data``=``leuk``)`
 
     ## Call:
     ## survdiff(formula = Surv(time, cens) ~ group, data = leuk)

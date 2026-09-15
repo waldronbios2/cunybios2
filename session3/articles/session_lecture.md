@@ -72,7 +72,9 @@ P(x) = g^{-1}\left( \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_
 
 From <http://data.princeton.edu/wws509/datasets/#cuse>
 
-`cuse`` ``<-`` `[`read.table`](https://rdrr.io/r/utils/read.table.html)`(``"cuse.dat"``, header``=``TRUE``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``cuse``)`
+\
+`cuse`` ``<-`` `[`read.table`](https://rdrr.io/r/utils/read.table.html)`(``"cuse.dat"``, header``=``TRUE``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``cuse``)`
 
     ##         age         education      wantsMore     notUsing          using      
     ##  Length   :16   Length   :16   Length   :16   Min.   :  8.00   Min.   : 4.00  
@@ -84,7 +86,10 @@ From <http://data.princeton.edu/wws509/datasets/#cuse>
 
 ### Univariate regression on “wants more children”
 
-`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``wantsMore``, `` `` data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
+\
+`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``wantsMore``, `\
+`           data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
 
     ## 
     ## Call:
@@ -136,7 +141,10 @@ individual samples, jittered horizontally to avoid overplotting.
 
 ### Regression on **age**
 
-`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age``, `` `` data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
+\
+`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age``, `\
+`           data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
 
     ## 
     ## Call:
@@ -173,7 +181,9 @@ individual samples, jittered horizontally to avoid overplotting.
 
 ### Regression on **age** and **wantsMore**
 
-`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age`` ``+`` ``wantsMore``, `` `` data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`
+\
+`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age`` ``+`` ``wantsMore``, `\
+`           data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`
 
 |              | Estimate | Std. Error | z value | Pr(\>\|z\|) |
 |:-------------|---------:|-----------:|--------:|------------:|
@@ -195,7 +205,9 @@ E[y|x] = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_{12} x_1*x_2
 
 ### Interaction / Effect Modification (fit)
 
-`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age`` ``*`` ``wantsMore``, `` `` data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`
+\
+`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age`` ``*`` ``wantsMore``, `\
+`           data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`
 
 |                       | Estimate | Std. Error | z value | Pr(\>\|z\|) |
 |:----------------------|---------:|-----------:|--------:|------------:|
@@ -260,7 +272,9 @@ or simply:
 
 - The model formula encodes a default model matrix, e.g.:
 
-`group`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``, ``2``, ``2``)`` ``)`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``group``)`
+\
+`group`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``, ``2``, ``2``)`` ``)`\
+[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``group``)`
 
     ##   (Intercept) group2
     ## 1           1      0
@@ -277,7 +291,9 @@ or simply:
 
 What if we forgot to code group as a factor?
 
-`group`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``, ``2``, ``2``)`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``group``)`
+\
+`group`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``, ``2``, ``2``)`\
+[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``group``)`
 
     ##   (Intercept) group
     ## 1           1     1
@@ -289,7 +305,9 @@ What if we forgot to code group as a factor?
 
 ### More groups, still one variable
 
-`group`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``2``,``2``,``3``,``3``)``)`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``group``)`
+\
+`group`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``2``,``2``,``3``,``3``)``)`\
+[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``group``)`
 
     ##   (Intercept) group2 group3
     ## 1           1      0      0
@@ -306,7 +324,10 @@ What if we forgot to code group as a factor?
 
 ### Changing the baseline group
 
-`group`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``2``,``2``,``3``,``3``)``)`` ``group`` ``<-`` `[`relevel`](https://rdrr.io/r/stats/relevel.html)`(``x``=``group``, ref``=``3``)`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``group``)`
+\
+`group`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``2``,``2``,``3``,``3``)``)`\
+`group`` ``<-`` `[`relevel`](https://rdrr.io/r/stats/relevel.html)`(``x``=``group``, ref``=``3``)`\
+[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``group``)`
 
     ##   (Intercept) group1 group2
     ## 1           1      1      0
@@ -323,7 +344,10 @@ What if we forgot to code group as a factor?
 
 ### More than one variable
 
-`agegroup`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``1``,``1``,``2``,``2``,``2``,``2``)``)`` ``wantsMore`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"y"``,``"y"``,``"n"``,``"n"``,``"y"``,``"y"``,``"n"``,``"n"``)``)`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``agegroup`` ``+`` ``wantsMore``)`
+\
+`agegroup`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``1``,``1``,``2``,``2``,``2``,``2``)``)`\
+`wantsMore`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"y"``,``"y"``,``"n"``,``"n"``,``"y"``,``"y"``,``"n"``,``"n"``)``)`\
+[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``agegroup`` ``+`` ``wantsMore``)`
 
     ##   (Intercept) agegroup2 wantsMorey
     ## 1           1         0          1
@@ -345,7 +369,8 @@ What if we forgot to code group as a factor?
 
 ### With an interaction term
 
-[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``agegroup`` ``+`` ``wantsMore`` ``+`` ``agegroup``:``wantsMore``)`
+\
+[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``agegroup`` ``+`` ``wantsMore`` ``+`` ``agegroup``:``wantsMore``)`
 
     ##   (Intercept) agegroup2 wantsMorey agegroup2:wantsMorey
     ## 1           1         0          1                    0
@@ -372,7 +397,9 @@ What if we forgot to code group as a factor?
     than for \<25 year-olds is answered by the term
     `age40-49:wantsMoreyes` in this default model with interaction terms
 
-`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age`` ``*`` ``wantsMore``, `` `` data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`
+\
+`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age`` ``*`` ``wantsMore``, `\
+`           data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`
 
 |                       | Estimate | Std. Error | z value | Pr(\>\|z\|) |
 |:----------------------|---------:|-----------:|--------:|------------:|
@@ -399,6 +426,7 @@ There are many ways to construct this design, one is with
 
 ### Design matrix constructed with library(multcomp)
 
+\
 [`coef`](https://rdrr.io/r/stats/coef.html)`(``fit``)`
 
     ##           (Intercept)              age25-29              age30-39 
@@ -408,12 +436,16 @@ There are many ways to construct this design, one is with
     ## age30-39:wantsMoreyes age40-49:wantsMoreyes 
     ##           -1.09049316           -1.36714805
 
-`contmat`` ``<-`` `[`matrix`](https://rdrr.io/r/base/matrix.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0``,``0``,``0``,``0``,``0``,``0``,``-``1``,``1``)``, ``1``)`` `` ``contmat`
+\
+`contmat`` ``<-`` `[`matrix`](https://rdrr.io/r/base/matrix.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0``,``0``,``0``,``0``,``0``,``0``,``-``1``,``1``)``, ``1``)`` `\
+`contmat`
 
     ##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
     ## [1,]    0    0    0    0    0    0   -1    1
 
-`new.interaction`` ``<-`` ``multcomp``::`[`glht`](https://rdrr.io/pkg/multcomp/man/glht.html)`(``fit``, linfct``=``contmat``)`` `` `[`summary`](https://rdrr.io/r/base/summary.html)`(``new.interaction``)`
+\
+`new.interaction`` ``<-`` ``multcomp``::`[`glht`](https://rdrr.io/pkg/multcomp/man/glht.html)`(``fit``, linfct``=``contmat``)`` `\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``new.interaction``)`
 
     ## 
     ##   Simultaneous Tests for General Linear Hypotheses

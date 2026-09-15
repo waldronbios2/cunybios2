@@ -98,18 +98,15 @@ Waldron</h4>
 <li>Use analysis of deviance to compare two log-linear GLMs</li>
 <li>Practice recoding and creating tables and plots</li>
 </ol>
-<p><strong>Exercises</strong></p>
-<ol style="list-style-type: decimal">
-<li>Simulate count data from a Poisson distribution (for example number
-of hospital visits by persons over 70 in a 3-year period), where:
-<ol style="list-style-type: lower-alpha">
-<li>10,000 persons annotated with “race” as “white” or “non-white”</li>
-<li>“white” persons have an average of 3.5 hospital visits during this
-time period</li>
-<li>“non-white” persons have an average of 3 hospital visits</li>
-</ol>
-</li>
-</ol>
+<p><strong>Activities</strong></p>
+<div class="section level3">
+<h3 id="simulate-count-data-from-a-poisson-distribution">1. Simulate count data from a Poisson distribution<a class="anchor" aria-label="anchor" href="#simulate-count-data-from-a-poisson-distribution"></a>
+</h3>
+<p>(For example, number of hospital visits by persons over 70 in a
+3-year period), where: a. 10,000 persons annotated with “race” as
+“white” or “non-white” b. “white” persons have an average of 3.5
+hospital visits during this time period c. “non-white” persons have an
+average of 3 hospital visits</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## ── <span style="font-weight: bold;">Attaching core tidyverse packages</span> ──────────────────────── tidyverse 2.0.0 ──</span></span>
@@ -128,12 +125,13 @@ time period</li>
 <span><span class="va">simdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>race <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"non-white"</span><span class="op">)</span>, <span class="va">N</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>race <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">race</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"non-white"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html" class="external-link">rpois</a></span><span class="op">(</span><span class="va">N</span>, lambda <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">race</span> <span class="op">==</span> <span class="st">"white"</span>, <span class="fl">3.5</span>, <span class="fl">3.0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li>Fit a log-linear Poisson model of count outcomes with “race” as the
-predictor. Note, in this context I tend to use the terms “predictor” and
-“covariate” interchangeably, to mean any variable used as a predictor in
-the regression model.</li>
-</ol>
+</div>
+<div class="section level3">
+<h3 id="fit-a-log-linear-poisson-model-of-count-outcomes">2. Fit a log-linear Poisson model of count outcomes<a class="anchor" aria-label="anchor" href="#fit-a-log-linear-poisson-model-of-count-outcomes"></a>
+</h3>
+<p>With “race” as the predictor. Note, in this context I tend to use the
+terms “predictor” and “covariate” interchangeably, to mean any variable
+used as a predictor in the regression model.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">race</span>, data <span class="op">=</span> <span class="va">simdat</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
@@ -155,10 +153,12 @@ the regression model.</li>
 <span><span class="co">## AIC: 39419</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Number of Fisher Scoring iterations: 5</span></span></code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Use a chi-square test on deviance residuals to test null hypothesis
-of no relationship between mean hospital visits and race.</li>
-</ol>
+</div>
+<div class="section level3">
+<h3 id="use-a-chi-square-test-on-deviance-residuals">3. Use a chi-square test on deviance residuals<a class="anchor" aria-label="anchor" href="#use-a-chi-square-test-on-deviance-residuals"></a>
+</h3>
+<p>To test null hypothesis of no relationship between mean hospital
+visits and race.</p>
 <ul>
 <li>The difference in total deviance between two nested models is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>χ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\chi^2</annotation></semantics></math>
@@ -173,7 +173,7 @@ a difference of 1 degrees of freedom.</li>
 </ul>
 <p>The critical threshold for rejection at p=0.05 is:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">qchisq</a></span><span class="op">(</span><span class="fl">0.95</span>, df<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">qchisq</a></span><span class="op">(</span><span class="fl">0.95</span>, df <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 3.841459</span></span></code></pre>
 <p>So we reject
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math></p>
@@ -190,13 +190,15 @@ a difference of 1 degrees of freedom.</li>
 <span><span class="co">## 2      9998      10831  1   210.76 &lt; 2.2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Create and discuss standard fit diagnostics plots</li>
-</ol>
+</div>
+<div class="section level3">
+<h3 id="create-and-discuss-standard-fit-diagnostics-plots">4. Create and discuss standard fit diagnostics plots<a class="anchor" aria-label="anchor" href="#create-and-discuss-standard-fit-diagnostics-plots"></a>
+</h3>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700"></p>
-<ol start="4" style="list-style-type: decimal">
-<li>Example: Risky Drug Use Behavior</li>
-</ol>
+</div>
+<div class="section level3">
+<h3 id="example-risky-drug-use-behavior">5. Example: Risky Drug Use Behavior<a class="anchor" aria-label="anchor" href="#example-risky-drug-use-behavior"></a>
+</h3>
 <ul>
 <li>Download the “needle_sharing” dataset (see Vittinghoff 8.3.1)</li>
 <li>Outcome is # times the drug user shared a syringe in the past month
@@ -210,7 +212,7 @@ a difference of 1 degrees of freedom.</li>
 <pre><code><span><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs </span></span>
 <span><span class="co">##   0.000   0.000   0.000   2.976   0.000  60.000       5</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">needledat</span><span class="op">$</span><span class="va">shared_syr</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">needledat</span><span class="op">$</span><span class="va">shared_syr</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 106.5978</span></span></code></pre>
 <p>Some recoding:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -222,9 +224,10 @@ a difference of 1 degrees of freedom.</li>
 <span>    ethnicity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">ethn</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shared_syr"</span>, <span class="st">"ethnicity"</span>, <span class="st">"sex"</span>, <span class="st">"homeless"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<ol start="5" style="list-style-type: decimal">
-<li>Create a table of the risky drug use behavior dataset</li>
-</ol>
+</div>
+<div class="section level3">
+<h3 id="create-a-table-of-the-risky-drug-use-behavior-dataset">6. Create a table of the risky drug use behavior dataset<a class="anchor" aria-label="anchor" href="#create-a-table-of-the-risky-drug-use-behavior-dataset"></a>
+</h3>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/benjaminrich/table1" class="external-link">table1</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -233,7 +236,7 @@ a difference of 1 degrees of freedom.</li>
 <span><span class="co">## </span></span>
 <span><span class="co">##     units, units&lt;-</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/table1/man/table1.html" class="external-link">table1</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">needledat_cleaned</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/table1/man/table1.html" class="external-link">table1</a></span><span class="op">(</span><span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">needledat_cleaned</span><span class="op">)</span></span></code></pre></div>
 <div class="Rtable1"><table class="table Rtable1">
 <thead><tr>
 <th class="rowlabel firstrow lastrow"></th>
@@ -326,9 +329,10 @@ a difference of 1 degrees of freedom.</li>
 </tr>
 </tbody>
 </table></div>
-<ol start="6" style="list-style-type: decimal">
-<li>Plots of Risky Drug Use Behavior</li>
-</ol>
+</div>
+<div class="section level3">
+<h3 id="plots-of-risky-drug-use-behavior">7. Plots of Risky Drug Use Behavior<a class="anchor" aria-label="anchor" href="#plots-of-risky-drug-use-behavior"></a>
+</h3>
 <ol style="list-style-type: lower-alpha">
 <li><p>Create a histogram number of syringe uses</p></li>
 <li><p>Create a scatter plot of number of syringe uses versus rank of
@@ -360,15 +364,17 @@ number of syringe uses</p></li>
 <li>There are a <em>lot</em> of zeros - Poisson model is not a good
 fit</li>
 </ul>
-<ol start="7" style="list-style-type: decimal">
-<li>Fit a Poisson model to the risky drug use behavior dataset
-anyways</li>
-</ol>
+</div>
+<div class="section level3">
+<h3 id="fit-a-poisson-model-to-the-risky-drug-use-behavior-dataset-anyways">8. Fit a Poisson model to the risky drug use behavior dataset
+anyways<a class="anchor" aria-label="anchor" href="#fit-a-poisson-model-to-the-risky-drug-use-behavior-dataset-anyways"></a>
+</h3>
 <p>Even though we know it is a bad fit</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">shared_syr</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">ethn</span> <span class="op">+</span> <span class="va">homeless</span>,</span>
-<span>                data <span class="op">=</span> <span class="va">needledat</span>,</span>
-<span>                family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  data <span class="op">=</span> <span class="va">needledat</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit.pois</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -398,16 +404,67 @@ anyways</li>
 <span><span class="co">## AIC: 1483.8</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Number of Fisher Scoring iterations: 12</span></span></code></pre>
-<ol start="8" style="list-style-type: decimal">
-<li>Create and discuss Poisson model diagnostic plots</li>
-</ol>
+</div>
+<div class="section level3">
+<h3 id="create-and-discuss-poisson-model-diagnostic-plots">9. Create and discuss Poisson model diagnostic plots<a class="anchor" aria-label="anchor" href="#create-and-discuss-poisson-model-diagnostic-plots"></a>
+</h3>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit.pois</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning: not plotting observations with leverage one:</span></span>
 <span><span class="co">##   17, 38, 72, 86</span></span></code></pre>
 <p><img src="session_lab_files/figure-html/diagnostic-1.png" class="r-plt" alt="" width="700"></p>
-  </main>
+</div>
+<div class="section level3">
+<h3 id="interpreting-poisson-coefficients">Interpreting Poisson Coefficients<a class="anchor" aria-label="anchor" href="#interpreting-poisson-coefficients"></a>
+</h3>
+<p>In a Poisson log-linear model, exponentiating the coefficients
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\exp(\beta)</annotation></semantics></math>)
+yields the Incidence Rate Ratios (IRRs). For example, if we exponentiate
+the coefficients from <code>fit.pois</code>:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Exponentiate the coefficients to get IRRs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit.pois</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##        (Intercept)               sexM           sexTrans       ethnFilipino </span></span>
+<span><span class="co">##       2.061273e+00       3.966098e-01       2.805403e-07       4.899964e-07 </span></span>
+<span><span class="co">##       ethnHispanic         ethnIndian ethnIndian &amp; White          ethnWhite </span></span>
+<span><span class="co">##       4.325535e+00       7.515661e-07       2.980785e-07       1.062516e+00 </span></span>
+<span><span class="co">##  ethnWhite &amp; Hispa           homeless </span></span>
+<span><span class="co">##       2.367783e+00       3.616239e+00</span></span></code></pre>
+<p>This tells us the multiplicative effect of each predictor on the
+expected count of syringe sharing incidents, holding other variables
+constant.</p>
+</div>
+<div class="section level2">
+<h2 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h2>
+<div class="section level3">
+<h3 id="exercise-1-calculate-incidence-rate-ratios-irrs">Exercise 1: Calculate Incidence Rate Ratios (IRRs)<a class="anchor" aria-label="anchor" href="#exercise-1-calculate-incidence-rate-ratios-irrs"></a>
+</h3>
+<p>Extract the coefficients from <code>fit.pois</code> (the model on
+risky drug use), exponentiate them to obtain the Incidence Rate Ratios
+(IRRs), and compute their 95% confidence intervals.</p>
+</div>
+<div class="section level3">
+<h3 id="exercise-2-model-comparison-lrt">Exercise 2: Model Comparison (LRT)<a class="anchor" aria-label="anchor" href="#exercise-2-model-comparison-lrt"></a>
+</h3>
+<p>Fit a reduced Poisson model by removing the <code>homeless</code>
+predictor from the previous risky drug use model. Then, perform a
+Likelihood Ratio Test (using <code>anova(..., test="LRT")</code>) to
+compare this reduced model against the full model <code>fit.pois</code>.
+Interpret the result. Does the <code>homeless</code> variable
+significantly improve the model fit?</p>
+</div>
+<div class="section level3">
+<h3 id="exercise-3-check-for-overdispersion">Exercise 3: Check for Overdispersion<a class="anchor" aria-label="anchor" href="#exercise-3-check-for-overdispersion"></a>
+</h3>
+<p>Calculate the ratio of the residual deviance to the residual degrees
+of freedom for <code>fit.pois</code>. Interpret what this value means
+for the model assumptions. Is there evidence of overdispersion?</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

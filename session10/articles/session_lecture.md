@@ -112,7 +112,11 @@ Where we assume: $`SUBJECT_i \stackrel{iid}{\sim} N(0, \tau_{00}^2)`$
 
 ### Fit this mixed-effects model
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`nlme`](https://svn.r-project.org/R-packages/trunk/nlme/)`)`` ``fitmix`` ``<-`` ``nlme``::`[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``fecfat`` ``~`` ``pilltype``, `` `` data ``=`` ``dat``, `` `` random ``=`` ``~`` ``1`` ``|`` ``subject``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`nlme`](https://svn.r-project.org/R-packages/trunk/nlme/)`)`\
+`fitmix`` ``<-`` ``nlme``::`[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``fecfat`` ``~`` ``pilltype``, `\
+`                    data ``=`` ``dat``, `\
+`                    random ``=``  ``~`` ``1`` ``|`` ``subject``)`
 
 Note: the `lme4` package is another popular alternative
 
@@ -272,7 +276,10 @@ Boxplot and “Spaghetti” plot:
 - Does baseline birth weight vary by mother?
   - random intercept
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`nlme`](https://svn.r-project.org/R-packages/trunk/nlme/)`)`` ``gafit1`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``bweight`` ``~`` ``birthord``, data``=``ga``, `` `` random``=``~``1``|``momid``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`nlme`](https://svn.r-project.org/R-packages/trunk/nlme/)`)`\
+`gafit1`` ``<-`` `[`lme`](https://rdrr.io/pkg/nlme/man/lme.html)`(``bweight`` ``~`` ``birthord``, data``=``ga``, `\
+`              random``=``~``1``|``momid``)`
 
 Note: there are not enough degrees of freedom to also fit a random
 coefficient for birth order
@@ -283,6 +290,7 @@ coefficient for birth order
 
 ### Georgia Birthweights dataset
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``gafit1``)`
 
     ## Linear mixed-effects model fit by REML
@@ -312,7 +320,8 @@ coefficient for birth order
 
 ### Georgia Birthweights dataset
 
-[`intervals`](https://rdrr.io/pkg/nlme/man/intervals.html)`(``gafit1``, which ``=`` ``"all"``)`
+\
+[`intervals`](https://rdrr.io/pkg/nlme/man/intervals.html)`(``gafit1``, which ``=`` ``"all"``)`
 
     ## Approximate 95% confidence intervals
     ## 
@@ -369,10 +378,15 @@ coefficient for birth order
 
 ### Fit a population average model
 
-`gafit.gee`` ``<-`` ``gee``::`[`gee`](https://rdrr.io/pkg/gee/man/gee.html)`(``bweight`` ``~`` ``birthord``,`` `` corstr ``=`` ``"exchangeable"``,`` `` id ``=`` ``momid``,`` `` data ``=`` ``ga``)`
+\
+`gafit.gee`` ``<-`` ``gee``::`[`gee`](https://rdrr.io/pkg/gee/man/gee.html)`(``bweight`` ``~`` ``birthord``,`\
+`                      corstr ``=`` ``"exchangeable"``,`\
+`                      id ``=`` ``momid``,`\
+`                      data ``=`` ``ga``)`
 
 ### 
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``gafit.gee``)`
 
     ## 

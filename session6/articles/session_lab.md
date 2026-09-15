@@ -12,7 +12,9 @@
 1.  Calculate the follow-up table for 6 MP patients in the leukemia
     study
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`` ``leuk`` ``<-`` `[`read_csv`](https://readr.tidyverse.org/reference/read_delim.html)`(``"leuk.csv"``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`\
+`leuk`` ``<-`` `[`read_csv`](https://readr.tidyverse.org/reference/read_delim.html)`(``"leuk.csv"``)`
 
     ## Rows: 42 Columns: 3
     ## ── Column specification ────────────────────────────────────────────────────────
@@ -27,7 +29,9 @@
     [`library(survminer)`](https://rpkgs.datanovia.com/survminer/index.html)
     is recommendable.
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`survival`](https://github.com/therneau/survival)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`survival`](https://github.com/therneau/survival)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`
 
     ## Loading required package: ggplot2
 
@@ -40,13 +44,19 @@
     ## 
     ##     myeloma
 
-[`with`](https://rdrr.io/r/base/with.html)`(``leuk``, `[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``)`
+\
+[`with`](https://rdrr.io/r/base/with.html)`(``leuk``, `[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``)`
 
     ##  [1]  6   6   6   7  10  13  16  22  23   6+  9+ 10+ 11+ 17+ 19+ 20+ 25+ 32+ 32+
     ## [20] 34+ 35+  1   1   2   2   3   4   4   5   5   8   8   8   8  11  11  12  12 
     ## [39] 15  17  22  23
 
-`fit`` ``<-`` ``survminer``::`[`surv_fit`](https://rdrr.io/pkg/survminer/man/surv_fit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``)`` ``survminer``::`[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit``,`` `` xlab ``=`` ``"Time (weeks)"``,`` `` ylab ``=`` ``"Survival Probability"``,`` `` risk.table ``=`` ``TRUE``)`
+\
+`fit`` ``<-`` ``survminer``::`[`surv_fit`](https://rdrr.io/pkg/survminer/man/surv_fit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``)`\
+`survminer``::`[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit``,`\
+`           xlab ``=`` ``"Time (weeks)"``,`\
+`           ylab ``=`` ``"Survival Probability"``,`\
+`           risk.table ``=`` ``TRUE``)`
 
     ## Ignoring unknown labels:
     ## • colour : "Strata"
@@ -58,6 +68,7 @@
     survive. This is also the time at which 25% of patients have had
     events.
 
+\
 [`quantile`](https://rdrr.io/r/stats/quantile.html)`(``fit``)`
 
     ## $quantile
@@ -75,7 +86,8 @@
     ## group=6 MP    NA NA NA
     ## group=Placebo  8 12 NA
 
-[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``)`
+\
+[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)`` ``~`` ``group``, data ``=`` ``leuk``)`
 
     ## Call:
     ## survdiff(formula = Surv(time, cens) ~ group, data = leuk)
@@ -90,6 +102,7 @@
     Re-do the Kaplan-Meier plot for both groups, and re-do the logrank
     test.
 
+\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`
 
     ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
@@ -102,11 +115,18 @@
     ## ✖ dplyr::lag()    masks stats::lag()
     ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
-`leuknew`` ``<-`` ``leuk`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``newtime ``=`` `[`pmin`](https://rdrr.io/r/base/Extremes.html)`(``time``, ``20``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``newcens ``=`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(``time`` ``<=`` ``20``, ``cens``, ``0``)``)`
+\
+`leuknew`` ``<-`` ``leuk`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``newtime ``=`` `[`pmin`](https://rdrr.io/r/base/Extremes.html)`(``time``, ``20``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``newcens ``=`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(``time`` ``<=`` ``20``, ``cens``, ``0``)``)`
 
 Kaplan-Meier plot
 
-`fit`` ``<-`` ``survminer``::`[`surv_fit`](https://rdrr.io/pkg/survminer/man/surv_fit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``newtime``, ``newcens``)`` ``~`` ``group``, data ``=`` ``leuknew``)`` ``survminer``::`[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit``,`` `` xlab ``=`` ``"Time (weeks)"``,`` `` ylab ``=`` ``"Survival Probability"``,`` `` risk.table ``=`` ``TRUE``)`
+\
+`fit`` ``<-`` ``survminer``::`[`surv_fit`](https://rdrr.io/pkg/survminer/man/surv_fit.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``newtime``, ``newcens``)`` ``~`` ``group``, data ``=`` ``leuknew``)`\
+`survminer``::`[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit``,`\
+`           xlab ``=`` ``"Time (weeks)"``,`\
+`           ylab ``=`` ``"Survival Probability"``,`\
+`           risk.table ``=`` ``TRUE``)`
 
     ## Ignoring unknown labels:
     ## • colour : "Strata"
@@ -115,7 +135,8 @@ Kaplan-Meier plot
 
 Logrank test
 
-[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``newtime``, ``newcens``)`` ``~`` ``group``, data ``=`` ``leuknew``)`
+\
+[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``newtime``, ``newcens``)`` ``~`` ``group``, data ``=`` ``leuknew``)`
 
     ## Call:
     ## survdiff(formula = Surv(newtime, newcens) ~ group, data = leuknew)

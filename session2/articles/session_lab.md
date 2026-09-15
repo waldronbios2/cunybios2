@@ -8,7 +8,7 @@
     package
 4.  Create a customized bar plot using the `ggplot2` package
 
-**Exercises**
+**Activities**
 
 1.  Load the contraceptive use dataset into R
 2.  Create an “Epi Table 1” of sample characteristics
@@ -36,7 +36,23 @@ to skip the blank column 6 in the graphical interface (which added the
 code `X6 = col_skip()` below). *readr* is good for identifying problems
 like this in text data files.
 
-`# traditional method for loading data:`` ``# cuse <- read.table("cuse.dat", header=TRUE)`` ``# Using readr package with "File - Import Dataset" and manually setting factor levels.`` ``# Note, you don't have to write all this code by hand! It was produced by the File - Import Dataset helper.`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`` ``cuse`` ``<-`` `` `[`read_table`](https://readr.tidyverse.org/reference/read_table.html)`(`` `` ``"cuse.dat"``,`` `` col_types ``=`` `[`cols`](https://readr.tidyverse.org/reference/cols.html)`(`` `` age ``=`` `[`col_factor`](https://readr.tidyverse.org/reference/parse_factor.html)`(``levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"<25"``, ``"25-29"``, ``"30-39"``, ``"40-49"``)``)``,`` `` education ``=`` `[`col_factor`](https://readr.tidyverse.org/reference/parse_factor.html)`(``levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"low"``, ``"high"``)``)``,`` `` wantsMore ``=`` `[`col_factor`](https://readr.tidyverse.org/reference/parse_factor.html)`(``levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"no"``, ``"yes"``)``)``,`` `` X6 ``=`` `[`col_skip`](https://readr.tidyverse.org/reference/col_skip.html)`(``)`` `` ``)`` `` ``)`
+\
+`# traditional method for loading data:`\
+`# cuse <- read.table("cuse.dat", header=TRUE)`\
+`# Using readr package with "File - Import Dataset" and manually setting factor levels.`\
+`# Note, you don't have to write all this code by hand! It was produced by the File - Import Dataset helper.`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`readr`](https://readr.tidyverse.org)`)`\
+`cuse`` ``<-`\
+`  `[`read_table`](https://readr.tidyverse.org/reference/read_table.html)`(`\
+`    ``"cuse.dat"``,`\
+`    col_types ``=`` `[`cols`](https://readr.tidyverse.org/reference/cols.html)`(`\
+`      age ``=`` `[`col_factor`](https://readr.tidyverse.org/reference/parse_factor.html)`(``levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"<25"``, ``"25-29"``, ``"30-39"``, ``"40-49"``)``)``,`\
+`      education ``=`` `[`col_factor`](https://readr.tidyverse.org/reference/parse_factor.html)`(``levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"low"``, ``"high"``)``)``,`\
+`      wantsMore ``=`` `[`col_factor`](https://readr.tidyverse.org/reference/parse_factor.html)`(``levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"no"``, ``"yes"``)``)``,`\
+`      X6 ``=`` `[`col_skip`](https://readr.tidyverse.org/reference/col_skip.html)`(``)`\
+`    ``)`\
+`  ``)`
 
     ## Warning: Missing column names filled in: 'X6' [6]
 
@@ -53,8 +69,10 @@ like this in text data files.
 Note, these warnings relate to the presence of an empty column in the
 dataset, which I dropped using `X6 = col_skip()`
 
+\
 [`problems`](https://readr.tidyverse.org/reference/problems.html)`(``)`
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``cuse``)`
 
     ##     age    education wantsMore    notUsing          using      
@@ -79,7 +97,9 @@ corresponds to a number of counts of women using and not using
 contraceptives. We do this just to demo the table1 package, then make a
 correct table below after reshaping this dataset.
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`table1`](https://github.com/benjaminrich/table1)`)`` `[`table1`](https://rdrr.io/pkg/table1/man/table1.html)`(``~`` ``.``, data ``=`` ``cuse``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`table1`](https://github.com/benjaminrich/table1)`)`\
+[`table1`](https://rdrr.io/pkg/table1/man/table1.html)`(``~`` ``.``, data ``=`` ``cuse``)`
 
 [TABLE]
 
@@ -113,7 +133,11 @@ children, and sum the number wanting or not wanting more children in
 each of these groups. Also rename “notUsing” to “not using” to make a
 nicer legend later.
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`` ``cusebyage0`` ``<-`` `[`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)`(``cuse``, ``age``, ``education``, ``wantsMore``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`summarise`](https://dplyr.tidyverse.org/reference/summarise.html)`(``using ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``using``)``, ``"not using"`` ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``notUsing``)``)`` `[`print`](https://rdrr.io/r/base/print.html)`(``cusebyage0``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`\
+`cusebyage0`` ``<-`` `[`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)`(``cuse``, ``age``, ``education``, ``wantsMore``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    `[`summarise`](https://dplyr.tidyverse.org/reference/summarise.html)`(``using ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``using``)``, ``"not using"`` ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``notUsing``)``)`\
+[`print`](https://rdrr.io/r/base/print.html)`(``cusebyage0``)`
 
     ## # A tibble: 16 × 5
     ## # Groups:   age, education [8]
@@ -140,7 +164,12 @@ Next, pivot this into a longer table by putting the “using” and “not
 using” columns into a single column called “contraceptive”. This pivot
 is necessary to make the data “tidy”.
 
-`cusebyage`` ``<-`` `[`pivot_longer`](https://tidyr.tidyverse.org/reference/pivot_longer.html)`(``cusebyage0``,`` `` cols ``=`` ``using``:``"not using"``,`` `` values_to ``=`` ``"n"``,`` `` names_to ``=`` ``"contraceptive"``)`` ``cusebyage`
+\
+`cusebyage`` ``<-`` `[`pivot_longer`](https://tidyr.tidyverse.org/reference/pivot_longer.html)`(``cusebyage0``,`\
+`      cols ``=`` ``using``:``"not using"``,`\
+`      values_to ``=`` ``"n"``,`\
+`      names_to ``=`` ``"contraceptive"``)`\
+`cusebyage`
 
     ## # A tibble: 32 × 5
     ## # Groups:   age, education [8]
@@ -167,7 +196,15 @@ readable labels. For interest, this time we stratify based on wanting
 more children, and add a caption. See
 [`?table`](https://rdrr.io/r/base/table.html) for more options.
 
-`cuseverylong`` ``<-`` `[`uncount`](https://tidyr.tidyverse.org/reference/uncount.html)`(``cusebyage``, ``n``)`` ``#from the tidyr package`` `[`label`](https://rdrr.io/pkg/table1/man/label.html)`(``cuseverylong``$``age``)`` ``<-`` ``"Age (years)"`` `[`label`](https://rdrr.io/pkg/table1/man/label.html)`(``cuseverylong``$``education``)`` ``<-`` ``"Education level"`` `[`label`](https://rdrr.io/pkg/table1/man/label.html)`(``cuseverylong``$``wantsMore``)`` ``<-`` ``"Wants more children?"`` `[`label`](https://rdrr.io/pkg/table1/man/label.html)`(``cuseverylong``$``contraceptive``)`` ``<-`` ``"Using contraceptives?"`` `[`table1`](https://rdrr.io/pkg/table1/man/table1.html)`(``~`` ``.`` ``|`` ``wantsMore``, rowlabelhead ``=`` ``"Wants more children?"``, `` `` caption ``=`` ``"Table 1: Participants in the contraceptive use study"``,`` `` data ``=`` ``cuseverylong``)`
+\
+`cuseverylong`` ``<-`` `[`uncount`](https://tidyr.tidyverse.org/reference/uncount.html)`(``cusebyage``, ``n``)`` ``#from the tidyr package`\
+[`label`](https://rdrr.io/pkg/table1/man/label.html)`(``cuseverylong``$``age``)`` ``<-`` ``"Age (years)"`\
+[`label`](https://rdrr.io/pkg/table1/man/label.html)`(``cuseverylong``$``education``)`` ``<-`` ``"Education level"`\
+[`label`](https://rdrr.io/pkg/table1/man/label.html)`(``cuseverylong``$``wantsMore``)`` ``<-`` ``"Wants more children?"`\
+[`label`](https://rdrr.io/pkg/table1/man/label.html)`(``cuseverylong``$``contraceptive``)`` ``<-`` ``"Using contraceptives?"`\
+[`table1`](https://rdrr.io/pkg/table1/man/table1.html)`(``~`` ``.`` ``|`` ``wantsMore``, rowlabelhead ``=`` ``"Wants more children?"``, `\
+`       caption ``=`` ``"Table 1: Participants in the contraceptive use study"``,`\
+`       data ``=`` ``cuseverylong``)`
 
 [TABLE]
 
@@ -194,7 +231,22 @@ Now, make a sort of fancy greyscale barplot using ggplot2. You can make
 a nice plot without using nearly so many options, but I want to
 demonstrate the flexibility of making a bar plot with ggplot2.
 
-[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``cusebyage``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``wantsMore``, weight ``=`` ``n``, fill ``=`` ``contraceptive``)``)`` ``+`` `` ``# create a stacked bar plot, where the values provided are counts/frequencies,`` `` ``# and use black outlines for the bars.`` `` `[`geom_bar`](https://ggplot2.tidyverse.org/reference/geom_bar.html)`(``position ``=`` ``"stack"``, stat ``=`` ``"count"``, color ``=`` ``"black"``)`` ``+`` `` `` ``# use facet_grid to separate the plots by age group`` `` `[`facet_grid`](https://ggplot2.tidyverse.org/reference/facet_grid.html)`(``.``~``age``, labeller ``=`` ``label_both``)`` ``+`` `` `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Contraceptive usage counts"``,`` `` subtitle ``=`` ``"in Contraceptive Use dataset"``,`` `` caption ``=`` ``"Contraceptive use in study sample"``)`` ``+`` `` `` `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Wants more children?"``)`` ``+`` `` `` `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Number of Participants"``)`` ``+`` `` ``# there are lots of scale_fill_* options for automatic color schemes, but I `` `` ``# just want to specify the colors manually here.`` `` `[`scale_fill_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``values``=`[`c`](https://rdrr.io/r/base/c.html)`(``"white"``, ``"grey"``)``)`` ``+`` `` `[`theme_bw`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``)`
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``cusebyage``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``wantsMore``, weight ``=`` ``n``, fill ``=`` ``contraceptive``)``)`` ``+`\
+`  ``# create a stacked bar plot, where the values provided are counts/frequencies,`\
+`  ``# and use black outlines for the bars.`\
+`  `[`geom_bar`](https://ggplot2.tidyverse.org/reference/geom_bar.html)`(``position ``=`` ``"stack"``, stat ``=`` ``"count"``, color ``=`` ``"black"``)`` ``+`` `\
+`  ``# use facet_grid to separate the plots by age group`\
+`  `[`facet_grid`](https://ggplot2.tidyverse.org/reference/facet_grid.html)`(``.``~``age``, labeller ``=`` ``label_both``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Contraceptive usage counts"``,`\
+`       subtitle ``=`` ``"in Contraceptive Use dataset"``,`\
+`       caption ``=`` ``"Contraceptive use in study sample"``)`` ``+`` `\
+`  `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Wants more children?"``)`` ``+`` `\
+`  `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Number of Participants"``)`` ``+`\
+`  ``# there are lots of scale_fill_* options for automatic color schemes, but I `\
+`  ``# just want to specify the colors manually here.`\
+`  `[`scale_fill_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``values``=`[`c`](https://rdrr.io/r/base/c.html)`(``"white"``, ``"grey"``)``)`` ``+`\
+`  `[`theme_bw`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-8-1.png)
 
@@ -220,7 +272,10 @@ in separated text.
 
 Here’s some code to calculate the percentages.
 
-`cusebyage`` ``<-`` `[`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)`(``cusebyage``, ``age``, ``wantsMore``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``percent ``=`` ``n`` ``/`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``n``)`` ``*`` ``100``)`` ``cusebyage`
+\
+`cusebyage`` ``<-`` `[`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)`(``cusebyage``, ``age``, ``wantsMore``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`    `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``percent ``=`` ``n`` ``/`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``n``)`` ``*`` ``100``)`\
+`cusebyage`
 
     ## # A tibble: 32 × 6
     ## # Groups:   age, wantsMore [8]
@@ -246,7 +301,15 @@ The table below is intentionally messy. It contains blood pressure and
 medication measurements for two visits, but the visits and measurement
 types are encoded in the column names.
 
-`messy_bp`` ``<-`` ``tibble``::`[`tribble`](https://tibble.tidyverse.org/reference/tribble.html)`(`` `` ``~``participant``, ``~``group``, ``~``week1_bp``, ``~``week2_bp``, ``~``week1_med``, ``~``week2_med``,`` `` ``"A01"``, ``"control"``, ``128``, ``126``, ``"no"``, ``"no"``,`` `` ``"A02"``, ``"control"``, ``142``, ``138``, ``"yes"``, ``"yes"``,`` `` ``"B01"``, ``"treatment"``, ``135``, ``129``, ``"no"``, ``"no"``,`` `` ``"B02"``, ``"treatment"``, ``150``, ``144``, ``"yes"``, ``"no"`` ``)`` ``messy_bp`
+\
+`messy_bp`` ``<-`` ``tibble``::`[`tribble`](https://tibble.tidyverse.org/reference/tribble.html)`(`\
+`  ``~``participant``, ``~``group``,      ``~``week1_bp``, ``~``week2_bp``, ``~``week1_med``, ``~``week2_med``,`\
+`  ``"A01"``,        ``"control"``,          ``128``,       ``126``,        ``"no"``,        ``"no"``,`\
+`  ``"A02"``,        ``"control"``,          ``142``,       ``138``,       ``"yes"``,       ``"yes"``,`\
+`  ``"B01"``,        ``"treatment"``,        ``135``,       ``129``,        ``"no"``,        ``"no"``,`\
+`  ``"B02"``,        ``"treatment"``,        ``150``,       ``144``,       ``"yes"``,        ``"no"`\
+`)`\
+`messy_bp`
 
     ## # A tibble: 4 × 6
     ##   participant group     week1_bp week2_bp week1_med week2_med
@@ -290,4 +353,12 @@ should match):
 
 You can verify the structure with:
 
-[`stopifnot`](https://rdrr.io/r/base/stopifnot.html)`(`` `` `[`identical`](https://rdrr.io/r/base/identical.html)`(`[`names`](https://rdrr.io/r/base/names.html)`(``tidy_bp``)``,`` `` `[`c`](https://rdrr.io/r/base/c.html)`(``"participant"``, ``"group"``, ``"week"``, ``"blood_pressure"``, ``"medication"``)``)``,`` `` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``tidy_bp``)`` ``==`` ``8``,`` `` `[`n_distinct`](https://dplyr.tidyverse.org/reference/n_distinct.html)`(``tidy_bp``$``participant``)`` ``==`` ``4``,`` `` `[`n_distinct`](https://dplyr.tidyverse.org/reference/n_distinct.html)`(``tidy_bp``$``week``)`` ``==`` ``2``,`` `` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(`[`distinct`](https://dplyr.tidyverse.org/reference/distinct.html)`(``tidy_bp``, ``participant``, ``week``)``)`` ``==`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``tidy_bp``)`` ``)`
+\
+[`stopifnot`](https://rdrr.io/r/base/stopifnot.html)`(`\
+`  `[`identical`](https://rdrr.io/r/base/identical.html)`(`[`names`](https://rdrr.io/r/base/names.html)`(``tidy_bp``)``,`\
+`                  `[`c`](https://rdrr.io/r/base/c.html)`(``"participant"``, ``"group"``, ``"week"``, ``"blood_pressure"``, ``"medication"``)``)``,`\
+`  `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``tidy_bp``)`` ``==`` ``8``,`\
+`  `[`n_distinct`](https://dplyr.tidyverse.org/reference/n_distinct.html)`(``tidy_bp``$``participant``)`` ``==`` ``4``,`\
+`  `[`n_distinct`](https://dplyr.tidyverse.org/reference/n_distinct.html)`(``tidy_bp``$``week``)`` ``==`` ``2``,`\
+`  `[`nrow`](https://rdrr.io/r/base/nrow.html)`(`[`distinct`](https://dplyr.tidyverse.org/reference/distinct.html)`(``tidy_bp``, ``participant``, ``week``)``)`` ``==`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``tidy_bp``)`\
+`)`

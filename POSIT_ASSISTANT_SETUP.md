@@ -75,7 +75,11 @@ If you are working in a standalone directory or personal homework
 project, download `AGENTS.md` into your current working directory by
 running this single line in your RStudio console:
 
-[`download.file`](https://rdrr.io/r/utils/download.file.html)`(`` `` url ``=`` ``"https://raw.githubusercontent.com/waldronbios2/cunybios2/main/AGENTS.md"``,`` `` destfile ``=`` ``"AGENTS.md"`` ``)`
+\
+[`download.file`](https://rdrr.io/r/utils/download.file.html)`(`\
+`  url ``=`` ``"https://raw.githubusercontent.com/waldronbios2/cunybios2/main/AGENTS.md"``,`\
+`  destfile ``=`` ``"AGENTS.md"`\
+`)`
 
 You can view the full course rules and session guidelines in
 [`AGENTS.md`](https://waldronbios2.github.io/cunybios2/AGENTS.md).

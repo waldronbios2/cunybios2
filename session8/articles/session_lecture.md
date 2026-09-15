@@ -76,14 +76,31 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 
 ### 
 
-[`suppressPackageStartupMessages`](https://rdrr.io/r/base/message.html)`(`[`library`](https://rdrr.io/r/base/library.html)`(`[`pensim`](https://waldronlab.io/pensim/)`)``)`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``mydat`` ``<-`` `[`create.data`](https://waldronlab.io/ProjectAsPackage/reference/create.data.html)`(`` `` nvars ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``)``,`` `` nsamples ``=`` ``500``,`` `` cors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``0``)``,`` `` associations ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.5``, ``0.5``)``,`` `` firstonly ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``TRUE``, ``TRUE``)``,`` `` censoring ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``8.5``)`` ``)``$``data`
+\
+[`suppressPackageStartupMessages`](https://rdrr.io/r/base/message.html)`(`[`library`](https://rdrr.io/r/base/library.html)`(`[`pensim`](https://waldronlab.io/pensim/)`)``)`\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`\
+`mydat`` ``<-`` `[`create.data`](https://waldronlab.io/ProjectAsPackage/reference/create.data.html)`(`\
+`  nvars ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``)``,`\
+`  nsamples ``=`` ``500``,`\
+`  cors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``0``)``,`\
+`  associations ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.5``, ``0.5``)``,`\
+`  firstonly ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``TRUE``, ``TRUE``)``,`\
+`  censoring ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``8.5``)`\
+`)``$``data`
 
 Rename variables of simulated data, and make one variable categorical:
 
-[`suppressPackageStartupMessages`](https://rdrr.io/r/base/message.html)`(`[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)``)`` ``mydat`` ``<-`` ``mydat`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`rename`](https://dplyr.tidyverse.org/reference/rename.html)`(``Var1 ``=`` ``a.1``, Var2 ``=`` ``b.1``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``Var1 ``=`` `[`cut`](https://rdrr.io/r/base/cut.html)`(``Var1``,`` `` breaks ``=`` ``2``,`` `` labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"low"``, ``"high"``)``)``,`` `` time ``=`` `[`ceiling`](https://rdrr.io/r/base/Round.html)`(``time`` ``*`` ``1000``)``)`
+\
+[`suppressPackageStartupMessages`](https://rdrr.io/r/base/message.html)`(`[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)``)`\
+`mydat`` ``<-`` ``mydat`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`rename`](https://dplyr.tidyverse.org/reference/rename.html)`(``Var1 ``=`` ``a.1``, Var2 ``=`` ``b.1``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``Var1 ``=`` `[`cut`](https://rdrr.io/r/base/cut.html)`(``Var1``,`\
+`                    breaks ``=`` ``2``,`\
+`                    labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"low"``, ``"high"``)``)``,`\
+`         time ``=`` `[`ceiling`](https://rdrr.io/r/base/Round.html)`(``time`` ``*`` ``1000``)``)`
 
 ### Simulated data to test residuals methods
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``mydat``)`
 
     ##    Var1          Var2               time           cens      
@@ -197,7 +214,11 @@ Rename variables of simulated data, and make one variable categorical:
 - Just define stage as an *ordered factor* and tests for trend are done
   automatically:
 
-`pbc.os`` ``<-`` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``pbc.os``, stageordered ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``stage``, ordered ``=`` ``TRUE``)``)`` ``fit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``stageordered``, data ``=`` ``pbc.os``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`` `
+\
+`pbc.os`` ``<-`\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``pbc.os``, stageordered ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``stage``, ordered ``=`` ``TRUE``)``)`\
+`fit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``stageordered``, data ``=`` ``pbc.os``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)``  `
 
     ## Call:
     ## coxph(formula = Surv(time, os) ~ stageordered, data = pbc.os)
@@ -249,7 +270,10 @@ Highly significant tests of overall fit by LRT, Wald, and logrank test.
 
 ### 
 
-`fit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``age`` ``+`` ``sex`` ``+`` ``edema`` `` ``+`` ``stage`` ``+`` ``arm``, data ``=`` ``pbc.os``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
+\
+`fit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``age`` ``+`` ``sex`` ``+`` ``edema`\
+`             ``+`` ``stage`` ``+`` ``arm``, data ``=`` ``pbc.os``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
 
     ## Call:
     ## coxph(formula = Surv(time, os) ~ age + sex + edema + stage + 
@@ -290,7 +314,9 @@ Highly significant tests of overall fit by LRT, Wald, and logrank test.
   - Section 6.3.2.3 in Vittinghoff
 - Idea is to estimate hazard ratio in an unadjusted model:
 
-`unadjfit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``stage``, data ``=`` ``pbc.os``)`` `[`coef`](https://rdrr.io/r/stats/coef.html)`(``unadjfit``)`
+\
+`unadjfit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``stage``, data ``=`` ``pbc.os``)`\
+[`coef`](https://rdrr.io/r/stats/coef.html)`(``unadjfit``)`
 
     ##   stage2   stage3   stage4 
     ## 1.607014 2.149500 3.062775
@@ -299,7 +325,10 @@ Highly significant tests of overall fit by LRT, Wald, and logrank test.
 
 - and in an adjusted model:
 
-`adjfit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``age`` ``+`` ``sex`` ``+`` ``edema`` `` ``+`` ``stage`` ``+`` ``arm``, data ``=`` ``pbc.os``)`` `[`coef`](https://rdrr.io/r/stats/coef.html)`(``adjfit``)`
+\
+`adjfit`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``age`` ``+`` ``sex`` ``+`` ``edema`\
+`                ``+`` ``stage`` ``+`` ``arm``, data ``=`` ``pbc.os``)`\
+[`coef`](https://rdrr.io/r/stats/coef.html)`(``adjfit``)`
 
     ##          age         sexf     edema0.5       edema1       stage2       stage3 
     ##    0.0276179   -0.3175396    0.5387152    2.0804217    1.5352629    1.9982170 
@@ -340,7 +369,10 @@ Highly significant tests of overall fit by LRT, Wald, and logrank test.
 
 **Example - in R, strata() can be added to any model formula**
 
-`mycox`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``trt`` ``+`` `[`strata`](https://rdrr.io/pkg/survival/man/strata.html)`(``stage``)``, `` `` data ``=`` ``pbc.os``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``mycox``)`
+\
+`mycox`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(`[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``os``)`` ``~`` ``trt`` ``+`` `[`strata`](https://rdrr.io/pkg/survival/man/strata.html)`(``stage``)``, `\
+`               data ``=`` ``pbc.os``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``mycox``)`
 
     ## Call:
     ## coxph(formula = Surv(time, os) ~ trt + strata(stage), data = pbc.os)

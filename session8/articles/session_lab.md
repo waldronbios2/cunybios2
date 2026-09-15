@@ -16,7 +16,10 @@
   - 312 cases from RCT, plus additional 112 not from RCT.
 - Primary outcome is (censored) time to death
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`survival`](https://github.com/therneau/survival)`)`` `[`data`](https://rdrr.io/r/utils/data.html)`(``pbc``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``pbc``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`survival`](https://github.com/therneau/survival)`)`\
+[`data`](https://rdrr.io/r/utils/data.html)`(``pbc``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``pbc``)`
 
     ##        id             time          status            trt       
     ##  Min.   :  1.0   Min.   :  41   Min.   :0.0000   Min.   :1.000  
@@ -69,6 +72,7 @@ patients may be prioritized for liver transplant - a topic we don’t get
 to in this course. Instead, we will simply treat 0 (end of study) and 1
 as censored, 2 (death) as an event.
 
+\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`
 
     ## 
@@ -82,10 +86,14 @@ as censored, 2 (death) as an event.
     ## 
     ##     intersect, setdiff, setequal, union
 
-`pbc2`` ``<-`` ``pbc`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``cens ``=`` ``status`` ``>`` ``1.5``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``y ``=`` `[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``)`
+\
+`pbc2`` ``<-`` ``pbc`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``cens ``=`` ``status`` ``>`` ``1.5``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``y ``=`` `[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``)`
 
 ## Plot a KM curve for all participants using `library(survminer)` function `ggsurvplot()`.
 
+\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`
 
     ## Loading required package: ggplot2
@@ -99,19 +107,24 @@ as censored, 2 (death) as an event.
     ## 
     ##     myeloma
 
-`fit`` ``<-`` `[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(``y`` ``~`` ``1``, data ``=`` ``pbc2``)`` `[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit``)`
+\
+`fit`` ``<-`` `[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(``y`` ``~`` ``1``, data ``=`` ``pbc2``)`\
+[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-3-1.png)
 
 ## Stratify by treatment and add a p-value to this plot (see `?ggsurvplot`).
 
-`fit2`` ``<-`` `[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`` `[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit2``, pval ``=`` ``TRUE``)`
+\
+`fit2`` ``<-`` `[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`\
+[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit2``, pval ``=`` ``TRUE``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-4-1.png)
 
 ## Check whether these p-values correspond to results from a log-rank test.
 
-[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`
+\
+[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`
 
     ## Call:
     ## survdiff(formula = y ~ trt, data = pbc2)
@@ -126,7 +139,9 @@ as censored, 2 (death) as an event.
 
 ## Perform a Cox proportional hazards regression, using the “trt” variable as a predictor.
 
-`fitcox`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fitcox``)`
+\
+`fitcox`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fitcox``)`
 
     ## Call:
     ## coxph(formula = y ~ trt, data = pbc2)
@@ -149,16 +164,21 @@ as censored, 2 (death) as an event.
 
 Using a simpler method from survminer:
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`` `[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit2``, fun ``=`` ``"cloglog"``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`\
+[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit2``, fun ``=`` ``"cloglog"``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-7-1.png)
 
 ## Plot Schoenfeld residuals and perform Schoenfeld test for the above Cox model
 
-`fitzph`` ``<-`` `[`cox.zph`](https://rdrr.io/pkg/survival/man/cox.zph.html)`(``fitcox``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``fitzph``)`
+\
+`fitzph`` ``<-`` `[`cox.zph`](https://rdrr.io/pkg/survival/man/cox.zph.html)`(``fitcox``)`\
+[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``fitzph``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-8-1.png)
 
+\
 `fitzph`
 
     ##        chisq df    p

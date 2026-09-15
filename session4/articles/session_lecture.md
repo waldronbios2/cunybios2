@@ -269,7 +269,10 @@ dataset
 
 One categorical variable, so use model matrix. Make a simple heatmap.
 
-`mm`` ``<-`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(`` ``~`` ``.``, data ``=`` ``iris``)`` ``pheatmap``::`[`pheatmap`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html)`(`[`cor`](https://rdrr.io/r/stats/cor.html)`(``mm``[``, ``-``1``]``)``, ``#-1 gets rid of intercept column`` `` color ``=`` `[`colorRampPalette`](https://rdrr.io/r/grDevices/colorRamp.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"#f0f0f0"``, ``"#bdbdbd"``, ``"#636363"``)``)``(``100``)``)`
+\
+`mm`` ``<-`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(`` ``~`` ``.``, data ``=`` ``iris``)`\
+`pheatmap``::`[`pheatmap`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html)`(`[`cor`](https://rdrr.io/r/stats/cor.html)`(``mm``[``, ``-``1``]``)``, ``#-1 gets rid of intercept column`\
+`  color ``=`` `[`colorRampPalette`](https://rdrr.io/r/grDevices/colorRamp.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"#f0f0f0"``, ``"#bdbdbd"``, ``"#636363"``)``)``(``100``)``)`
 
 ![](session_lecture_files/figure-html/unnamed-chunk-3-1.png)*Note:*
 multicollinearity exists between multiple predictors, not between
@@ -280,7 +283,9 @@ predictor and outcome
 Confirm what in iris dataset using Variance Inflation Factor of a linear
 regression model:
 
-`fit`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``Sepal.Width`` ``~`` ``.``, data ``=`` ``iris``)`` ``car``::`[`vif`](https://rdrr.io/pkg/car/man/vif.html)`(``fit``)`
+\
+`fit`` ``<-`` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``Sepal.Width`` ``~`` ``.``, data ``=`` ``iris``)`\
+`car``::`[`vif`](https://rdrr.io/pkg/car/man/vif.html)`(``fit``)`
 
     ##                   GVIF Df GVIF^(1/(2*Df))
     ## Sepal.Length  6.124653  1        2.474804

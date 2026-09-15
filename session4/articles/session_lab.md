@@ -8,15 +8,17 @@
 4.  Use analysis of deviance to compare two log-linear GLMs
 5.  Practice recoding and creating tables and plots
 
-**Exercises**
+**Activities**
 
-1.  Simulate count data from a Poisson distribution (for example number
-    of hospital visits by persons over 70 in a 3-year period), where:
-    1.  10,000 persons annotated with “race” as “white” or “non-white”
-    2.  “white” persons have an average of 3.5 hospital visits during
-        this time period
-    3.  “non-white” persons have an average of 3 hospital visits
+### 1. Simulate count data from a Poisson distribution
 
+(For example, number of hospital visits by persons over 70 in a 3-year
+period), where: a. 10,000 persons annotated with “race” as “white” or
+“non-white” b. “white” persons have an average of 3.5 hospital visits
+during this time period c. “non-white” persons have an average of 3
+hospital visits
+
+\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`
 
     ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
@@ -30,14 +32,22 @@
     ## ✖ dplyr::lag()    masks stats::lag()
     ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``N`` ``<-`` ``10000`` ``simdat`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``race ``=`` `[`sample`](https://rdrr.io/r/base/sample.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"white"``, ``"non-white"``)``, ``N``, replace ``=`` ``TRUE``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``race ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``race``, levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"white"``, ``"non-white"``)``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``y ``=`` `[`rpois`](https://rdrr.io/r/stats/Poisson.html)`(``N``, lambda ``=`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(``race`` ``==`` ``"white"``, ``3.5``, ``3.0``)``)``)`
+\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`\
+`N`` ``<-`` ``10000`\
+`simdat`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``race ``=`` `[`sample`](https://rdrr.io/r/base/sample.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"white"``, ``"non-white"``)``, ``N``, replace ``=`` ``TRUE``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``race ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``race``, levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"white"``, ``"non-white"``)``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``y ``=`` `[`rpois`](https://rdrr.io/r/stats/Poisson.html)`(``N``, lambda ``=`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(``race`` ``==`` ``"white"``, ``3.5``, ``3.0``)``)``)`
 
-2.  Fit a log-linear Poisson model of count outcomes with “race” as the
-    predictor. Note, in this context I tend to use the terms “predictor”
-    and “covariate” interchangeably, to mean any variable used as a
-    predictor in the regression model.
+### 2. Fit a log-linear Poisson model of count outcomes
 
-`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``y`` ``~`` ``race``, data ``=`` ``simdat``, family ``=`` `[`poisson`](https://rdrr.io/r/stats/family.html)`(``link ``=`` ``"log"``)``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
+With “race” as the predictor. Note, in this context I tend to use the
+terms “predictor” and “covariate” interchangeably, to mean any variable
+used as a predictor in the regression model.
+
+\
+`fit`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``y`` ``~`` ``race``, data ``=`` ``simdat``, family ``=`` `[`poisson`](https://rdrr.io/r/stats/family.html)`(``link ``=`` ``"log"``)``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fit``)`
 
     ## 
     ## Call:
@@ -58,8 +68,10 @@
     ## 
     ## Number of Fisher Scoring iterations: 5
 
-3.  Use a chi-square test on deviance residuals to test null hypothesis
-    of no relationship between mean hospital visits and race.
+### 3. Use a chi-square test on deviance residuals
+
+To test null hypothesis of no relationship between mean hospital visits
+and race.
 
 - The difference in total deviance between two nested models is
   $`\chi^2`$ distributed under $`H_0`$ that the more complex model is no
@@ -69,7 +81,8 @@
 
 The critical threshold for rejection at p=0.05 is:
 
-[`qchisq`](https://rdrr.io/r/stats/Chisquare.html)`(``0.95``, df``=``1``)`
+\
+[`qchisq`](https://rdrr.io/r/stats/Chisquare.html)`(``0.95``, df ``=`` ``1``)`
 
     ## [1] 3.841459
 
@@ -77,7 +90,9 @@ So we reject $`H_0`$
 
 BEWARE OF MISSING DATA: THIS IS SAFER
 
-`fit0`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``y`` ``~`` ``1``, data ``=`` ``simdat``, family ``=`` `[`poisson`](https://rdrr.io/r/stats/family.html)`(``link ``=`` ``"log"``)``)`` `[`anova`](https://rdrr.io/r/stats/anova.html)`(``fit0``, ``fit``, test ``=`` ``"LRT"``)`
+\
+`fit0`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``y`` ``~`` ``1``, data ``=`` ``simdat``, family ``=`` `[`poisson`](https://rdrr.io/r/stats/family.html)`(``link ``=`` ``"log"``)``)`\
+[`anova`](https://rdrr.io/r/stats/anova.html)`(``fit0``, ``fit``, test ``=`` ``"LRT"``)`
 
     ## Analysis of Deviance Table
     ## 
@@ -89,32 +104,45 @@ BEWARE OF MISSING DATA: THIS IS SAFER
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-3.  Create and discuss standard fit diagnostics plots
+### 4. Create and discuss standard fit diagnostics plots
 
 ![](session_lab_files/figure-html/unnamed-chunk-6-1.png)
 
-4.  Example: Risky Drug Use Behavior
+### 5. Example: Risky Drug Use Behavior
 
 - Download the “needle_sharing” dataset (see Vittinghoff 8.3.1)
 - Outcome is \# times the drug user shared a syringe in the past month
   (`shared_syr`)
 - Predictors: sex, ethn, homeless
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`readxl`](https://readxl.tidyverse.org)`)`` ``needledat`` ``<-`` `[`read_excel`](https://readxl.tidyverse.org/reference/read_excel.html)`(``"needle_sharing.xlsx"``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``needledat``$``shared_syr``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`readxl`](https://readxl.tidyverse.org)`)`\
+`needledat`` ``<-`` `[`read_excel`](https://readxl.tidyverse.org/reference/read_excel.html)`(``"needle_sharing.xlsx"``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``needledat``$``shared_syr``)`
 
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
     ##   0.000   0.000   0.000   2.976   0.000  60.000       5
 
-[`var`](https://rdrr.io/r/stats/cor.html)`(``needledat``$``shared_syr``, na.rm``=``TRUE``)`
+\
+[`var`](https://rdrr.io/r/stats/cor.html)`(``needledat``$``shared_syr``, na.rm ``=`` ``TRUE``)`
 
     ## [1] 106.5978
 
 Some recoding:
 
-[`suppressPackageStartupMessages`](https://rdrr.io/r/base/message.html)`(`[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)``)`` ``needledat_cleaned`` ``<-`` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``needledat``,`` `` homeless ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``homeless``, levels ``=`` ``0``:``1``, labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"No"``, ``"Yes"``)``)``,`` `` sex ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``sex``, levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"M"``, ``"F"``)``, labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Male"``, ``"Female"``)``)``,`` `` ethnicity ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``ethn``)`` `` ``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(`[`all_of`](https://tidyselect.r-lib.org/reference/all_of.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"shared_syr"``, ``"ethnicity"``, ``"sex"``, ``"homeless"``)``)``)`
+\
+[`suppressPackageStartupMessages`](https://rdrr.io/r/base/message.html)`(`[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)``)`\
+`needledat_cleaned`` ``<-`\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``needledat``,`\
+`    homeless ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``homeless``, levels ``=`` ``0``:``1``, labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"No"``, ``"Yes"``)``)``,`\
+`    sex ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``sex``, levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"M"``, ``"F"``)``, labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Male"``, ``"Female"``)``)``,`\
+`    ethnicity ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``ethn``)`\
+`  ``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(`[`all_of`](https://tidyselect.r-lib.org/reference/all_of.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"shared_syr"``, ``"ethnicity"``, ``"sex"``, ``"homeless"``)``)``)`
 
-5.  Create a table of the risky drug use behavior dataset
+### 6. Create a table of the risky drug use behavior dataset
 
+\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`table1`](https://github.com/benjaminrich/table1)`)`
 
     ## 
@@ -124,20 +152,25 @@ Some recoding:
     ## 
     ##     units, units<-
 
-[`table1`](https://rdrr.io/pkg/table1/man/table1.html)`(``~`` ``.``, data ``=`` ``needledat_cleaned``)`
+\
+[`table1`](https://rdrr.io/pkg/table1/man/table1.html)`(``~``.``, data ``=`` ``needledat_cleaned``)`
 
 [TABLE]
 
-6.  Plots of Risky Drug Use Behavior
-
-&nbsp;
+### 7. Plots of Risky Drug Use Behavior
 
 1.  Create a histogram number of syringe uses
 
 2.  Create a scatter plot of number of syringe uses versus rank of
     number of syringe uses
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``needledat``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``shared_syr``)``)`` ``+`` `` `[`geom_histogram`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)`(``)`` ``+`` `` `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Counts of Syringe Sharing Incidents Per Person"``)`` ``+`` `` `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Number of Incidents"``)`` ``+`` `` `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Number of people with that count"``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``needledat``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``shared_syr``)``)`` ``+`\
+`  `[`geom_histogram`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)`(``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Counts of Syringe Sharing Incidents Per Person"``)`` ``+`\
+`  `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Number of Incidents"``)`` ``+`\
+`  `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"Number of people with that count"``)`
 
     ## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 
@@ -146,7 +179,14 @@ Some recoding:
 
 ![](session_lab_files/figure-html/histogram-1.png)
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``needledat``, rnk ``=`` `[`rank`](https://rdrr.io/r/base/rank.html)`(``shared_syr``, ties.method ``=`` ``"first"``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``rnk``, y ``=`` ``shared_syr``)``)`` ``+`` `` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`` `` `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Count vs Rank Count of Syringe Sharing Incidents"``)`` ``+`` `` `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"rank of count"``)`` ``+`` `` `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"count of syringe sharing"``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
+[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``needledat``, rnk ``=`` `[`rank`](https://rdrr.io/r/base/rank.html)`(``shared_syr``, ties.method ``=`` ``"first"``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``rnk``, y ``=`` ``shared_syr``)``)`` ``+`\
+`  `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``title ``=`` ``"Count vs Rank Count of Syringe Sharing Incidents"``)`` ``+`\
+`  `[`xlab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"rank of count"``)`` ``+`\
+`  `[`ylab`](https://ggplot2.tidyverse.org/reference/labs.html)`(``"count of syringe sharing"``)`
 
     ## Warning: Removed 5 rows containing missing values or values outside the scale range
     ## (`geom_point()`).
@@ -155,11 +195,16 @@ Some recoding:
 
 - There are a *lot* of zeros - Poisson model is not a good fit
 
-7.  Fit a Poisson model to the risky drug use behavior dataset anyways
+### 8. Fit a Poisson model to the risky drug use behavior dataset anyways
 
 Even though we know it is a bad fit
 
-`fit.pois`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``shared_syr`` ``~`` ``sex`` ``+`` ``ethn`` ``+`` ``homeless``,`` `` data ``=`` ``needledat``,`` `` family ``=`` `[`poisson`](https://rdrr.io/r/stats/family.html)`(``link ``=`` ``"log"``)``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit.pois``)`
+\
+`fit.pois`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``shared_syr`` ``~`` ``sex`` ``+`` ``ethn`` ``+`` ``homeless``,`\
+`  data ``=`` ``needledat``,`\
+`  family ``=`` `[`poisson`](https://rdrr.io/r/stats/family.html)`(``link ``=`` ``"log"``)`\
+`)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fit.pois``)`
 
     ## 
     ## Call:
@@ -190,11 +235,56 @@ Even though we know it is a bad fit
     ## 
     ## Number of Fisher Scoring iterations: 12
 
-8.  Create and discuss Poisson model diagnostic plots
+### 9. Create and discuss Poisson model diagnostic plots
 
-[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``2``)``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``fit.pois``)`
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``2``)``)`\
+[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``fit.pois``)`
 
     ## Warning: not plotting observations with leverage one:
     ##   17, 38, 72, 86
 
 ![](session_lab_files/figure-html/diagnostic-1.png)
+
+### Interpreting Poisson Coefficients
+
+In a Poisson log-linear model, exponentiating the coefficients
+($`\exp(\beta)`$) yields the Incidence Rate Ratios (IRRs). For example,
+if we exponentiate the coefficients from `fit.pois`:
+
+\
+`# Exponentiate the coefficients to get IRRs`\
+[`exp`](https://rdrr.io/r/base/Log.html)`(`[`coef`](https://rdrr.io/r/stats/coef.html)`(``fit.pois``)``)`
+
+    ##        (Intercept)               sexM           sexTrans       ethnFilipino 
+    ##       2.061273e+00       3.966098e-01       2.805403e-07       4.899964e-07 
+    ##       ethnHispanic         ethnIndian ethnIndian & White          ethnWhite 
+    ##       4.325535e+00       7.515661e-07       2.980785e-07       1.062516e+00 
+    ##  ethnWhite & Hispa           homeless 
+    ##       2.367783e+00       3.616239e+00
+
+This tells us the multiplicative effect of each predictor on the
+expected count of syringe sharing incidents, holding other variables
+constant.
+
+## Exercises
+
+### Exercise 1: Calculate Incidence Rate Ratios (IRRs)
+
+Extract the coefficients from `fit.pois` (the model on risky drug use),
+exponentiate them to obtain the Incidence Rate Ratios (IRRs), and
+compute their 95% confidence intervals.
+
+### Exercise 2: Model Comparison (LRT)
+
+Fit a reduced Poisson model by removing the `homeless` predictor from
+the previous risky drug use model. Then, perform a Likelihood Ratio Test
+(using `anova(..., test="LRT")`) to compare this reduced model against
+the full model `fit.pois`. Interpret the result. Does the `homeless`
+variable significantly improve the model fit?
+
+### Exercise 3: Check for Overdispersion
+
+Calculate the ratio of the residual deviance to the residual degrees of
+freedom for `fit.pois`. Interpret what this value means for the model
+assumptions. Is there evidence of overdispersion?

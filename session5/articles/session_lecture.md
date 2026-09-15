@@ -71,12 +71,14 @@ y_i \sim Poisson(\lambda_i)
 - Predictors: `sex`, `ethn`, `homeless`
   - filtered to `sex` “M” or “F”, `ethn` “White”, “AA”, “Hispanic”
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``needledat2``$``shared_syr``)`
 
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
     ##   0.000   0.000   0.000   3.122   0.000  60.000       2
 
-[`var`](https://rdrr.io/r/stats/cor.html)`(``needledat2``$``shared_syr``, na.rm ``=`` ``TRUE``)`
+\
+[`var`](https://rdrr.io/r/stats/cor.html)`(``needledat2``$``shared_syr``, na.rm ``=`` ``TRUE``)`
 
     ## [1] 113.371
 
@@ -91,7 +93,10 @@ Exploratory plots
 
 ### Fitting a Poisson model
 
-`fit.pois`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``shared_syr`` ``~`` ``sex`` ``+`` ``ethn`` ``+`` ``homeless``,`` `` data ``=`` ``needledat2``,`` `` family ``=`` `[`poisson`](https://rdrr.io/r/stats/family.html)`(``link ``=`` ``"log"``)``)`
+\
+`fit.pois`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``shared_syr`` ``~`` ``sex`` ``+`` ``ethn`` ``+`` ``homeless``,`\
+`                data ``=`` ``needledat2``,`\
+`                family ``=`` `[`poisson`](https://rdrr.io/r/stats/family.html)`(``link ``=`` ``"log"``)``)`
 
 ### Residuals plots
 
@@ -155,10 +160,15 @@ probability of success p
 
 ### Negative Binomial Regression
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`MASS`](http://www.stats.ox.ac.uk/pub/MASS4/)`)`` ``fit.negbin`` ``<-`` ``MASS``::`[`glm.nb`](https://rdrr.io/pkg/MASS/man/glm.nb.html)`(``shared_syr`` ``~`` ``sex`` ``+`` `` ``ethn`` ``+`` ``homeless``,`` `` data ``=`` ``needledat2``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`MASS`](http://www.stats.ox.ac.uk/pub/MASS4/)`)`\
+`fit.negbin`` ``<-`` ``MASS``::`[`glm.nb`](https://rdrr.io/pkg/MASS/man/glm.nb.html)`(``shared_syr`` ``~`` ``sex`` ``+`\
+`                             ``ethn`` ``+`` ``homeless``,`\
+`                           data ``=`` ``needledat2``)`
 
 ### 
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``fit.negbin``)`
 
     ## 
@@ -199,15 +209,19 @@ difference in model residual deviances is $`\chi^2`$-distributed.
 Deviance:
 $`\Delta (\textrm{D}) = -2 * \Delta (\textrm{log likelihood})`$
 
-`(``ll.negbin`` ``<-`` `[`logLik`](https://rdrr.io/r/stats/logLik.html)`(``fit.negbin``)``)`
+\
+`(``ll.negbin`` ``<-`` `[`logLik`](https://rdrr.io/r/stats/logLik.html)`(``fit.negbin``)``)`
 
     ## 'log Lik.' -147.1277 (df=6)
 
-`(``ll.pois`` ``<-`` `[`logLik`](https://rdrr.io/r/stats/logLik.html)`(``fit.pois``)``)`
+\
+`(``ll.pois`` ``<-`` `[`logLik`](https://rdrr.io/r/stats/logLik.html)`(``fit.pois``)``)`
 
     ## 'log Lik.' -730.0133 (df=5)
 
-[`pchisq`](https://rdrr.io/r/stats/Chisquare.html)`(``2`` ``*`` ``(``ll.negbin`` ``-`` ``ll.pois``)``, df``=``1``, `` `` lower.tail``=``FALSE``)`
+\
+[`pchisq`](https://rdrr.io/r/stats/Chisquare.html)`(``2`` ``*`` ``(``ll.negbin`` ``-`` ``ll.pois``)``, df``=``1``, `\
+`       lower.tail``=``FALSE``)`
 
     ## 'log Lik.' 1.675949e-255 (df=6)
 
@@ -231,10 +245,16 @@ zero by *1.*
 
 ### Zero-inflated Poisson regression
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`pscl`](https://github.com/atahk/pscl)`)`` ``fit.ZIpois`` ``<-`` `` ``pscl``::`[`zeroinfl`](https://rdrr.io/pkg/pscl/man/zeroinfl.html)`(``shared_syr``~``sex``+``ethn``+``homeless``,`` `` dist ``=`` ``"poisson"``,`` `` data ``=`` ``needledat2``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`pscl`](https://github.com/atahk/pscl)`)`\
+`fit.ZIpois`` ``<-`\
+`  ``pscl``::`[`zeroinfl`](https://rdrr.io/pkg/pscl/man/zeroinfl.html)`(``shared_syr``~``sex``+``ethn``+``homeless``,`\
+`                 dist ``=`` ``"poisson"``,`\
+`                 data ``=`` ``needledat2``)`
 
 ### 
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``fit.ZIpois``)`
 
     ## 
@@ -269,7 +289,11 @@ zero by *1.*
 
 ### Zero-inflated Negative Binomial regression
 
-`fit.ZInegbin`` ``<-`` `` `` ``pscl``::`[`zeroinfl`](https://rdrr.io/pkg/pscl/man/zeroinfl.html)`(``shared_syr``~``sex``+``ethn``+``homeless``,`` `` dist ``=`` ``"negbin"``,`` `` data ``=`` ``needledat2``)`
+\
+`fit.ZInegbin`` ``<-`` `\
+`  ``pscl``::`[`zeroinfl`](https://rdrr.io/pkg/pscl/man/zeroinfl.html)`(``shared_syr``~``sex``+``ethn``+``homeless``,`\
+`                         dist ``=`` ``"negbin"``,`\
+`                         data ``=`` ``needledat2``)`
 
 - *NOTE*: zero-inflation model can include any of your variables as
   predictors
@@ -278,6 +302,7 @@ zero by *1.*
 
 ### 
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``fit.ZInegbin``)`
 
     ## 
@@ -318,10 +343,15 @@ zero by *1.*
   included in the zero-inflation model.
 - E.g. with HIV status as the only predictor in zero-inflation model:
 
-`fit.ZInb2`` ``<-`` ``pscl``::`[`zeroinfl`](https://rdrr.io/pkg/pscl/man/zeroinfl.html)`(``shared_syr`` ``~`` ``sex`` ``+`` ``ethn`` ``+`` `` `` ``homeless`` ``+`` ``hiv`` ``|`` ``hiv``,`` `` dist ``=`` ``"negbin"``,`` `` data ``=`` ``needledat2``)`
+\
+`fit.ZInb2`` ``<-`` ``pscl``::`[`zeroinfl`](https://rdrr.io/pkg/pscl/man/zeroinfl.html)`(``shared_syr`` ``~`` ``sex`` ``+`` ``ethn`` ``+`` `\
+`                        ``homeless`` ``+`` ``hiv`` ``|`` ``hiv``,`\
+`                      dist ``=`` ``"negbin"``,`\
+`                      data ``=`` ``needledat2``)`
 
 ### 
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``fit.ZInb2``)`
 
     ## 
@@ -358,10 +388,15 @@ zero by *1.*
 
 ### Intercept-only ZI model
 
-`fit.ZInb3`` ``<-`` `` ``pscl``::`[`zeroinfl`](https://rdrr.io/pkg/pscl/man/zeroinfl.html)`(``shared_syr``~``sex``+``ethn``+``homeless``|``1``,`` `` dist ``=`` ``"negbin"``,`` `` data ``=`` ``needledat2``)`
+\
+`fit.ZInb3`` ``<-`\
+`  ``pscl``::`[`zeroinfl`](https://rdrr.io/pkg/pscl/man/zeroinfl.html)`(``shared_syr``~``sex``+``ethn``+``homeless``|``1``,`\
+`           dist ``=`` ``"negbin"``,`\
+`           data ``=`` ``needledat2``)`
 
 ### 
 
+\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``fit.ZInb3``)`
 
     ## 
@@ -398,6 +433,7 @@ Use the [`confint()`](https://rdrr.io/r/stats/confint.html) function for
 all these models (don’t try to specify which package confint comes
 from). E.g.:
 
+\
 [`confint`](https://rdrr.io/r/stats/confint.html)`(``fit.ZInb3``)`
 
     ##                         2.5 %    97.5 %

@@ -115,13 +115,17 @@ P(x) = g^{-1}\left( \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_
 
 ### The logit function
 
-`logit`` ``<-`` ``function``(``P``)`` `[`log`](https://rdrr.io/r/base/Log.html)`(``P``/``(``1``-``P``)``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``logit``, xlab``=``"Probability"``, ylab``=``"Log-odds"``,`` `` cex.lab``=``1.5``, cex.axis``=``1.5``)`
+\
+`logit`` ``<-`` ``function``(``P``)`` `[`log`](https://rdrr.io/r/base/Log.html)`(``P``/``(``1``-``P``)``)`\
+[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``logit``, xlab``=``"Probability"``, ylab``=``"Log-odds"``,`\
+`     cex.lab``=``1.5``, cex.axis``=``1.5``)`
 
 ![](session_lecture_files/figure-html/unnamed-chunk-1-1.png)
 
 ### Inverse logit function
 
-`invLogit`` ``<-`` ``function``(``x``)`` ``1``/``(``1``+`[`exp`](https://rdrr.io/r/base/Log.html)`(``-``x``)``)`
+\
+`invLogit`` ``<-`` ``function``(``x``)`` ``1``/``(``1``+`[`exp`](https://rdrr.io/r/base/Log.html)`(``-``x``)``)`
 
 ![](session_lecture_files/figure-html/unnamed-chunk-3-1.png)
 
@@ -139,7 +143,10 @@ See the lab to make a table that summarizes the participants.
 - Predictors: age, education level (high/low), whether wants more
   children or not
 
-`fit1`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age`` ``+`` ``education`` ``+`` ``wantsMore``, `` `` data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``fit1``)`
+\
+`fit1`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``age`` ``+`` ``education`` ``+`` ``wantsMore``, `\
+`           data``=``cuse``, family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`\
+[`summary`](https://rdrr.io/r/base/summary.html)`(``fit1``)`
 
     ## 
     ## Call:
@@ -229,7 +236,10 @@ $`\Delta (\textrm{D}) = -2 * \Delta (\textrm{log likelihood})`$
 
 ### Likelihood Ratio Test (cont’d)
 
-`fit0`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``-``1``, data``=``cuse``, `` `` family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`` `[`anova`](https://rdrr.io/r/stats/anova.html)`(``fit0``, ``fit1``, test``=``"LRT"``)`
+\
+`fit0`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``using``, ``notUsing``)`` ``~`` ``-``1``, data``=``cuse``, `\
+`            family``=`[`binomial`](https://rdrr.io/r/stats/family.html)`(``"logit"``)``)`\
+[`anova`](https://rdrr.io/r/stats/anova.html)`(``fit0``, ``fit1``, test``=``"LRT"``)`
 
     ## Analysis of Deviance Table
     ## 

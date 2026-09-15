@@ -100,37 +100,6 @@ Waldron</h4>
 </li>
 <li>perform and interpret likelihood ratio test</li>
 </ol>
-<p><strong>Exercises</strong></p>
-<ol style="list-style-type: decimal">
-<li>What is the mean fraction of women using birth control for each age
-group? Each education level? For women who do or don’t want more
-children?
-<ul>
-<li>Hint: look at the “data wrangling” cheat sheet functions
-<code>mutate</code>, <code>group_by</code>, and
-<code>summarize</code>
-</li>
-</ul>
-</li>
-<li>Based on <code>fit1</code>, write on paper the model for expected
-probability of using birth control. Don’t forget the logit
-function.</li>
-<li>Based on <code>fit1</code>, what is the expected probability of an
-individual 25-29 years old, with high education, who wants more
-children, using birth control? Calculate it manually, and using
-<code>predict(fit1)</code>
-</li>
-<li>Based on <code>fit1</code>: Relative to women under 25 who want to
-have children, what is the predicted increase in odds that a woman 40-49
-years old who does <em>not</em> want to have children will be taking
-birth control?</li>
-<li>Using a likelihood ratio test, is there evidence that a model with
-interactions improves on <code>fit1</code> (no interactions)?</li>
-<li>Which, if any, variables have the strongest interactions?</li>
-<li>Looking at the effect of age only, consider contrasts between
-<em>every pair</em> of age groups. Between which age groups is the
-contrast significant?</li>
-</ol>
 <div class="section level2">
 <h2 id="load-and-explore-the-contraceptive-use-data">Load and explore the contraceptive use data<a class="anchor" aria-label="anchor" href="#load-and-explore-the-contraceptive-use-data"></a>
 </h2>
@@ -144,13 +113,13 @@ just do it.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span></span>
 <span><span class="va">cuse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html" class="external-link">read_table</a></span><span class="op">(</span><span class="st">"cuse.dat"</span>,</span>
-<span>    col_types <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html" class="external-link">cols</a></span><span class="op">(</span></span>
-<span>      age <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html" class="external-link">col_factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&lt;25"</span>, <span class="st">"25-29"</span>, <span class="st">"30-39"</span>, <span class="st">"40-49"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      education <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html" class="external-link">col_factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"high"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      wantsMore <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html" class="external-link">col_factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      X6 <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/col_skip.html" class="external-link">col_skip</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>  col_types <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html" class="external-link">cols</a></span><span class="op">(</span></span>
+<span>    age <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html" class="external-link">col_factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&lt;25"</span>, <span class="st">"25-29"</span>, <span class="st">"30-39"</span>, <span class="st">"40-49"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    education <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html" class="external-link">col_factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"high"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    wantsMore <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html" class="external-link">col_factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    X6 <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/col_skip.html" class="external-link">col_skip</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning: Missing column names filled in: 'X6' [6]</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: 16 parsing failures.</span></span>
 <span><span class="co">## row col  expected    actual       file</span></span>
@@ -209,41 +178,42 @@ contraception:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">16</span> 40-49 high      no              12    31     0.721</span></span></code></pre>
 <p>Now, group and summarize by age:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cuse2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">fracusing</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">cuse2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>mean_fracusing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">fracusing</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
-<span><span class="co">##   age   `mean(fracusing)`</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> &lt;25               0.188</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 25-29             0.271</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 30-39             0.388</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> 40-49             0.469</span></span></code></pre>
+<span><span class="co">##   age   mean_fracusing</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> &lt;25            0.188</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 25-29          0.271</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 30-39          0.388</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> 40-49          0.469</span></span></code></pre>
+<p>Similarly, group and summarize by education level:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cuse2</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 16 × 6</span></span></span>
-<span><span class="co">##    age   education wantsMore notUsing using fracusing</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> &lt;25   low       yes             53     6     0.102</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> &lt;25   low       no              10     4     0.286</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> &lt;25   high      yes            212    52     0.197</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> &lt;25   high      no              50    10     0.167</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 25-29 low       yes             60    14     0.189</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 25-29 low       no              19    10     0.345</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 25-29 high      yes            155    54     0.258</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 25-29 high      no              65    27     0.293</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 30-39 low       yes            112    33     0.228</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> 30-39 low       no              77    80     0.510</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> 30-39 high      yes            118    46     0.280</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> 30-39 high      no              68    78     0.534</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> 40-49 low       yes             35     6     0.146</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> 40-49 low       no              46    48     0.511</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> 40-49 high      yes              8     8     0.5  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">16</span> 40-49 high      no              12    31     0.721</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">cuse2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">education</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>mean_fracusing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">fracusing</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
+<span><span class="co">##   education mean_fracusing</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> low                0.289</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> high               0.369</span></span></code></pre>
+<p>And group and summarize by desire for more children:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cuse2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">wantsMore</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>mean_fracusing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">fracusing</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
+<span><span class="co">##   wantsMore mean_fracusing</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> no                 0.421</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> yes                0.238</span></span></code></pre>
 <p>Here the <code>%&gt;%</code> is called a “pipe”, and it sends the
 output of the previous function to the input of the next function. This
 could also have been done in one step:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">cuse</span>, fracusing <span class="op">=</span> <span class="va">using</span> <span class="op">/</span> <span class="op">(</span><span class="va">using</span> <span class="op">+</span> <span class="va">notUsing</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">fracusing</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
 <span><span class="co">##   age   `mean(fracusing)`</span></span>
@@ -267,7 +237,7 @@ control<a class="anchor" aria-label="anchor" href="#write-on-paper-the-model-for
 probability of using birth control? Don’t forget the (inverse) logit
 function.</p>
 <p><strong>Solution</strong></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">using</span>, <span class="va">notUsing</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">education</span> <span class="op">+</span> <span class="va">wantsMore</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">cuse</span>,</span>
@@ -276,7 +246,7 @@ function.</p>
 <p>I’m going to store the coefficients of <code>fit1</code> in a new
 variable <code>b</code> just to save typing when writing out the
 formula, and round to two decimal places:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bcoef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p>Here I’m going to take advantage of R Markdown’s support for LaTeX
 formulae to write out the fitted regression model. I also use the ` r
@@ -305,35 +275,40 @@ children, using birth control? Calculate it manually, and using
 <p>This can be done using the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function, using a
 new <code>data.frame</code> giving the values that you want to predict
 for:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">invLogit</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">q4data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>age<span class="op">=</span><span class="st">"25-29"</span>, education<span class="op">=</span><span class="st">"high"</span>, wantsMore<span class="op">=</span><span class="st">"yes"</span><span class="op">)</span></span>
-<span><span class="fu">invLogit</span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit1</span>, newdata<span class="op">=</span><span class="va">q4data</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">invLogit</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">q4data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>age <span class="op">=</span> <span class="st">"25-29"</span>, education <span class="op">=</span> <span class="st">"high"</span>, wantsMore <span class="op">=</span> <span class="st">"yes"</span><span class="op">)</span></span>
+<span><span class="fu">invLogit</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit1</span>, newdata <span class="op">=</span> <span class="va">q4data</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         1 </span></span>
 <span><span class="co">## 0.2223899</span></span></code></pre>
 <p>By default, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> predicts on the original data, and
 taking a look, I noticed that the 7th value is the one we want to
 predict on:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">invLogit</span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span> <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">invLogit</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         7 </span></span>
 <span><span class="co">## 0.2223899</span></span></code></pre>
-<p>If we were really doing this manually, on paper, we would just
-calculate the linear predictor, then use the inverse logit function.
-Note that education=“high” is the reference group, so we don’t use it
-here:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">invLogit</span><span class="op">(</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"(Intercept)"</span><span class="op">]</span> <span class="op">+</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"age25-29"</span><span class="op">]</span> <span class="op">+</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"wantsMoreyes"</span><span class="op">]</span> <span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## (Intercept) </span></span>
-<span><span class="co">##   0.1722164</span></span></code></pre>
-<p>I don’t <em>really</em> care, but if the remnant “(Intercept)” name
-there were annoying me, I would assign this to a variable then get rid
-of that name:</p>
+<p>If we were really doing this manually, on paper, we would calculate
+the linear predictor
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>η</mi><annotation encoding="application/x-tex">\eta</annotation></semantics></math>),
+then evaluate the inverse logit function:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msup><mtext mathvariant="italic">𝑙𝑜𝑔𝑖𝑡</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>η</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">P = \textit{logit}^{-1}(\eta) = \frac{1}{1 + e^{-\eta}}</annotation></semantics></math></p>
+<p>Note that <code>education</code> has reference level
+<code>"low"</code>, so for an individual with high education, the
+indicator variable <code>educationhigh</code> equals 1 and its
+coefficient must be included:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">invLogit</span><span class="op">(</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"(Intercept)"</span><span class="op">]</span> <span class="op">+</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"age25-29"</span><span class="op">]</span> <span class="op">+</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"wantsMoreyes"</span><span class="op">]</span> <span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span><span class="va">res</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.1722164</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">eta</span> <span class="op">&lt;-</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"(Intercept)"</span><span class="op">]</span> <span class="op">+</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"age25-29"</span><span class="op">]</span> <span class="op">+</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"educationhigh"</span><span class="op">]</span> <span class="op">+</span> <span class="va">bcoef</span><span class="op">[</span><span class="st">"wantsMoreyes"</span><span class="op">]</span></span>
+<span><span class="fu">invLogit</span><span class="op">(</span><span class="va">eta</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## (Intercept) </span></span>
+<span><span class="co">##   0.2227001</span></span></code></pre>
+<p>Notice that this manual calculation matches our
+<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> result above (0.223).</p>
+<p><em>(Tip: In <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>, specifying
+<code>type = "response"</code> directly returns predicted probabilities
+on the scale of the response variable, without needing a manual
+inverse-logit transformation:
+<code>predict(fit1, newdata = q4data, type = "response")</code>)</em></p>
 </div>
 <div class="section level2">
 <h2 id="predicted-odds-ratio">Predicted odds ratio<a class="anchor" aria-label="anchor" href="#predicted-odds-ratio"></a>
@@ -344,7 +319,7 @@ old who does <em>not</em> want to have children will be taking birth
 control?</p>
 <p><strong>Solution</strong></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span><span class="op">[</span><span class="st">"age40-49"</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span><span class="op">[</span><span class="st">"wantsMoreyes"</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span><span class="op">[</span><span class="st">"age40-49"</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span><span class="op">[</span><span class="st">"wantsMoreyes"</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## age40-49 </span></span>
 <span><span class="co">##  7.55488</span></span></code></pre>
 </div>
@@ -355,18 +330,40 @@ control?</p>
 interactions improves on <code>fit1</code> (no interactions)?</p>
 <p><strong>Solution</strong></p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit1.int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">using</span>, <span class="va">notUsing</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">*</span> <span class="va">education</span> <span class="op">*</span> <span class="va">wantsMore</span>, </span>
-<span>           data<span class="op">=</span><span class="va">cuse</span>, family<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="st">"logit"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit1.int</span>, test<span class="op">=</span><span class="st">"LRT"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fit1.2way</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">using</span>, <span class="va">notUsing</span><span class="op">)</span> <span class="op">~</span> <span class="op">(</span><span class="va">age</span> <span class="op">+</span> <span class="va">education</span> <span class="op">+</span> <span class="va">wantsMore</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">cuse</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="st">"logit"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fit1.int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">using</span>, <span class="va">notUsing</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">*</span> <span class="va">education</span> <span class="op">*</span> <span class="va">wantsMore</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">cuse</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="st">"logit"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit1.2way</span>, <span class="va">fit1.int</span>, test <span class="op">=</span> <span class="st">"LRT"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Analysis of Deviance Table</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Model 1: cbind(using, notUsing) ~ age + education + wantsMore</span></span>
-<span><span class="co">## Model 2: cbind(using, notUsing) ~ age * education * wantsMore</span></span>
+<span><span class="co">## Model 2: cbind(using, notUsing) ~ (age + education + wantsMore)^2</span></span>
+<span><span class="co">## Model 3: cbind(using, notUsing) ~ age * education * wantsMore</span></span>
 <span><span class="co">##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    </span></span>
-<span><span class="co">## 1        10     29.917                          </span></span>
-<span><span class="co">## 2         0      0.000 10   29.917 0.0008838 ***</span></span>
+<span><span class="co">## 1        10    29.9172                          </span></span>
+<span><span class="co">## 2         3     2.4415  7  27.4757 0.0002736 ***</span></span>
+<span><span class="co">## 3         0     0.0000  3   2.4415 0.4859584    </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
+<p>The likelihood ratio test shows that adding all two-way interactions
+(<code>fit1.2way</code>) significantly improves model fit over the
+additive model (<code>fit1</code>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.00027</mn></mrow><annotation encoding="application/x-tex">p = 0.00027</annotation></semantics></math>).
+However, adding three-way interactions (<code>fit1.int</code>) yields no
+statistically significant improvement
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.486</mn></mrow><annotation encoding="application/x-tex">p = 0.486</annotation></semantics></math>)
+and costs 3 additional degrees of freedom (yielding a fully saturated
+model with 0 residual degrees of freedom). Therefore, the two-way
+interaction model is much more parsimonious.</p>
 </div>
 <div class="section level2">
 <h2 id="a-model-with-interactions">A model with interactions<a class="anchor" aria-label="anchor" href="#a-model-with-interactions"></a>
@@ -377,34 +374,44 @@ regression results from all kinds of models, capable of comparing
 multiple models or multiple dependent variables in the same table, and
 providing formatting customized to numerous journal styles.</p>
 <p><strong>Solution</strong></p>
-<p>We see here that the strongest interaction coeffient is for
-<code>age30-39:wantsMoreyes</code>. It is statistically significant and
-negative (0). It appears that being 30-39 years old and wanting more
-children has a multiplicative effect against using birth control, moreso
-than expected based on the age or wanting more children alone.</p>
+<p>In the two-way interaction model (<code>fit1.2way</code>), the
+strongest interaction coefficients are between age and wanting more
+children: <code>age30-39:wantsMoreyes</code> (-0.95) and
+<code>age40-49:wantsMoreyes</code> (-1.19). Both are statistically
+significant and negative
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>&lt;</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">p &lt; 0.05</annotation></semantics></math>).
+This indicates that for women aged 30 and older, wanting more children
+exerts a substantially stronger deterrent effect against using birth
+control than would be predicted from age or wanting more children acting
+purely additively on the log-odds scale.</p>
+<p><em>(Note on the 3-way model: In the fully saturated model
+<code>fit1.int</code>, these interaction effects get partitioned across
+the three-way interaction terms, diluting the two-way coefficients and
+inflating standard errors because there are 16 parameters for 16 data
+rows.)</em></p>
 <p>The <em>stargazer</em> package is a good way to create
 nicely-formatted tables of regression results.</p>
 <table style="text-align:center" class="table">
 <tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="3">
+</td>
+</tr>
+<tr>
+<td>
+</td>
 <td colspan="3" style="border-bottom: 1px solid black">
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 </td>
-<td colspan="2">
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td colspan="2" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td colspan="2">
+<td colspan="3">
 Outcome: Using Birth Control
 </td>
 </tr>
@@ -412,10 +419,13 @@ Outcome: Using Birth Control
 <td style="text-align:left">
 </td>
 <td>
-No Interaction
+Additive
 </td>
 <td>
-With Interactions
+Two-Way
+</td>
+<td>
+Full Three-Way
 </td>
 </tr>
 <tr>
@@ -427,9 +437,12 @@ With Interactions
 <td>
 (2)
 </td>
+<td>
+(3)
+</td>
 </tr>
 <tr>
-<td colspan="3" style="border-bottom: 1px solid black">
+<td colspan="4" style="border-bottom: 1px solid black">
 </td>
 </tr>
 <tr>
@@ -438,6 +451,9 @@ age25-29
 </td>
 <td>
 0.39<sup>**</sup> (0.04, 0.73)
+</td>
+<td>
+0.76 (-0.24, 1.75)
 </td>
 <td>
 0.27 (-1.12, 1.66)
@@ -451,6 +467,9 @@ age30-39
 0.91<sup>***</sup> (0.59, 1.23)
 </td>
 <td>
+1.57<sup>***</sup> (0.67, 2.47)
+</td>
+<td>
 0.95 (-0.25, 2.16)
 </td>
 </tr>
@@ -460,6 +479,9 @@ age40-49
 </td>
 <td>
 1.19<sup>***</sup> (0.77, 1.61)
+</td>
+<td>
+1.49<sup>***</sup> (0.53, 2.45)
 </td>
 <td>
 0.96 (-0.27, 2.19)
@@ -473,6 +495,9 @@ educationhigh
 0.32<sup>***</sup> (0.08, 0.57)
 </td>
 <td>
+0.02 (-0.81, 0.85)
+</td>
+<td>
 -0.69 (-2.04, 0.65)
 </td>
 </tr>
@@ -482,6 +507,9 @@ wantsMoreyes
 </td>
 <td>
 -0.83<sup>***</sup> (-1.06, -0.60)
+</td>
+<td>
+-0.47 (-1.25, 0.30)
 </td>
 <td>
 -1.26<sup>*</sup> (-2.70, 0.17)
@@ -494,6 +522,9 @@ age25-29:educationhigh
 <td>
 </td>
 <td>
+-0.16 (-1.06, 0.74)
+</td>
+<td>
 0.46 (-1.15, 2.07)
 </td>
 </tr>
@@ -502,6 +533,9 @@ age25-29:educationhigh
 age30-39:educationhigh
 </td>
 <td>
+</td>
+<td>
+-0.05 (-0.87, 0.77)
 </td>
 <td>
 0.79 (-0.63, 2.21)
@@ -514,6 +548,9 @@ age40-49:educationhigh
 <td>
 </td>
 <td>
+0.99<sup>*</sup> (-0.03, 2.01)
+</td>
+<td>
 1.60<sup>**</sup> (0.05, 3.15)
 </td>
 </tr>
@@ -522,6 +559,9 @@ age40-49:educationhigh
 age25-29:wantsMoreyes
 </td>
 <td>
+</td>
+<td>
+-0.23 (-1.03, 0.58)
 </td>
 <td>
 0.45 (-1.28, 2.18)
@@ -534,6 +574,9 @@ age30-39:wantsMoreyes
 <td>
 </td>
 <td>
+-0.95<sup>**</sup> (-1.70, -0.20)
+</td>
+<td>
 0.002 (-1.52, 1.52)
 </td>
 </tr>
@@ -542,6 +585,9 @@ age30-39:wantsMoreyes
 age40-49:wantsMoreyes
 </td>
 <td>
+</td>
+<td>
+-1.19<sup>**</sup> (-2.20, -0.19)
 </td>
 <td>
 -0.54 (-2.27, 1.18)
@@ -554,12 +600,17 @@ educationhigh:wantsMoreyes
 <td>
 </td>
 <td>
+0.49<sup>*</sup> (-0.03, 1.01)
+</td>
+<td>
 1.47<sup>*</sup> (-0.15, 3.08)
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 age25-29:educationhigh:wantsMoreyes
+</td>
+<td>
 </td>
 <td>
 </td>
@@ -574,12 +625,16 @@ age30-39:educationhigh:wantsMoreyes
 <td>
 </td>
 <td>
+</td>
+<td>
 -1.29 (-3.04, 0.47)
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 age40-49:educationhigh:wantsMoreyes
+</td>
+<td>
 </td>
 <td>
 </td>
@@ -595,16 +650,22 @@ Constant
 -1.13<sup>***</sup> (-1.50, -0.77)
 </td>
 <td>
+-1.47<sup>***</sup> (-2.36, -0.58)
+</td>
+<td>
 -0.92 (-2.08, 0.24)
 </td>
 </tr>
 <tr>
-<td colspan="3" style="border-bottom: 1px solid black">
+<td colspan="4" style="border-bottom: 1px solid black">
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 Observations
+</td>
+<td>
+16
 </td>
 <td>
 16
@@ -621,6 +682,9 @@ Log Likelihood
 -50.71
 </td>
 <td>
+-36.97
+</td>
+<td>
 -35.75
 </td>
 </tr>
@@ -632,18 +696,21 @@ Akaike Inf. Crit.
 113.43
 </td>
 <td>
+99.95
+</td>
+<td>
 103.51
 </td>
 </tr>
 <tr>
-<td colspan="3" style="border-bottom: 1px solid black">
+<td colspan="4" style="border-bottom: 1px solid black">
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 <em>Note:</em>
 </td>
-<td colspan="2" style="text-align:right">
+<td colspan="3" style="text-align:right">
 <sup><em></em></sup>p&lt;0.1; <sup><strong></strong></sup>p&lt;0.05;
 <sup></sup>p&lt;0.01
 </td>
@@ -665,17 +732,19 @@ and following an example from <code><a href="https://rdrr.io/pkg/multcomp/man/gl
 bother anymore creating pretty tables with <code>stargazer</code>
 though…</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">using</span>, <span class="va">notUsing</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span>, data<span class="op">=</span><span class="va">cuse</span>, family<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="st">"logit"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">using</span>, <span class="va">notUsing</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span>, data <span class="op">=</span> <span class="va">cuse</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="st">"logit"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (Intercept)    age25-29    age30-39    age40-49 </span></span>
 <span><span class="co">##  -1.5071591   0.4606758   1.0482932   1.4246380</span></span></code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="st">"25-29 - &lt;25"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>           <span class="st">"30-39 - &lt;25"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>           <span class="st">"40-49 - &lt;25"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>           <span class="st">"30-39 - 25-29"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>           <span class="st">"40-49 - 25-29"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>           <span class="st">"40-49 - 30-39"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
+<span>  <span class="st">"25-29 - &lt;25"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="st">"30-39 - &lt;25"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="st">"40-49 - &lt;25"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  <span class="st">"30-39 - 25-29"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="st">"40-49 - 25-29"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  <span class="st">"40-49 - 30-39"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">K</span></span></code></pre></div>
 <pre><code><span><span class="co">##               [,1] [,2] [,3] [,4]</span></span>
 <span><span class="co">## 25-29 - &lt;25      0    1    0    0</span></span>
@@ -685,7 +754,7 @@ though…</p>
 <span><span class="co">## 40-49 - 25-29    0   -1    0    1</span></span>
 <span><span class="co">## 40-49 - 30-39    0    0   -1    1</span></span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit.all.cont</span> <span class="op">=</span> <span class="fu">multcomp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html" class="external-link">glht</a></span><span class="op">(</span><span class="va">fit</span>, linfct<span class="op">=</span><span class="va">K</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fit.all.cont</span> <span class="op">&lt;-</span> <span class="fu">multcomp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html" class="external-link">glht</a></span><span class="op">(</span><span class="va">fit</span>, linfct <span class="op">=</span> <span class="va">K</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit.all.cont</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   Simultaneous Tests for General Linear Hypotheses</span></span>
@@ -715,8 +784,8 @@ no-intercept model, which would be hard to interpret outside the context
 of <code><a href="https://rdrr.io/pkg/multcomp/man/contrMat.html" class="external-link">multcomp::contrMat</a></code>, but can be used as an intermediate
 step to get here.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fitnoint</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">using</span>, <span class="va">notUsing</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span><span class="op">-</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">cuse</span>, family<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="st">"logit"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">K2</span> <span class="op">=</span> <span class="fu">multcomp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/contrMat.html" class="external-link">contrMat</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, type<span class="op">=</span><span class="st">"Tukey"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fitnoint</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">using</span>, <span class="va">notUsing</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">-</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">cuse</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="st">"logit"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">K2</span> <span class="op">&lt;-</span> <span class="fu">multcomp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/contrMat.html" class="external-link">contrMat</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, type <span class="op">=</span> <span class="st">"Tukey"</span><span class="op">)</span></span>
 <span><span class="va">K2</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   Multiple Comparisons of Means: Tukey Contrasts</span></span>
@@ -729,7 +798,7 @@ step to get here.</p>
 <span><span class="co">## 4 - 2  0 -1  0 1</span></span>
 <span><span class="co">## 4 - 3  0  0 -1 1</span></span></code></pre>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit.all.cont2</span> <span class="op">=</span> <span class="fu">multcomp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html" class="external-link">glht</a></span><span class="op">(</span><span class="va">fitnoint</span>, linfct<span class="op">=</span><span class="va">K2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fit.all.cont2</span> <span class="op">&lt;-</span> <span class="fu">multcomp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html" class="external-link">glht</a></span><span class="op">(</span><span class="va">fitnoint</span>, linfct <span class="op">=</span> <span class="va">K2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit.all.cont2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   Simultaneous Tests for General Linear Hypotheses</span></span>
@@ -754,7 +823,7 @@ step to get here.</p>
 <p>We didn’t get the same informative coefficient names this time, but
 we can rename the rows in <code>K2</code>, for example:</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">K2</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">K2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span></span>
 <span><span class="va">K2</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   Multiple Comparisons of Means: Tukey Contrasts</span></span>
@@ -767,27 +836,67 @@ we can rename the rows in <code>K2</code>, for example:</p>
 <span><span class="co">## 40-49 - 25-29  0 -1  0 1</span></span>
 <span><span class="co">## 40-49 - 30-39  0  0 -1 1</span></span></code></pre>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span> <span class="fu">multcomp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html" class="external-link">glht</a></span><span class="op">(</span><span class="va">fit</span>, linfct<span class="op">=</span><span class="va">K2</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">multcomp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html" class="external-link">glht</a></span><span class="op">(</span><span class="va">fitnoint</span>, linfct <span class="op">=</span> <span class="va">K2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   Simultaneous Tests for General Linear Hypotheses</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Multiple Comparisons of Means: Tukey Contrasts</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Fit: glm(formula = cbind(using, notUsing) ~ age, family = binomial("logit"), </span></span>
+<span><span class="co">## Fit: glm(formula = cbind(using, notUsing) ~ age - 1, family = binomial("logit"), </span></span>
 <span><span class="co">##     data = cuse)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Linear Hypotheses:</span></span>
 <span><span class="co">##                    Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">## 25-29 - &lt;25 == 0     1.9678     0.2841   6.926   &lt;0.001 ***</span></span>
-<span><span class="co">## 30-39 - &lt;25 == 0     2.5555     0.2734   9.347   &lt;0.001 ***</span></span>
-<span><span class="co">## 40-49 - &lt;25 == 0     2.9318     0.2975   9.854   &lt;0.001 ***</span></span>
+<span><span class="co">## 25-29 - &lt;25 == 0     0.4607     0.1727   2.667   0.0373 *  </span></span>
+<span><span class="co">## 30-39 - &lt;25 == 0     1.0483     0.1544   6.788   &lt;0.001 ***</span></span>
+<span><span class="co">## 40-49 - &lt;25 == 0     1.4246     0.1940   7.345   &lt;0.001 ***</span></span>
 <span><span class="co">## 30-39 - 25-29 == 0   0.5876     0.1406   4.181   &lt;0.001 ***</span></span>
 <span><span class="co">## 40-49 - 25-29 == 0   0.9640     0.1831   5.265   &lt;0.001 ***</span></span>
-<span><span class="co">## 40-49 - 30-39 == 0   0.3763     0.1660   2.268   0.0979 .  </span></span>
+<span><span class="co">## 40-49 - 30-39 == 0   0.3763     0.1660   2.268   0.1035    </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## (Adjusted p values reported -- single-step method)</span></span></code></pre>
+<blockquote>
+<p><strong>Important Note on Contrasts and Intercepts:</strong> Notice
+that <code>K2</code> must be tested using <code>fitnoint</code>
+(<code>multcomp::glht(fitnoint, linfct=K2)</code>), <strong>not</strong>
+<code>fit</code>. Because <code><a href="https://rdrr.io/pkg/multcomp/man/contrMat.html" class="external-link">contrMat()</a></code> constructs contrasts
+assuming each column corresponds to a separate group mean/log-odds
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo>,</mo><msub><mi>β</mi><mn>3</mn></msub><mo>,</mo><msub><mi>β</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">\beta_1, \beta_2, \beta_3, \beta_4</annotation></semantics></math>
+in a no-intercept model), applying <code>K2</code> to a model with an
+intercept (<code>fit</code>) mistakenly treats column 1 as the intercept
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\beta_0</annotation></semantics></math>)
+rather than the first group. The row <code>c(-1, 1, 0, 0)</code> would
+then compute
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mrow><mn>25</mn><mo>−</mo><mn>29</mn></mrow></msub></mrow><annotation encoding="application/x-tex">-\beta_0 + \beta_{25-29}</annotation></semantics></math>
+(yielding
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1.97</mn><annotation encoding="application/x-tex">1.97</annotation></semantics></math>)
+instead of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mrow><mn>25</mn><mo>−</mo><mn>29</mn></mrow></msub><mo>−</mo><msub><mi>β</mi><mrow><mo>&lt;</mo><mn>25</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\beta_{25-29} - \beta_{&lt;25}</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.46</mn><annotation encoding="application/x-tex">0.46</annotation></semantics></math>).
+Using <code>fitnoint</code> ensures columns match the four group levels,
+correctly reproducing the exact estimates and p-values from our manual
+matrix <code>K</code> applied to <code>fit</code>.</p>
+</blockquote>
+<div class="section level4">
+<h4 id="conclusion-between-which-age-groups-is-the-contrast-significant">Conclusion: Between which age groups is the contrast
+significant?<a class="anchor" aria-label="anchor" href="#conclusion-between-which-age-groups-is-the-contrast-significant"></a>
+</h4>
+<p>Looking at the simultaneous tests with adjusted
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values:
+- All pairwise differences in contraceptive use between age groups are
+statistically significant
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>&lt;</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">p &lt; 0.05</annotation></semantics></math>),
+<strong>except</strong> between the <strong>40–49</strong> and
+<strong>30–39</strong> age groups (difference in log-odds =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.376</mn><annotation encoding="application/x-tex">0.376</annotation></semantics></math>,
+adjusted
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.104</mn></mrow><annotation encoding="application/x-tex">p = 0.104</annotation></semantics></math>).
+Contraceptive use increases steadily with age from <code>&lt;25</code>
+up to <code>30–39</code>, but plateaus between <code>30–39</code> and
+<code>40–49</code>.</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="other-contrast-schemes">Other contrast schemes<a class="anchor" aria-label="anchor" href="#other-contrast-schemes"></a>
@@ -922,7 +1031,30 @@ same thing.</p>
 <span><span class="co">## group2   -0.1    0.8   -0.3   -0.4</span></span>
 <span><span class="co">## group3   -0.1   -0.2    0.7   -0.4</span></span>
 <span><span class="co">## group4   -0.1   -0.2   -0.3    0.6</span></span></code></pre>
+<hr>
 </div>
+</div>
+<div class="section level2">
+<h2 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h2>
+<p>In the lab walkthrough, we compared the additive model
+(<code>fit1</code>) to the all-two-way model (<code>fit1.2way</code>)
+and the full three-way model (<code>fit1.int</code>). A researcher
+suggests that the only interaction of interest is between age and desire
+for more children:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">cbind(using, notUsing)</mtext><mo>∼</mo><mtext mathvariant="normal">age</mtext><mo>×</mo><mtext mathvariant="normal">wantsMore</mtext><mo>+</mo><mtext mathvariant="normal">education</mtext></mrow><annotation encoding="application/x-tex">\text{cbind(using, notUsing)} \sim \text{age} \times \text{wantsMore} + \text{education}</annotation></semantics></math></p>
+<ol style="list-style-type: decimal">
+<li><p>Fit this model and name it <code>fit_agewants</code>.</p></li>
+<li><p>Conduct a Likelihood Ratio Test comparing the additive model
+(<code>fit1</code>) against <code>fit_agewants</code> using
+<code>anova(fit1, fit_agewants, test = "Chisq")</code>. Is the inclusion
+of the <code>age * wantsMore</code> interaction statistically
+justified?</p></li>
+<li><p>Compare <code>fit_agewants</code> against the model with all
+two-way interactions (<code>fit1.2way</code>) using
+<code>anova(fit_agewants, fit1.2way, test = "Chisq")</code>. Which model
+would you select as your final model? Why?</p></li>
+</ol>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
