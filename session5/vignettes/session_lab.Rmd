@@ -261,6 +261,31 @@ ggplot(preds.long, aes(x = value)) +
   geom_histogram(binwidth = 1)
 ```
 
-We can see that none of the models come close to modeling the extreme observed counts of 30+. In reality, these might require a more complex mixture model: for example a mixture of zero-inflation plus two different count distributions, one with a much higher mean. This is beyond the scope of the course, but it is possible to fit more complex mixture models that could fit this dataset better. 
+We can see that none of the models come close to modeling the extreme observed counts of 30+. In reality, these might require a more complex mixture model: for example a mixture of zero-inflation plus two different count distributions, one with a much higher mean. This is beyond the scope of the course, but it is possible to fit more complex mixture models that could fit this dataset better.
+
+# Exercises
+
+Noting the caveat that the Negative Binomial model did not fit well, we will proceed to interpret it anyways. In reality, **bootstrap would be a much safer way to estimate confidence intervals and p-values**. If you wish, please feel free to substitute bootstrap in the following exercises, but it is not required.
+
+## Exercise 1: Interpret Negative Binomial Coefficients as IRRs
+Extract the coefficients from `fit.negbin`, exponentiate them to obtain Incidence Rate Ratios (IRRs), and compute their 95% confidence intervals (`confint()`). Interpret the IRR for `homeless`: how does needle sharing frequency compare between homeless and non-homeless participants, holding sex and ethnicity constant?
+
+```{r}
+
+```
+
+## Exercise 2: Does Zero Inflation Depend on the Predictors?
+The lab already fit `fit.ZIpoisfull`, a zero-inflated Poisson model where `sex`, `ethn`, and `homeless` predict *both* the count process and the zero-inflation process, but never used it. Compare `fit.ZIpoisfull` to the intercept-only zero-inflation model `fit.ZIpois` using a Likelihood Ratio Test (`anova()`, or manually via `2 * (logLik(fit.ZIpoisfull) - logLik(fit.ZIpois))` compared to `qchisq(0.95, df = ...)`). Do the predictors significantly improve the model of *who is a structural zero*, or is an intercept-only zero-inflation model adequate?
+
+```{r}
+
+```
+
+## Exercise 3: Check for Overdispersion in the Poisson Model
+Calculate the ratio of residual deviance to residual degrees of freedom for `fit.pois`. Given this value and the mean/variance comparison calculated earlier in the lab, explain why a Poisson model is a poor choice for this outcome, and why moving to a Negative Binomial model (as done in this lab) was the appropriate next step.
+
+```{r}
+
+```
 
 
