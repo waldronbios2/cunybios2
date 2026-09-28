@@ -251,7 +251,7 @@ simulated?<a class="anchor" aria-label="anchor" href="#fit-a-random-effects-mode
 <span><span class="co">## </span></span>
 <span><span class="co">## Standardized Within-Group Residuals:</span></span>
 <span><span class="co">##          Min           Q1          Med           Q3          Max </span></span>
-<span><span class="co">## -2.695148348 -0.506748351  0.004597957  0.511724333  2.743338993 </span></span>
+<span><span class="co">## -2.695148176 -0.506748373  0.004597944  0.511724285  2.743338857 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Number of Observations: 20000</span></span>
 <span><span class="co">## Number of Groups: 10000</span></span></code></pre>
@@ -265,12 +265,12 @@ simulated?<a class="anchor" aria-label="anchor" href="#fit-a-random-effects-mode
 <span><span class="co">## </span></span>
 <span><span class="co">##  Random Effects:</span></span>
 <span><span class="co">##   Level: id </span></span>
-<span><span class="co">##                    lower     est.    upper</span></span>
-<span><span class="co">## sd((Intercept)) 1.995761 2.026972 2.058671</span></span>
+<span><span class="co">##                   lower     est.    upper</span></span>
+<span><span class="co">## sd((Intercept)) 1.99574 2.026972 2.058692</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Within-group standard error:</span></span>
 <span><span class="co">##     lower      est.     upper </span></span>
-<span><span class="co">## 0.9884511 0.9988032 1.0092636</span></span></code></pre>
+<span><span class="co">## 0.9860565 0.9988032 1.0117147</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="estimate-icc-from-the-model-above--is-it-what-you-expected-from-the-group-and-residual-variances-you-simulated">Estimate ICC from the model above. Is it what you expected from the
@@ -298,7 +298,7 @@ ICC &amp; = corr(x_{ij}, x_{ik}) \\
 <span>  <span class="va">cors</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="op">(</span><span class="va">cors</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">cors</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">ICClme</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.804629</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 0.8046289</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="estimate-icc-simply-by-calculating-the-correlation-between-fecfat1-and-fecfat2--is-it-similar-to-the-estimate-above">Estimate ICC simply by calculating the correlation between

@@ -425,6 +425,50 @@ different count distributions, one with a much higher mean. This is
 beyond the scope of the course, but it is possible to fit more complex
 mixture models that could fit this dataset better.</p>
 </div>
+<div class="section level2">
+<h2 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h2>
+<p>Noting the caveat that the Negative Binomial model did not fit well,
+we will proceed to interpret it anyways. In reality, <strong>bootstrap
+would be a much safer way to estimate confidence intervals and
+p-values</strong>. If you wish, please feel free to substitute bootstrap
+in the following exercises, but it is not required.</p>
+<div class="section level3">
+<h3 id="exercise-1-interpret-negative-binomial-coefficients-as-irrs">Exercise 1: Interpret Negative Binomial Coefficients as IRRs<a class="anchor" aria-label="anchor" href="#exercise-1-interpret-negative-binomial-coefficients-as-irrs"></a>
+</h3>
+<p>Extract the coefficients from <code>fit.negbin</code>, exponentiate
+them to obtain Incidence Rate Ratios (IRRs), and compute their 95%
+confidence intervals (<code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code>). Interpret the IRR for
+<code>homeless</code>: how does needle sharing frequency compare between
+homeless and non-homeless participants, holding sex and ethnicity
+constant?</p>
+</div>
+<div class="section level3">
+<h3 id="exercise-2-does-zero-inflation-depend-on-the-predictors">Exercise 2: Does Zero Inflation Depend on the Predictors?<a class="anchor" aria-label="anchor" href="#exercise-2-does-zero-inflation-depend-on-the-predictors"></a>
+</h3>
+<p>The lab already fit <code>fit.ZIpoisfull</code>, a zero-inflated
+Poisson model where <code>sex</code>, <code>ethn</code>, and
+<code>homeless</code> predict <em>both</em> the count process and the
+zero-inflation process, but never used it. Compare
+<code>fit.ZIpoisfull</code> to the intercept-only zero-inflation model
+<code>fit.ZIpois</code> using a Likelihood Ratio Test
+(<code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code>, or manually via
+<code>2 * (logLik(fit.ZIpoisfull) - logLik(fit.ZIpois))</code> compared
+to <code>qchisq(0.95, df = ...)</code>). Do the predictors significantly
+improve the model of <em>who is a structural zero</em>, or is an
+intercept-only zero-inflation model adequate?</p>
+</div>
+<div class="section level3">
+<h3 id="exercise-3-check-for-overdispersion-in-the-poisson-model">Exercise 3: Check for Overdispersion in the Poisson Model<a class="anchor" aria-label="anchor" href="#exercise-3-check-for-overdispersion-in-the-poisson-model"></a>
+</h3>
+<p>Calculate the ratio of residual deviance to residual degrees of
+freedom for <code>fit.pois</code>. Given this value and the
+mean/variance comparison calculated earlier in the lab, explain why a
+Poisson model is a poor choice for this outcome, and why moving to a
+Negative Binomial model (as done in this lab) was the appropriate next
+step.</p>
+</div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
