@@ -178,6 +178,8 @@ This tells us the multiplicative effect of each predictor on the expected count 
 ## Exercise 1: Calculate Incidence Rate Ratios (IRRs)
 Extract the coefficients from `fit.pois` (the model on risky drug use), exponentiate them to obtain the Incidence Rate Ratios (IRRs), and compute their 95% confidence intervals.
 
+Hint: some terms will have an IRR of about 0 with a confidence interval running to `Inf`. This is expected, and the cause is in the data rather than your code: check `table(needledat$ethn)` and `table(needledat$sex)`. Categories with only one or two people, all of whom have a count of zero, can't be estimated (this is called *separation*), so don't interpret those terms. For the same reason `confint()` may give an error; if it does, `confint.default()` gives Wald intervals instead.
+
 ```{r}
 
 ```
