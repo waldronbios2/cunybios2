@@ -9,6 +9,7 @@ Description: Loglinear models part 2
 Imports:
     MASS,
     gamlss,
+    lmtest,
     pscl,
     stargazer,
     pheatmap,

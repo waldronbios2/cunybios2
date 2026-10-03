@@ -59,7 +59,7 @@ The mean number of needle sharing events per participant is `r signif(pull(meanv
 
 # Create a histogram of the outcome variable.
 
-This was done in the lecture using base R, but let's do it here with ggplot2. Note the filtering of complete cases only is unnecessary because ggplot does it anyways, but this gets rid of a warning (try it without filtering). Specifying the binwidth is also unnecessary, but by default geom_histogram creates histogram bins of size 2 (ie 0 and 1 in the same bin, 2 and 3 together, ...)
+This was done in the lecture using base R, but let's do it here with ggplot2. Note the filtering of complete cases only is unnecessary because ggplot does it anyways, but this gets rid of a warning (try it without filtering). Specifying `binwidth = 1` gives each count its own bar; by default `geom_histogram` uses 30 bins spread across the range of the data, which here would group neighbouring counts together.
 
 ```{r}
 library(ggplot2)
@@ -89,7 +89,7 @@ fit.negbin <- glm.nb(shared_syr ~ sex + ethn + homeless,
 
 ## Zero-inflated Poisson
 
-The `|1` creates an intercept-only zero inflation model. Substitute it with a variable name to add that variable to the count model, and use regular model formula syntax to create any zero-inflation logistic regression model you want. Or omit the `|` for a full zero-inflation model.
+The formula has two parts separated by `|`: predictors of the count model go on the left, and predictors of the zero-inflation (logistic regression) model go on the right. `| 1` creates an intercept-only zero-inflation model; replace the `1` with any variables, using regular model formula syntax, to add them to the zero-inflation model. If you omit the `|` entirely, as in this first model, the same predictors are used for both parts.
 
 ```{r}
 library(pscl)
@@ -116,8 +116,11 @@ fit.ZInegbin <- zeroinfl(shared_syr ~ sex + ethn + homeless | 1,
 
 ## Make a boxplot of needle sharing by homelessness (and other predictors)
 
+Try replacing `homeless` with `ethn` or `sex`.
+
 ```{r}
-ggplot(needledat2, aes(x = ethn, y = shared_syr)) +
+filter(needledat2, !is.na(shared_syr)) %>%
+  ggplot(aes(x = homeless, y = shared_syr)) +
   geom_boxplot(varwidth = TRUE)
 ```
 
@@ -139,10 +142,12 @@ pheatmap(mm[, -1],
          clustering_distance_rows = "euclidean")
 ```
 
-Now repeat but assessing all variables, removing `id` because it's just an identifier, and `shsyryn` because it has zero variance.
+Now repeat but assessing all the potential predictors. First remove `id` because it's just an identifier, the outcome and the variables derived from it (`shared_syr`, `shsyryn`, `logshsyr`, `shsyr`), and `hivstat` because it is recoded as `hiv`. These have to be removed with `select()` *before* calling `model.matrix()`: a formula like `~ . - shsyr` removes the term but still drops every row where `shsyr` is missing, which would leave only 22 of the 117 participants.
 
 ```{r}
-mm <- model.matrix(~ . - id - shsyryn, data = needledat2)[, -1] #[, -1] gets rid of intercept
+predictors <- dplyr::select(needledat2, -id, -shared_syr, -shsyryn, -logshsyr, -shsyr, -hivstat)
+mm <- model.matrix(~ ., data = predictors)[, -1] #[, -1] gets rid of intercept
+nrow(mm) # participants with complete data on all predictors
 plot(hclust(as.dist(1 - cor(mm))))
 library(pheatmap)
 pheatmap(mm,
@@ -230,13 +235,13 @@ for (i in seq_along(listoffits)){
 
 # Plot predicted and observed counts
 
-Here is a `data.frame` that we can use to make histograms, density plots, etc.
+Here is a `data.frame` that we can use to make histograms, density plots, etc. Note `type = "response"`: for `glm` and `glm.nb` models, `predict()` returns predictions on the log (linear predictor) scale by default, whereas we want predicted counts that can be compared to the observed counts.
 ```{r}
 preds <- data.frame(observed = fit.pois$y,
-                    poisson = predict(fit.pois),
-                    negbin = predict(fit.negbin),
-                    ZIpois = predict(fit.ZIpois),
-                    ZInegbin = predict(fit.ZInegbin))
+                    poisson = predict(fit.pois, type = "response"),
+                    negbin = predict(fit.negbin, type = "response"),
+                    ZIpois = predict(fit.ZIpois, type = "response"),
+                    ZInegbin = predict(fit.ZInegbin, type = "response"))
 ```
 
 Just to help with pivoting, let's pivot this into long-format:
@@ -275,7 +280,7 @@ Extract the coefficients from `fit.negbin`, exponentiate them to obtain Incidenc
 ```
 
 ## Exercise 2: Does Zero Inflation Depend on the Predictors?
-The lab already fit `fit.ZIpoisfull`, a zero-inflated Poisson model where `sex`, `ethn`, and `homeless` predict *both* the count process and the zero-inflation process, but never used it. Compare `fit.ZIpoisfull` to the intercept-only zero-inflation model `fit.ZIpois` using a Likelihood Ratio Test (`anova()`, or manually via `2 * (logLik(fit.ZIpoisfull) - logLik(fit.ZIpois))` compared to `qchisq(0.95, df = ...)`). Do the predictors significantly improve the model of *who is a structural zero*, or is an intercept-only zero-inflation model adequate?
+The lab already fit `fit.ZIpoisfull`, a zero-inflated Poisson model where `sex`, `ethn`, and `homeless` predict *both* the count process and the zero-inflation process, but never used it. Compare `fit.ZIpoisfull` to the intercept-only zero-inflation model `fit.ZIpois` using a Likelihood Ratio Test. `anova()` doesn't work for `zeroinfl` models, so either use `lmtest::lrtest(fit.ZIpois, fit.ZIpoisfull)`, or calculate it manually as `2 * (logLik(fit.ZIpoisfull) - logLik(fit.ZIpois))` and compare it to `qchisq(0.95, df = ...)`, where `df` is the difference in the number of estimated parameters between the two models (see the `df` shown by `logLik()`). Do the predictors significantly improve the model of *who is a structural zero*, or is an intercept-only zero-inflation model adequate?
 
 ```{r}
 
