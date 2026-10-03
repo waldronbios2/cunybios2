@@ -22,3 +22,6 @@ session*/docs/
 .posit/assistant
 settings.json
 .vscode/
+
+# Lab solutions: keep out of the public repo
+*solutions.Rmd
