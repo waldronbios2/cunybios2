@@ -150,9 +150,10 @@ if the analysis is changed!)</p>
 <p>This was done in the lecture using base R, but let’s do it here with
 ggplot2. Note the filtering of complete cases only is unnecessary
 because ggplot does it anyways, but this gets rid of a warning (try it
-without filtering). Specifying the binwidth is also unnecessary, but by
-default geom_histogram creates histogram bins of size 2 (ie 0 and 1 in
-the same bin, 2 and 3 together, …)</p>
+without filtering). Specifying <code>binwidth = 1</code> gives each
+count its own bar; by default <code>geom_histogram</code> uses 30 bins
+spread across the range of the data, which here would group neighbouring
+counts together.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">needledat2</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">shared_syr</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -189,11 +190,13 @@ without zero inflation.<a class="anchor" aria-label="anchor" href="#fit-poisson-
 <div class="section level3">
 <h3 id="zero-inflated-poisson">Zero-inflated Poisson<a class="anchor" aria-label="anchor" href="#zero-inflated-poisson"></a>
 </h3>
-<p>The <code>|1</code> creates an intercept-only zero inflation model.
-Substitute it with a variable name to add that variable to the count
-model, and use regular model formula syntax to create any zero-inflation
-logistic regression model you want. Or omit the <code>|</code> for a
-full zero-inflation model.</p>
+<p>The formula has two parts separated by <code>|</code>: predictors of
+the count model go on the left, and predictors of the zero-inflation
+(logistic regression) model go on the right. <code>| 1</code> creates an
+intercept-only zero-inflation model; replace the <code>1</code> with any
+variables, using regular model formula syntax, to add them to the
+zero-inflation model. If you omit the <code>|</code> entirely, as in
+this first model, the same predictors are used for both parts.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/atahk/pscl" class="external-link">pscl</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Classes and Methods for R originally developed in the</span></span>
@@ -227,11 +230,12 @@ full zero-inflation model.</p>
 <h3 id="make-a-boxplot-of-needle-sharing-by-homelessness-and-other-predictors">Make a boxplot of needle sharing by homelessness (and other
 predictors)<a class="anchor" aria-label="anchor" href="#make-a-boxplot-of-needle-sharing-by-homelessness-and-other-predictors"></a>
 </h3>
+<p>Try replacing <code>homeless</code> with <code>ethn</code> or
+<code>sex</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">needledat2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ethn</span>, y <span class="op">=</span> <span class="va">shared_syr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">needledat2</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">shared_syr</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">homeless</span>, y <span class="op">=</span> <span class="va">shared_syr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>varwidth <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 2 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">## (`stat_boxplot()`).</span></span></code></pre>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 </div>
@@ -244,7 +248,7 @@ matrix containing numeric and dummy variables, that can be used for
 calculating correlations and plotting heatmaps or dendrograms. First,
 assessing only three variables. Note, the first column of
 <code>mm</code> is the intercept, which must be removed.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">ethn</span> <span class="op">+</span> <span class="va">homeless</span>, data <span class="op">=</span> <span class="va">needledat2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">mm</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
@@ -256,20 +260,30 @@ for columns. The choice of distance metric makes this clustering look
 very different. See <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">?pheatmap</a></code> for other distance metric
 options. There are also other heatmap packages, but
 <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">?pheatmap</a></code> makes it easy to produce a basic heatmap.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pheatmap</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap</a></span><span class="op">(</span><span class="va">mm</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span>         clustering_distance_cols <span class="op">=</span> <span class="st">"correlation"</span>,</span>
 <span>         clustering_distance_rows <span class="op">=</span> <span class="st">"euclidean"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
-<p>Now repeat but assessing all variables, removing <code>id</code>
-because it’s just an identifier, and <code>shsyryn</code> because it has
-zero variance.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span> <span class="op">-</span> <span class="va">id</span> <span class="op">-</span> <span class="va">shsyryn</span>, data <span class="op">=</span> <span class="va">needledat2</span><span class="op">)</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="co">#[, -1] gets rid of intercept</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="session_lab_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="700"></p>
+<p>Now repeat but assessing all the potential predictors. First remove
+<code>id</code> because it’s just an identifier, the outcome and the
+variables derived from it (<code>shared_syr</code>,
+<code>shsyryn</code>, <code>logshsyr</code>, <code>shsyr</code>), and
+<code>hivstat</code> because it is recoded as <code>hiv</code>. These
+have to be removed with <code><a href="https://rdrr.io/pkg/MASS/man/lm.ridge.html" class="external-link">select()</a></code> <em>before</em> calling
+<code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix()</a></code>: a formula like <code>~ . - shsyr</code>
+removes the term but still drops every row where <code>shsyr</code> is
+missing, which would leave only 22 of the 117 participants.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">predictors</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">needledat2</span>, <span class="op">-</span><span class="va">id</span>, <span class="op">-</span><span class="va">shared_syr</span>, <span class="op">-</span><span class="va">shsyryn</span>, <span class="op">-</span><span class="va">logshsyr</span>, <span class="op">-</span><span class="va">shsyr</span>, <span class="op">-</span><span class="va">hivstat</span><span class="op">)</span></span>
+<span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">predictors</span><span class="op">)</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="co">#[, -1] gets rid of intercept</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span> <span class="co"># participants with complete data on all predictors</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 103</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pheatmap</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap</a></span><span class="op">(</span><span class="va">mm</span>,</span>
 <span>         clustering_distance_cols <span class="op">=</span> <span class="st">"correlation"</span>,</span>
@@ -282,21 +296,21 @@ fit best.<a class="anchor" aria-label="anchor" href="#use-chi-square-nested-devi
 </h2>
 <p>I want to calculate the log-likelihood from each model. The simplest
 way is to call the <code>logLik</code> function one at a time:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">fit.pois</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'log Lik.' -730.0133 (df=5)</span></span></code></pre>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">fit.negbin</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'log Lik.' -147.1277 (df=6)</span></span></code></pre>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">fit.ZIpois</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'log Lik.' -303.0276 (df=6)</span></span></code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">fit.ZInegbin</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'log Lik.' -146.7677 (df=7)</span></span></code></pre>
 <p>Just to demonstrate a fancier way that could be used on many models,
 I’ll create a list of model objects:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">listoffits</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    pois <span class="op">=</span> <span class="va">fit.pois</span>,</span>
@@ -307,7 +321,7 @@ I’ll create a list of model objects:</p>
 <p>Then demonstrate how the <code>lapply</code> (also related functions
 like <code>sapply</code>) can be used to implicitly loop over elements
 of a list, to do exactly the same thing:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">listoffits</span>, <span class="va">logLik</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $pois</span></span>
 <span><span class="co">## 'log Lik.' -730.0133 (df=5)</span></span>
@@ -325,11 +339,11 @@ big a difference in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>2</mn><mo>×</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>l</mi><mi>i</mi><mi>k</mi><mi>e</mi><mi>l</mi><mi>i</mi><mi>h</mi><mi>o</mi><mi>o</mi><mi>d</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">-2 \times log(likelihood)</annotation></semantics></math>
 would be statistically significant on one difference of degrees of
 freedom:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">qchisq</a></span><span class="op">(</span><span class="fl">0.95</span>, df <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 3.841459</span></span></code></pre>
 <p>Or two degrees of freedom:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">qchisq</a></span><span class="op">(</span><span class="fl">0.95</span>, df <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 5.991465</span></span></code></pre>
 <p>All the differences in double log-likelihoods above are <em>much</em>
@@ -338,6 +352,32 @@ for the difference between Negative Binomial and zero-inflated negative
 binomial models. So it doesn’t look like zero inflation helped the
 Negative Binomial distribution model, but it helped the Poisson model,
 and the Negative Binomial model fits better than the Poisson model.</p>
+<p>Strictly, the Poisson vs. Negative Binomial comparison needs a small
+correction. The Poisson model is the special case of the Negative
+Binomial where the dispersion parameter is zero, and since dispersion
+can’t be negative, the null hypothesis sits at the boundary of the
+possible values. In that situation the likelihood ratio statistic
+doesn’t follow a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>χ</mi><mn>1</mn><mn>2</mn></msubsup><annotation encoding="application/x-tex">\chi^2_1</annotation></semantics></math>
+distribution: the correct p-value is half of the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>χ</mi><mn>1</mn><mn>2</mn></msubsup><annotation encoding="application/x-tex">\chi^2_1</annotation></semantics></math>
+p-value, so the 5% critical value is the 90th percentile of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>χ</mi><mn>1</mn><mn>2</mn></msubsup><annotation encoding="application/x-tex">\chi^2_1</annotation></semantics></math>
+rather than the 95th:</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">qchisq</a></span><span class="op">(</span><span class="fl">0.90</span>, df <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2.705543</span></span></code></pre>
+<p>That makes no difference here, where the difference is in the
+hundreds, but it would matter for a borderline result.</p>
+<p>Whether to fit a zero-inflated model at all is first a modeling
+question rather than a testing one. A zero-inflated model assumes there
+is a separate group of “structural zeros”: here, people who would never
+share a syringe under any circumstances, as opposed to people who could
+have shared but happened not to in the past month. We have no particular
+reason to suspect such a group in this study, and the Negative Binomial
+model’s overdispersion already accounts for the large number of zeros,
+which is consistent with zero inflation not improving the Negative
+Binomial model.</p>
 </div>
 <div class="section level2">
 <h2 id="create-residual-deviance-plots-using-the-functions-defined-in-the-lecture-">Create residual deviance plots using the functions defined in the
@@ -345,7 +385,7 @@ lecture.<a class="anchor" aria-label="anchor" href="#create-residual-deviance-pl
 </h2>
 <p>These were the (base graphics) functions defined to create the first
 two panels of residuals plots for all of these types of models.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plotpanel1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">fit</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>,</span>
@@ -376,48 +416,52 @@ these models with plenty of skepticism. But this dataset is tricky and
 I’m not sure offhand of a good model to fit it.</p>
 <p>Note, the line <code>par(mfrow=c(1, 2))</code> only works for base
 graphics (not ggplot2), and creates a 1 row by 2 column plot panel.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">listoffits</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu">plotpanel1</span><span class="op">(</span><span class="va">listoffits</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">listoffits</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="fu">plotpanel2</span><span class="op">(</span><span class="va">listoffits</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">listoffits</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p><img src="session_lab_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="700"><img src="session_lab_files/figure-html/unnamed-chunk-18-2.png" class="r-plt" alt="" width="700"><img src="session_lab_files/figure-html/unnamed-chunk-18-3.png" class="r-plt" alt="" width="700"><img src="session_lab_files/figure-html/unnamed-chunk-18-4.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="700"><img src="session_lab_files/figure-html/unnamed-chunk-19-2.png" class="r-plt" alt="" width="700"><img src="session_lab_files/figure-html/unnamed-chunk-19-3.png" class="r-plt" alt="" width="700"><img src="session_lab_files/figure-html/unnamed-chunk-19-4.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="plot-predicted-and-observed-counts">Plot predicted and observed counts<a class="anchor" aria-label="anchor" href="#plot-predicted-and-observed-counts"></a>
 </h2>
 <p>Here is a <code>data.frame</code> that we can use to make histograms,
-density plots, etc.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+density plots, etc. Note <code>type = "response"</code>: for
+<code>glm</code> and <code>glm.nb</code> models, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>
+returns predictions on the log (linear predictor) scale by default,
+whereas we want predicted counts that can be compared to the observed
+counts.</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>observed <span class="op">=</span> <span class="va">fit.pois</span><span class="op">$</span><span class="va">y</span>,</span>
-<span>                    poisson <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit.pois</span><span class="op">)</span>,</span>
-<span>                    negbin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit.negbin</span><span class="op">)</span>,</span>
-<span>                    ZIpois <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit.ZIpois</span><span class="op">)</span>,</span>
-<span>                    ZInegbin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit.ZInegbin</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                    poisson <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit.pois</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>                    negbin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit.negbin</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>                    ZIpois <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit.ZIpois</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>                    ZInegbin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit.ZInegbin</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Just to help with pivoting, let’s pivot this into long-format:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds.long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">preds</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>What did this do?</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">preds.long</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         name         value        </span></span>
-<span><span class="co">##  Length   :575   Min.   :-0.5506  </span></span>
-<span><span class="co">##  N.unique :  5   1st Qu.: 0.0000  </span></span>
-<span><span class="co">##  N.blank  :  0   Median : 1.1446  </span></span>
-<span><span class="co">##  Min.nchar:  6   Mean   : 2.3125  </span></span>
-<span><span class="co">##  Max.nchar:  8   3rd Qu.: 2.5691  </span></span>
+<span><span class="co">##  Length   :575   Min.   : 0.0000  </span></span>
+<span><span class="co">##  N.unique :  5   1st Qu.: 0.7352  </span></span>
+<span><span class="co">##  N.blank  :  0   Median : 2.5691  </span></span>
+<span><span class="co">##  Min.nchar:  6   Mean   : 3.2634  </span></span>
+<span><span class="co">##  Max.nchar:  8   3rd Qu.: 3.3616  </span></span>
 <span><span class="co">##                  Max.   :60.0000</span></span></code></pre>
 <p>Boxplot</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">preds.long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="session_lab_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="" width="700"></p>
 <p>Histogram with facet_wrap</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">preds.long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">name</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="session_lab_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="700"></p>
 <p>We can see that none of the models come close to modeling the extreme
 observed counts of 30+. In reality, these might require a more complex
 mixture model: for example a mixture of zero-inflation plus two
@@ -451,12 +495,16 @@ Poisson model where <code>sex</code>, <code>ethn</code>, and
 <code>homeless</code> predict <em>both</em> the count process and the
 zero-inflation process, but never used it. Compare
 <code>fit.ZIpoisfull</code> to the intercept-only zero-inflation model
-<code>fit.ZIpois</code> using a Likelihood Ratio Test
-(<code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code>, or manually via
-<code>2 * (logLik(fit.ZIpoisfull) - logLik(fit.ZIpois))</code> compared
-to <code>qchisq(0.95, df = ...)</code>). Do the predictors significantly
-improve the model of <em>who is a structural zero</em>, or is an
-intercept-only zero-inflation model adequate?</p>
+<code>fit.ZIpois</code> using a Likelihood Ratio Test.
+<code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> doesn’t work for <code>zeroinfl</code> models, so
+either use <code>lmtest::lrtest(fit.ZIpois, fit.ZIpoisfull)</code>, or
+calculate it manually as
+<code>2 * (logLik(fit.ZIpoisfull) - logLik(fit.ZIpois))</code> and
+compare it to <code>qchisq(0.95, df = ...)</code>, where <code>df</code>
+is the difference in the number of estimated parameters between the two
+models (see the <code>df</code> shown by <code><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik()</a></code>). Do the
+predictors significantly improve the model of <em>who is a structural
+zero</em>, or is an intercept-only zero-inflation model adequate?</p>
 </div>
 <div class="section level3">
 <h3 id="exercise-3-check-for-overdispersion-in-the-poisson-model">Exercise 3: Check for Overdispersion in the Poisson Model<a class="anchor" aria-label="anchor" href="#exercise-3-check-for-overdispersion-in-the-poisson-model"></a>

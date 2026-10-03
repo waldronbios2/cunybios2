@@ -55,9 +55,9 @@ if the analysis is changed!)
 This was done in the lecture using base R, but let’s do it here with
 ggplot2. Note the filtering of complete cases only is unnecessary
 because ggplot does it anyways, but this gets rid of a warning (try it
-without filtering). Specifying the binwidth is also unnecessary, but by
-default geom_histogram creates histogram bins of size 2 (ie 0 and 1 in
-the same bin, 2 and 3 together, …)
+without filtering). Specifying `binwidth = 1` gives each count its own
+bar; by default `geom_histogram` uses 30 bins spread across the range of
+the data, which here would group neighbouring counts together.
 
 \
 [`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`\
@@ -94,11 +94,13 @@ the same bin, 2 and 3 together, …)
 
 ### Zero-inflated Poisson
 
-The `|1` creates an intercept-only zero inflation model. Substitute it
-with a variable name to add that variable to the count model, and use
-regular model formula syntax to create any zero-inflation logistic
-regression model you want. Or omit the `|` for a full zero-inflation
-model.
+The formula has two parts separated by `|`: predictors of the count
+model go on the left, and predictors of the zero-inflation (logistic
+regression) model go on the right. `| 1` creates an intercept-only
+zero-inflation model; replace the `1` with any variables, using regular
+model formula syntax, to add them to the zero-inflation model. If you
+omit the `|` entirely, as in this first model, the same predictors are
+used for both parts.
 
 \
 [`library`](https://rdrr.io/r/base/library.html)`(`[`pscl`](https://github.com/atahk/pscl)`)`
@@ -131,12 +133,12 @@ model.
 
 ### Make a boxplot of needle sharing by homelessness (and other predictors)
 
-\
-[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``needledat2``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``ethn``, y ``=`` ``shared_syr``)``)`` ``+`\
-`  `[`geom_boxplot`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html)`(``varwidth ``=`` ``TRUE``)`
+Try replacing `homeless` with `ethn` or `sex`.
 
-    ## Warning: Removed 2 rows containing non-finite outside the scale range
-    ## (`stat_boxplot()`).
+\
+[`filter`](https://rdrr.io/r/stats/filter.html)`(``needledat2``, ``!`[`is.na`](https://rdrr.io/r/base/NA.html)`(``shared_syr``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``homeless``, y ``=`` ``shared_syr``)``)`` ``+`\
+`  `[`geom_boxplot`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html)`(``varwidth ``=`` ``TRUE``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-8-1.png)
 
@@ -173,11 +175,24 @@ easy to produce a basic heatmap.
 
 ![](session_lab_files/figure-html/unnamed-chunk-10-1.png)
 
-Now repeat but assessing all variables, removing `id` because it’s just
-an identifier, and `shsyryn` because it has zero variance.
+Now repeat but assessing all the potential predictors. First remove `id`
+because it’s just an identifier, the outcome and the variables derived
+from it (`shared_syr`, `shsyryn`, `logshsyr`, `shsyr`), and `hivstat`
+because it is recoded as `hiv`. These have to be removed with
+[`select()`](https://rdrr.io/pkg/MASS/man/lm.ridge.html) *before*
+calling [`model.matrix()`](https://rdrr.io/r/stats/model.matrix.html): a
+formula like `~ . - shsyr` removes the term but still drops every row
+where `shsyr` is missing, which would leave only 22 of the 117
+participants.
 
 \
-`mm`` ``<-`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``.`` ``-`` ``id`` ``-`` ``shsyryn``, data ``=`` ``needledat2``)``[``, ``-``1``]`` ``#[, -1] gets rid of intercept`\
+`predictors`` ``<-`` ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``needledat2``, ``-``id``, ``-``shared_syr``, ``-``shsyryn``, ``-``logshsyr``, ``-``shsyr``, ``-``hivstat``)`\
+`mm`` ``<-`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(``~`` ``.``, data ``=`` ``predictors``)``[``, ``-``1``]`` ``#[, -1] gets rid of intercept`\
+[`nrow`](https://rdrr.io/r/base/nrow.html)`(``mm``)`` ``# participants with complete data on all predictors`
+
+    ## [1] 103
+
+\
 [`plot`](https://rdrr.io/r/graphics/plot.default.html)`(`[`hclust`](https://rdrr.io/r/stats/hclust.html)`(`[`as.dist`](https://rdrr.io/r/stats/dist.html)`(``1`` ``-`` `[`cor`](https://rdrr.io/r/stats/cor.html)`(``mm``)``)``)``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-11-1.png)
@@ -269,6 +284,33 @@ binomial models. So it doesn’t look like zero inflation helped the
 Negative Binomial distribution model, but it helped the Poisson model,
 and the Negative Binomial model fits better than the Poisson model.
 
+Strictly, the Poisson vs. Negative Binomial comparison needs a small
+correction. The Poisson model is the special case of the Negative
+Binomial where the dispersion parameter is zero, and since dispersion
+can’t be negative, the null hypothesis sits at the boundary of the
+possible values. In that situation the likelihood ratio statistic
+doesn’t follow a $`\chi^2_1`$ distribution: the correct p-value is half
+of the $`\chi^2_1`$ p-value, so the 5% critical value is the 90th
+percentile of $`\chi^2_1`$ rather than the 95th:
+
+\
+[`qchisq`](https://rdrr.io/r/stats/Chisquare.html)`(``0.90``, df ``=`` ``1``)`
+
+    ## [1] 2.705543
+
+That makes no difference here, where the difference is in the hundreds,
+but it would matter for a borderline result.
+
+Whether to fit a zero-inflated model at all is first a modeling question
+rather than a testing one. A zero-inflated model assumes there is a
+separate group of “structural zeros”: here, people who would never share
+a syringe under any circumstances, as opposed to people who could have
+shared but happened not to in the past month. We have no particular
+reason to suspect such a group in this study, and the Negative Binomial
+model’s overdispersion already accounts for the large number of zeros,
+which is consistent with zero inflation not improving the Negative
+Binomial model.
+
 ## Create residual deviance plots using the functions defined in the lecture.
 
 These were the (base graphics) functions defined to create the first two
@@ -315,19 +357,22 @@ ggplot2), and creates a 1 row by 2 column plot panel.
 `  ``plotpanel2``(``listoffits``[[``i``]``]``, main ``=`` `[`names`](https://rdrr.io/r/base/names.html)`(``listoffits``)``[``i``]``)`\
 `}`
 
-![](session_lab_files/figure-html/unnamed-chunk-18-1.png)![](session_lab_files/figure-html/unnamed-chunk-18-2.png)![](session_lab_files/figure-html/unnamed-chunk-18-3.png)![](session_lab_files/figure-html/unnamed-chunk-18-4.png)
+![](session_lab_files/figure-html/unnamed-chunk-19-1.png)![](session_lab_files/figure-html/unnamed-chunk-19-2.png)![](session_lab_files/figure-html/unnamed-chunk-19-3.png)![](session_lab_files/figure-html/unnamed-chunk-19-4.png)
 
 ## Plot predicted and observed counts
 
 Here is a `data.frame` that we can use to make histograms, density
-plots, etc.
+plots, etc. Note `type = "response"`: for `glm` and `glm.nb` models,
+[`predict()`](https://rdrr.io/r/stats/predict.html) returns predictions
+on the log (linear predictor) scale by default, whereas we want
+predicted counts that can be compared to the observed counts.
 
 \
 `preds`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``observed ``=`` ``fit.pois``$``y``,`\
-`                    poisson ``=`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit.pois``)``,`\
-`                    negbin ``=`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit.negbin``)``,`\
-`                    ZIpois ``=`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit.ZIpois``)``,`\
-`                    ZInegbin ``=`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit.ZInegbin``)``)`
+`                    poisson ``=`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit.pois``, type ``=`` ``"response"``)``,`\
+`                    negbin ``=`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit.negbin``, type ``=`` ``"response"``)``,`\
+`                    ZIpois ``=`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit.ZIpois``, type ``=`` ``"response"``)``,`\
+`                    ZInegbin ``=`` `[`predict`](https://rdrr.io/r/stats/predict.html)`(``fit.ZInegbin``, type ``=`` ``"response"``)``)`
 
 Just to help with pivoting, let’s pivot this into long-format:
 
@@ -340,11 +385,11 @@ What did this do?
 [`summary`](https://rdrr.io/r/base/summary.html)`(``preds.long``)`
 
     ##         name         value        
-    ##  Length   :575   Min.   :-0.5506  
-    ##  N.unique :  5   1st Qu.: 0.0000  
-    ##  N.blank  :  0   Median : 1.1446  
-    ##  Min.nchar:  6   Mean   : 2.3125  
-    ##  Max.nchar:  8   3rd Qu.: 2.5691  
+    ##  Length   :575   Min.   : 0.0000  
+    ##  N.unique :  5   1st Qu.: 0.7352  
+    ##  N.blank  :  0   Median : 2.5691  
+    ##  Min.nchar:  6   Mean   : 3.2634  
+    ##  Max.nchar:  8   3rd Qu.: 3.3616  
     ##                  Max.   :60.0000
 
 Boxplot
@@ -352,7 +397,7 @@ Boxplot
 \
 [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``preds.long``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``name``, y ``=`` ``value``)``)`` ``+`` `[`geom_boxplot`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html)`(``)`
 
-![](session_lab_files/figure-html/unnamed-chunk-22-1.png)
+![](session_lab_files/figure-html/unnamed-chunk-23-1.png)
 
 Histogram with facet_wrap
 
@@ -361,7 +406,7 @@ Histogram with facet_wrap
 `  `[`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html)`(``~``name``)`` ``+`\
 `  `[`geom_histogram`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)`(``binwidth ``=`` ``1``)`
 
-![](session_lab_files/figure-html/unnamed-chunk-23-1.png)
+![](session_lab_files/figure-html/unnamed-chunk-24-1.png)
 
 We can see that none of the models come close to modeling the extreme
 observed counts of 30+. In reality, these might require a more complex
@@ -393,11 +438,15 @@ The lab already fit `fit.ZIpoisfull`, a zero-inflated Poisson model
 where `sex`, `ethn`, and `homeless` predict *both* the count process and
 the zero-inflation process, but never used it. Compare `fit.ZIpoisfull`
 to the intercept-only zero-inflation model `fit.ZIpois` using a
-Likelihood Ratio Test ([`anova()`](https://rdrr.io/r/stats/anova.html),
-or manually via `2 * (logLik(fit.ZIpoisfull) - logLik(fit.ZIpois))`
-compared to `qchisq(0.95, df = ...)`). Do the predictors significantly
-improve the model of *who is a structural zero*, or is an intercept-only
-zero-inflation model adequate?
+Likelihood Ratio Test. [`anova()`](https://rdrr.io/r/stats/anova.html)
+doesn’t work for `zeroinfl` models, so either use
+`lmtest::lrtest(fit.ZIpois, fit.ZIpoisfull)`, or calculate it manually
+as `2 * (logLik(fit.ZIpoisfull) - logLik(fit.ZIpois))` and compare it to
+`qchisq(0.95, df = ...)`, where `df` is the difference in the number of
+estimated parameters between the two models (see the `df` shown by
+[`logLik()`](https://rdrr.io/r/stats/logLik.html)). Do the predictors
+significantly improve the model of *who is a structural zero*, or is an
+intercept-only zero-inflation model adequate?
 
 ### Exercise 3: Check for Overdispersion in the Poisson Model
 
