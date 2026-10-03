@@ -196,6 +196,16 @@ qchisq(0.95, df = 2)
 
 All the differences in double log-likelihoods above are _much_ larger (in the hundreds) than these critical significance values, except for the difference between Negative Binomial and zero-inflated negative binomial models. So it doesn't look like zero inflation helped the Negative Binomial distribution model, but it helped the Poisson model, and the Negative Binomial model fits better than the Poisson model.
 
+Strictly, the Poisson vs. Negative Binomial comparison needs a small correction. The Poisson model is the special case of the Negative Binomial where the dispersion parameter is zero, and since dispersion can't be negative, the null hypothesis sits at the boundary of the possible values. In that situation the likelihood ratio statistic doesn't follow a $\chi^2_1$ distribution: the correct p-value is half of the $\chi^2_1$ p-value, so the 5% critical value is the 90th percentile of $\chi^2_1$ rather than the 95th:
+
+```{r}
+qchisq(0.90, df = 1)
+```
+
+That makes no difference here, where the difference is in the hundreds, but it would matter for a borderline result.
+
+Whether to fit a zero-inflated model at all is first a modeling question rather than a testing one. A zero-inflated model assumes there is a separate group of "structural zeros": here, people who would never share a syringe under any circumstances, as opposed to people who could have shared but happened not to in the past month. We have no particular reason to suspect such a group in this study, and the Negative Binomial model's overdispersion already accounts for the large number of zeros, which is consistent with zero inflation not improving the Negative Binomial model.
+
 # Create residual deviance plots using the functions defined in the lecture.
 
 These were the (base graphics) functions defined to create the first two panels of residuals plots for all of these types of models.
