@@ -275,6 +275,16 @@ Extract the coefficients from `fit.pois` (the model on risky drug use),
 exponentiate them to obtain the Incidence Rate Ratios (IRRs), and
 compute their 95% confidence intervals.
 
+Hint: some terms will have an IRR of about 0 with a confidence interval
+running to `Inf`. This is expected, and the cause is in the data rather
+than your code: check `table(needledat$ethn)` and
+`table(needledat$sex)`. Categories with only one or two people, all of
+whom have a count of zero, can’t be estimated (this is called
+*separation*), so don’t interpret those terms. For the same reason
+[`confint()`](https://rdrr.io/r/stats/confint.html) may give an error;
+if it does, [`confint.default()`](https://rdrr.io/r/stats/confint.html)
+gives Wald intervals instead.
+
 ### Exercise 2: Model Comparison (LRT)
 
 Fit a reduced Poisson model by removing the `homeless` predictor from
@@ -282,6 +292,15 @@ the previous risky drug use model. Then, perform a Likelihood Ratio Test
 (using `anova(..., test="LRT")`) to compare this reduced model against
 the full model `fit.pois`. Interpret the result. Does the `homeless`
 variable significantly improve the model fit?
+
+Hint: `homeless` has missing values, so the reduced model would be fit
+on a few more observations than `fit.pois`, and
+[`anova()`](https://rdrr.io/r/stats/anova.html) will give an error
+because an LRT requires both models to be fit on the same observations.
+First subset the data to rows that are complete for all model variables
+(`shared_syr`, `sex`, `ethn`, `homeless`), for example with
+[`complete.cases()`](https://rdrr.io/r/stats/complete.cases.html), then
+fit both the full and reduced models on that subset.
 
 ### Exercise 3: Check for Overdispersion
 

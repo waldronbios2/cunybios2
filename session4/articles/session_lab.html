@@ -444,6 +444,15 @@ constant.</p>
 <p>Extract the coefficients from <code>fit.pois</code> (the model on
 risky drug use), exponentiate them to obtain the Incidence Rate Ratios
 (IRRs), and compute their 95% confidence intervals.</p>
+<p>Hint: some terms will have an IRR of about 0 with a confidence
+interval running to <code>Inf</code>. This is expected, and the cause is
+in the data rather than your code: check
+<code>table(needledat$ethn)</code> and
+<code>table(needledat$sex)</code>. Categories with only one or two
+people, all of whom have a count of zero, can’t be estimated (this is
+called <em>separation</em>), so don’t interpret those terms. For the
+same reason <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> may give an error; if it does,
+<code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint.default()</a></code> gives Wald intervals instead.</p>
 </div>
 <div class="section level3">
 <h3 id="exercise-2-model-comparison-lrt">Exercise 2: Model Comparison (LRT)<a class="anchor" aria-label="anchor" href="#exercise-2-model-comparison-lrt"></a>
@@ -454,6 +463,14 @@ Likelihood Ratio Test (using <code>anova(..., test="LRT")</code>) to
 compare this reduced model against the full model <code>fit.pois</code>.
 Interpret the result. Does the <code>homeless</code> variable
 significantly improve the model fit?</p>
+<p>Hint: <code>homeless</code> has missing values, so the reduced model
+would be fit on a few more observations than <code>fit.pois</code>, and
+<code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> will give an error because an LRT requires both
+models to be fit on the same observations. First subset the data to rows
+that are complete for all model variables (<code>shared_syr</code>,
+<code>sex</code>, <code>ethn</code>, <code>homeless</code>), for example
+with <code><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases()</a></code>, then fit both the full and reduced
+models on that subset.</p>
 </div>
 <div class="section level3">
 <h3 id="exercise-3-check-for-overdispersion">Exercise 3: Check for Overdispersion<a class="anchor" aria-label="anchor" href="#exercise-3-check-for-overdispersion"></a>
