@@ -185,6 +185,8 @@ Extract the coefficients from `fit.pois` (the model on risky drug use), exponent
 ## Exercise 2: Model Comparison (LRT)
 Fit a reduced Poisson model by removing the `homeless` predictor from the previous risky drug use model. Then, perform a Likelihood Ratio Test (using `anova(..., test="LRT")`) to compare this reduced model against the full model `fit.pois`. Interpret the result. Does the `homeless` variable significantly improve the model fit?
 
+Hint: `homeless` has missing values, so the reduced model would be fit on a few more observations than `fit.pois`, and `anova()` will give an error because an LRT requires both models to be fit on the same observations. First subset the data to rows that are complete for all model variables (`shared_syr`, `sex`, `ethn`, `homeless`), for example with `complete.cases()`, then fit both the full and reduced models on that subset.
+
 ```{r}
 
 ```
