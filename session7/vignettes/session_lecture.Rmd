@@ -68,7 +68,7 @@ leuk <- read_csv("leuk.csv")
 leuk <- leuk %>%
   mutate(group = factor(group, levels = c("Placebo", "6 MP")))
 kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
-survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype = 1:2)
+survminer::ggsurvplot(kmfit, risk.table = TRUE, risk.table.col = "strata", linetype = 1:2)
 ```
 
 ## The hazard function h(t)

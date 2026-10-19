@@ -51,7 +51,7 @@ kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
 survminer::ggsurvplot(kmfit,
                       xlab = "Time (weeks)",
                       ylab = "Survival Probability",
-                      risk.table = TRUE,
+                      risk.table = TRUE, risk.table.col = "strata",
                       linetype = 1:2)
 ```
 

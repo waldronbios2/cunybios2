@@ -132,7 +132,7 @@ suppressPackageStartupMessages({
   library(survminer)
 })
 kmfit <- survfit(Surv(time, cens) ~ Var1, data = mydat)
-ggsurvplot(kmfit, risk.table = TRUE, linetype = 1:2)
+ggsurvplot(kmfit, risk.table = TRUE, risk.table.col = "strata", linetype = 1:2)
 ```
 
 ## Martingale residuals
@@ -153,6 +153,31 @@ abline(h = 0, lty = 2)
 lines(lowess(mydat$time, resid(fitsim)), col = 'red')
 ```
 
+## Why do the smoothed residuals decrease with time?
+
+* The estimated cumulative hazard $H(t_i)$ increases with follow-up time $t_i$
+* Short times are mostly early events: $c_i = 1$ and $H(t_i)$ is small, so residuals are close to 1
+* Long times are mostly censored subjects: $c_i = 0$ and $H(t_i)$ is large, so residuals are negative
+* Time is part of the outcome, so this trend is expected even when the model fits well
+    + Look instead for outlying residuals, or plot residuals against a covariate
+
+## Martingale residuals vs a covariate
+
+* Left: model *without* `Var2`. The smoother's shape suggests the functional form of `Var2` (here linear)
+* Right: model with `Var2`. The smoother should be flat
+```{r, echo=FALSE, fig.width=8, fig.height=4}
+fitnoVar2 <- coxph(Surv(time, cens) ~ Var1, data = mydat)
+par(mfrow = c(1, 2), cex = 1.2, mar = c(4, 4, 2, 1))
+plot(mydat$Var2, resid(fitnoVar2), main = "Var2 not in model",
+     xlab = "Var2", ylab = "Martingale Residuals")
+abline(h = 0, lty = 2)
+lines(lowess(mydat$Var2, resid(fitnoVar2)), col = 'red')
+plot(mydat$Var2, resid(fitsim), main = "Var1 + Var2",
+     xlab = "Var2", ylab = "Martingale Residuals")
+abline(h = 0, lty = 2)
+lines(lowess(mydat$Var2, resid(fitsim)), col = 'red')
+```
+
 ## Deviance residuals in simulated data
 
 * Deviance residuals are scaled Martingale residuals
@@ -165,7 +190,7 @@ plot(mydat$time,
      xlab = "Time",
      ylab = "Deviance Residuals")
 abline(h = 0, lty = 2)
-lines(lowess(mydat$time, resid(fitsim)), col = 'red')
+lines(lowess(mydat$time, resid(fitsim, type = "deviance")), col = 'red')
 ```
 
 ## Schoenfeld residuals
@@ -260,7 +285,7 @@ par(cex = 1.5)
 library(survival)
 fit <- survfit(Surv(time / 365, os) ~ arm, data = pbc.os)
 survminer::ggsurvplot(fit)
-survminer::ggsurvplot(fit, risk.table = TRUE, linetype = 1:2)
+survminer::ggsurvplot(fit, risk.table = TRUE, risk.table.col = "strata", linetype = 1:2)
 ```
 
 
@@ -309,34 +334,39 @@ Highly significant tests of overall fit by LRT, Wald, and logrank test.
 
 * The Cox model is a _relative_ risk model
     + only predicts relative risks between pairs of subjects 
-* Key is to calculate the overall $S(t)$, then multiply it by the relative hazard for the specific covariate pattern.
-* In this example we plot the baseline survival for all stages together, then for stages 1-4 separately. 
+* Key is to calculate the baseline survival $S_0(t)$ for a reference covariate pattern, then raise it to the power of the hazard ratio for the specific covariate pattern: $S(t|x) = S_0(t)^{\exp(\beta x)}$
+* In this example the baseline is stage 1 (the reference level), and we plot predicted survival for stages 1-4, plus the Kaplan-Meier curve for all patients together.
 
 ## Predicted survival for specific covariate patterns
 
 ```{r, echo=FALSE}
 par(cex = 1.5)
 fit <- coxph(Surv(time, os) ~ stage, data = pbc.os)
-##HR for each stage, relative to overall
+##log(HR) for each stage, relative to stage 1 (the reference level)
 HR <- predict(fit, newdata = data.frame(stage = factor(1:4)))
+##Baseline survival: survfit() of a Cox model with no newdata uses the reference level of factors
+basesurv <- survfit(fit)
+##Kaplan-Meier curve for all patients together
+kmall <- survfit(Surv(time, os) ~ 1, data = pbc.os)
 plot(
-  survfit(fit)$time,
-  survfit(fit)$surv,
-  type = "l",
+  kmall$time,
+  kmall$surv,
+  type = "s",
+  ylim = c(0, 1),
   xlab = "Time (days)",
   ylab = "Survival Probability"
 )
 for (i in 1:4)
   lines(
-    survfit(fit)$time,
-    (survfit(fit)$surv) ^ exp(HR[i]),
+    basesurv$time,
+    basesurv$surv ^ exp(HR[i]),
     type = "l",
     col = i + 1,
     lty = i + 1
   )
 legend(
   "bottomleft",
-  legend = c("Overall", "Stage 1", "Stage 2", "Stage 3", "Stage 4"),
+  legend = c("All patients (KM)", "Stage 1", "Stage 2", "Stage 3", "Stage 4"),
   col = 1:5,
   lty = 1:5,
   bty = "n"
@@ -527,4 +557,5 @@ outcome ~ exposure
 
 * P.C. Austin (2011), An Introduction to Propensity Score Methods for Reducing the Effects of Confounding in Observational Studies. Multivariate Behavioral Research, 46:3, 399-424, DOI: [10.1080/00273171.2011.568786](http://dx.doi.org/10.1080/00273171.2011.568786)
 * R. d’Agostino (1998), Tutorial in Biostatistics: propensity score methods for bias reduction in the comparison of a treatment to a non-randomized control group. Stat. Med. 17, 2265-2281. [http://www.stat.ubc.ca/~john/papers/DAgostinoSIM1998.pdf](http://www.stat.ubc.ca/~john/papers/DAgostinoSIM1998.pdf)
-* You don't need any special package to do basic propensity score matching (e.g. stratifying by quintiles), but the [MatchIt](https://cran.r-project.org/package=MatchIt) package provides multiple matching approaches, diagnostics, good documentation
+
+You don't need any special package to do basic propensity score matching (e.g. stratifying by quintiles), but the [MatchIt](https://cran.r-project.org/package=MatchIt) package provides multiple matching approaches, diagnostics, good documentation

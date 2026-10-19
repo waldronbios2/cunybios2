@@ -198,7 +198,7 @@ fit <- survminer::surv_fit(Surv(time, cens) ~ group, data = leuk)
 survminer::ggsurvplot(fit,
            xlab = "Time (weeks)",
            ylab = "Survival Probability",
-           risk.table = TRUE)
+           risk.table = TRUE, risk.table.col = "strata")
 ```
 
 ## Median Survival Time

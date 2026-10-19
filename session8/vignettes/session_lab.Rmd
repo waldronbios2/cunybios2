@@ -1,5 +1,5 @@
 ---
-title: "Session 8 lab exercise: What it's about"
+title: "Session 8 lab exercise: Survival Analysis part 3"
 author: "Levi Waldron"
 institute: "CUNY SPH Biostatistics 2"
 clean: false
@@ -18,71 +18,75 @@ always_allow_html: true
 
 1. Make stratified and unstratified Kaplan-Meier plots
 2. Perform Cox proportional hazards regression
-3. Assess proportional hazards assumption
-
-**Exercises**
+3. Assess the proportional hazards assumption
+4. Use residuals to check the fit of a Cox model
+5. Fit multivariable Cox models, perform tests for trend, and predict survival for specific covariate patterns
 
 # Load the Primary Biliary Cirrhosis (pbc) dataset from the survival package
 
-* Mayo Clinic trial in primary biliary cirrhosis (PBC) of the liver conducted between 1974 and 1984, $n=424$ patients.
+* Mayo Clinic trial in primary biliary cirrhosis (PBC) of the liver conducted between 1974 and 1984, $n=418$ patients.
 * Randomized placebo controlled trial of the drug D-penicillamine.
-    - 312 cases from RCT, plus additional 112 not from RCT.
+    - 312 cases from RCT, plus additional 106 not from RCT.
 * Primary outcome is (censored) time to death
 
-```{r}
+```{r, message=FALSE}
 library(survival)
+library(survminer)
+library(tidyverse)
 data(pbc)
 summary(pbc)
 ```
 
 # Create a `Surv` object using variables "time" and "status", add this to the pbc dataframe
 
-Here "1" are patients who received transplants, and are thus removed from risk of death, at least due to liver cirrhosis. Transplantation may thus be related to risk, and not qualify as uninformative censoring. It could actually be considered a "competing hazard" because high-risk patients may be prioritized for liver transplant - a topic we don't get to in this course.  Instead, we will simply treat 0 (end of study) and 1 as censored, 2 (death) as an event.
+`status` is coded 0 = censored (alive at end of study), 1 = liver transplant, and 2 = dead. Patients who received transplants are removed from risk of death, at least due to liver cirrhosis. Transplantation may thus be related to risk, and not qualify as uninformative censoring. It could actually be considered a "competing risk" because high-risk patients may be prioritized for liver transplant (see the end of the lecture). Instead, we will simply treat 0 and 1 as censored, and 2 (death) as an event.
+
+We also keep only the 312 participants in the RCT, who have a non-missing treatment assignment `trt` (1 = D-penicillamine, 2 = placebo), and recode it as a factor with placebo as the reference group, as in the lecture. `stage` and `edema` are converted to factors for later use.
 
 ```{r}
-library(dplyr)
 pbc2 <- pbc %>%
-  mutate(cens = status > 1.5) %>%
-  mutate(y = Surv(time, cens))
+  filter(!is.na(trt)) %>%
+  mutate(death = status == 2) %>%
+  mutate(y = Surv(time, death)) %>%
+  mutate(arm = factor(trt, levels = 2:1, labels = c("placebo", "D-penicillamine")),
+         stage = factor(stage),
+         edema = factor(edema))
+table(pbc2$arm, pbc2$death)
 ```
-
 
 # Plot a KM curve for all participants using `library(survminer)` function `ggsurvplot()`. 
 
 ```{r}
-library(survminer)
 fit <- survfit(y ~ 1, data = pbc2)
-ggsurvplot(fit)
+ggsurvplot(fit, xlab = "Time (days)", ylab = "Survival Probability")
 ```
-
 
 # Stratify by treatment and add a p-value to this plot (see `?ggsurvplot`). 
 
 ```{r}
-fit2 <- survfit(y ~ trt, data = pbc2)
-ggsurvplot(fit2, pval = TRUE)
+fit2 <- survfit(y ~ arm, data = pbc2)
+ggsurvplot(fit2, pval = TRUE, xlab = "Time (days)", ylab = "Survival Probability")
 ```
 
 # Check whether these p-values correspond to results from a log-rank test.
 
 ```{r}
-survdiff(y ~ trt, data = pbc2)
+survdiff(y ~ arm, data = pbc2)
 ```
 
-# Perform a Cox proportional hazards regression, using the "trt" variable as a predictor.
+# Perform a Cox proportional hazards regression, using the treatment arm as a predictor.
 
 ```{r}
-fitcox <- coxph(y ~ trt, data = pbc2)
+fitcox <- coxph(y ~ arm, data = pbc2)
 summary(fitcox)
 ```
 
-# Create a log-minus-log plot to test the proportional hazards assumption.
+# Create a log-minus-log plot to assess the proportional hazards assumption.
 
-Using a simpler method from survminer:
+`fun = "cloglog"` plots $\log(-\log(\hat S(t)))$ against time on a log scale. Under proportional hazards, the curves for the two arms should be roughly parallel.
 
 ```{r}
-library(survminer)
-ggsurvplot(fit2, fun = "cloglog")
+ggsurvplot(fit2, fun = "cloglog", xlab = "Time (days, log scale)")
 ```
 
 # Plot Schoenfeld residuals and perform Schoenfeld test for the above Cox model
@@ -94,4 +98,46 @@ plot(fitzph)
 
 ```{r}
 fitzph
+```
+
+# Exercises
+
+## Exercise 1: Martingale and deviance residuals
+
+Fit the Cox model `coxph(y ~ age + edema + arm, data = pbc2)`. As in the lecture, plot its Martingale residuals (`residuals(..., type = "martingale")`) and deviance residuals (`residuals(..., type = "deviance")`) against follow-up time, with a horizontal line at zero and a smoother, for example with `ggplot()`, `geom_point()`, `geom_hline()`, and `geom_smooth()`.
+
+1. What is the largest possible value of a Martingale residual, and why? Which of the two types of residual is more symmetrically distributed about zero?
+2. Find the 5 patients with the largest absolute deviance residuals, and look at their `time`, `death`, `age`, `edema`, and `arm`. Why does the model predict these patients poorly?
+
+```{r}
+
+```
+
+## Exercise 2: Test for trend across stage
+
+Fit a Cox model with histologic `stage` as an unordered factor, then refit it with `stage` as an ordered factor (`factor(stage, ordered = TRUE)`), as in the lecture. In the ordered model, the `.L`, `.Q`, and `.C` terms are the linear, quadratic, and cubic trends across the four stages. Is there evidence for a linear trend in the log hazard across stage? For a non-linear trend?
+
+```{r}
+
+```
+
+## Exercise 3: Multivariable model and predicted survival
+
+Fit a multivariable Cox model `coxph(y ~ age + edema + stage + arm, data = pbc2)` and report the adjusted hazard ratios with 95% confidence intervals. Check the proportional hazards assumption for every term with `cox.zph()`; does any term appear to violate it? Finally, predict and plot survival curves for two patients who are both 50 years old, with no edema, and in the placebo arm: one in stage 1 and one in stage 4.
+
+*Hint*: Create the covariate patterns with a `data.frame` whose factor levels match the data, then pass it to `survfit()`:
+
+```{r, eval=FALSE}
+newpatients <- data.frame(
+  age = c(50, 50),
+  edema = factor(c("0", "0"), levels = levels(pbc2$edema)),
+  stage = factor(c("1", "4"), levels = levels(pbc2$stage)),
+  arm = factor(c("placebo", "placebo"), levels = levels(pbc2$arm))
+)
+predfit <- survfit(fitmulti, newdata = newpatients)
+ggsurvplot(predfit, data = newpatients, legend.labs = c("Stage 1", "Stage 4"))
+```
+
+```{r}
+
 ```

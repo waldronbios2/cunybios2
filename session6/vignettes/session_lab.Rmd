@@ -56,7 +56,7 @@ fit <- survminer::surv_fit(Surv(time, cens) ~ group, data = leuk)
 survminer::ggsurvplot(fit,
            xlab = "Time (weeks)",
            ylab = "Survival Probability",
-           risk.table = TRUE)
+           risk.table = TRUE, risk.table.col = "strata")
 ```
 
 # What is the time by which 25% of patients in each group have relapsed?
@@ -92,7 +92,7 @@ fit20 <- survminer::surv_fit(Surv(newtime, newcens) ~ group, data = leuknew)
 survminer::ggsurvplot(fit20,
            xlab = "Time (weeks)",
            ylab = "Survival Probability",
-           risk.table = TRUE)
+           risk.table = TRUE, risk.table.col = "strata")
 ```
 
 Log-rank test:
