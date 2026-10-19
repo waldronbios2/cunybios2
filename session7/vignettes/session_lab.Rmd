@@ -1,5 +1,5 @@
 ---
-title: "Session 7 lab exercise: Cox proportional Hazards"
+title: "Session 7 lab exercise: Cox proportional hazards"
 author: "Levi Waldron"
 institute: "CUNY SPH Biostatistics 2"
 clean: false
@@ -22,16 +22,9 @@ always_allow_html: true
 4. Fit a model using strata and a time-dependent covariate
 5. Create a DAG using dagitty
 
-**Exercises**
-
-1. Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset
-2. Create a stratified Kaplan-Meier plot
-3. Fit exponential and Weibull accelerated failure time (AFT) models
-4. Fit a stratified coxph model with a time-dependent covariate using an example from ?coxph
-5. Draw a DAG starting from dagitty.net and re-create it in R
-
-
 # Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset
+
+As in session 6, `cens` is the event indicator (1 = relapse, 0 = censored), and Placebo is the reference group.
 
 ```{r, message=FALSE}
 library(survival)
@@ -39,30 +32,37 @@ library(survminer)
 library(tidyverse)
 ```
 
-
-```{r}
+```{r, message=FALSE}
 leuk <- readr::read_csv("leuk.csv") %>%
   mutate(group = factor(group, levels = c("Placebo", "6 MP")))
 ```
+
+```{r}
+coxfit <- coxph(Surv(time, cens) ~ group, data = leuk)
+summary(coxfit)
+```
+
+The `exp(coef)` column is the hazard ratio of 6 MP relative to Placebo, and `lower .95` and `upper .95` give its 95% confidence interval.
 
 # Create a stratified Kaplan-Meier plot
 
 ```{r}
 kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
-survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
+survminer::ggsurvplot(kmfit,
+                      xlab = "Time (weeks)",
+                      ylab = "Survival Probability",
+                      risk.table = TRUE,
+                      linetype = 1:2)
 ```
 
 # Fit exponential and Weibull accelerated failure time (AFT) models
 
 ```{r}
-coxfit <- coxph(Surv(time, cens) ~ group, data = leuk)
 expfit <- survreg(Surv(time, cens) ~ group, data = leuk, dist = "exponential")
 weibullfit <- survreg(Surv(time, cens) ~ group, data = leuk, dist = "weibull")
 ```
 
- 
 ```{r, results='hide'}
-summary(coxfit)
 summary(expfit)
 summary(weibullfit)
 ```
@@ -72,9 +72,9 @@ library(stargazer)
 stargazer(coxfit, expfit, weibullfit, type = "html")
 ```
 
-Note, don't compare likelihoods between Cox and AFT models.
+Note that the Cox coefficient is negative while the AFT coefficients are positive. The Cox model describes the effect on the *hazard* (6 MP lowers the hazard of relapse), whereas AFT models describe the effect on *survival time* (6 MP lengthens time to relapse). Also don't compare likelihoods between Cox and AFT models: the Cox model maximizes a partial likelihood, so its log-likelihood is not on the same scale.
 
-# Fit a stratified coxph model with a time-dependent covariate using an example from `?coxph`
+# Fit a stratified Cox model using an example from `?coxph`
 
 Create a simple test data set:
 
@@ -86,11 +86,26 @@ test1 <- data.frame(time=c(4,3,1,1,2,2,3),
 test1
 ```
 
-Fit a model stratified by `sex`, with the time-dependent covariate `x`:
+Fit a model stratified by `sex`, with the covariate `x`. Stratification allows a different baseline hazard for each sex, and no coefficient is estimated for `sex`:
 
 ```{r}
 coxph(Surv(time, status) ~ x + strata(sex), test1) 
 ```
+
+# Fit a Cox model with a time-dependent covariate using an example from `?coxph`
+
+Time-dependent covariates use the "counting process" format `Surv(start, stop, event)`. Each row is an interval of follow-up during which the covariate values are constant, so a subject whose covariate changes during follow-up contributes one row per interval. Only the last interval for a subject can end in an event.
+
+```{r}
+test2 <- data.frame(start=c(1,2,5,2,1,7,3,4,8,8), 
+              stop=c(2,3,6,7,8,9,9,9,14,17), 
+              event=c(1,1,1,1,1,1,1,0,0,0), 
+              x=c(1,0,0,1,0,1,1,1,0,0)) 
+test2
+coxph(Surv(start, stop, event) ~ x, test2)
+```
+
+To prepare real data in this format, see `?tmerge` and the [time-dependent covariates vignette](https://bethatkinson.github.io/survivalVignettes/vignettes/timedep.html) from the lecture, by Therneau, Crowson and Atkinson. It has moved from the survival package to the survivalVignettes package.
 
 # Draw a DAG starting from dagitty.net and re-create it in R
 
@@ -116,3 +131,30 @@ outcome -> collider
 plot(g)
 ```
 
+# Exercises
+
+## Exercise 1: Interpret the hazard ratio
+
+Using `coxfit`, report the hazard ratio for 6 MP relative to Placebo with its 95% confidence interval (`exp(coef(coxfit))` and `exp(confint(coxfit))`), and interpret it in a sentence. Then refit the model with 6 MP as the reference group. How does the hazard ratio change, and does the interpretation change?
+
+```{r}
+
+```
+
+## Exercise 2: Time ratios from AFT models
+
+Exponentiate the coefficients of `expfit` and `weibullfit` to obtain time ratios, and compute their 95% confidence intervals with `exp(confint(...))`. Interpret the time ratio for 6 MP from the Weibull model: how much longer is time to relapse for 6 MP patients than for Placebo patients?
+
+*Hint*: For a Weibull model, the equivalent Cox coefficient is $-\beta_{AFT} / \text{scale}$, where `scale` is reported by `summary(weibullfit)` and stored in `weibullfit$scale`. Calculate this for 6 MP and compare it to `coef(coxfit)`. Is it close?
+
+```{r}
+
+```
+
+## Exercise 3: Adjustment sets from the DAG
+
+Use `adjustmentSets(g)` to find which variables must be adjusted for to estimate the *total* effect of the exposure on the outcome, and `adjustmentSets(g, effect = "direct")` for the *direct* effect. Explain why the collider should never be adjusted for, and why the mediator is adjusted for in one case but not the other.
+
+```{r}
+
+```

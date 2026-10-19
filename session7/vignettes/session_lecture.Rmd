@@ -278,7 +278,7 @@ summary(coxfit)
     + removing subjects who do not finish the treatment plan
     + imputing the date of an adverse event as midway between observation times
 
-Source: [Using Time Dependent Covariates and Time Dependent Coefficients in the Cox Model](https://cran.r-project.org/web/packages/survival/vignettes/timedep.pdf)
+Source: [Using Time Dependent Covariates and Time Dependent Coefficients in the Cox Model](https://bethatkinson.github.io/survivalVignettes/vignettes/timedep.html)
 
 ## Immortal time bias example
 
