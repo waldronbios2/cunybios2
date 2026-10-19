@@ -27,6 +27,10 @@ if (tlmgr_bin != "") {
     "environ", "trimspaces", "collection-latexextra"
   )
   repo <- "https://mirror.math.princeton.edu/pub/CTAN/systems/texlive/tlnet"
+  # tlmgr refuses to install anything when the repository has a newer tlmgr than the container
+  message("Updating tlmgr via ", repo)
+  res <- system2(tlmgr_bin, c("--verify-repo=none", "update", "--self", "--repository", repo), stdout = TRUE, stderr = TRUE)
+  message(paste(res, collapse = "\n"))
   message("Ensuring LaTeX packages are installed via ", repo, ": ", paste(tex_pkgs, collapse = ", "))
   res <- system2(tlmgr_bin, c("--verify-repo=none", "install", "--repository", repo, tex_pkgs), stdout = TRUE, stderr = TRUE)
   message(paste(res, collapse = "\n"))
