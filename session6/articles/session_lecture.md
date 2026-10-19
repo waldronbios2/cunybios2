@@ -156,9 +156,6 @@ function $`S(t)`$.
 
 ### Kaplan-Meier Estimate
 
-    ## Ignoring unknown labels:
-    ## • colour : "Strata"
-
 ![](session_lecture_files/figure-html/unnamed-chunk-4-1.png)
 
 ### Median Survival Time

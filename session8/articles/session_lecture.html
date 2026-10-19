@@ -147,9 +147,7 @@ a right-censored, time-to-event outcome and multiple predictors:
 </ul>
 </li>
 </ul>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>H</mi><mi>R</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>l</mi><mi>o</mi><mi>g</mi><mfrac><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><msub><mi>h</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><msub><mi>x</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mrow><mn>2</mn><mi>i</mi></mrow></msub><mo>+</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>+</mo><msub><mi>β</mi><mi>p</mi></msub><msub><mi>x</mi><mrow><mi>p</mi><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
-log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
-</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>H</mi><mi>R</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>l</mi><mi>o</mi><mi>g</mi><mfrac><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><msub><mi>h</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><msub><mi>x</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mrow><mn>2</mn><mi>i</mi></mrow></msub><mo>+</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>+</mo><msub><mi>β</mi><mi>p</mi></msub><msub><mi>x</mi><mrow><mi>p</mi><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}</annotation></semantics></math></p>
 <ul>
 <li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mi>R</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">HR(x_i)</annotation></semantics></math>
 is the hazard of patient
@@ -247,8 +245,6 @@ categorical:</p>
 <div class="section level3">
 <h3 id="kaplan-meier-plot-of-simulated-data-stratified-by-var1">Kaplan-Meier plot of simulated data, stratified by Var1<a class="anchor" aria-label="anchor" href="#kaplan-meier-plot-of-simulated-data-stratified-by-var1"></a>
 </h3>
-<pre><code><span><span class="co">## Ignoring unknown labels:</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span></span></code></pre>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
@@ -281,6 +277,45 @@ data well</li>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
+<h3 id="why-do-the-smoothed-residuals-decrease-with-time">Why do the smoothed residuals decrease with time?<a class="anchor" aria-label="anchor" href="#why-do-the-smoothed-residuals-decrease-with-time"></a>
+</h3>
+<ul>
+<li>The estimated cumulative hazard
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(t_i)</annotation></semantics></math>
+increases with follow-up time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mi>i</mi></msub><annotation encoding="application/x-tex">t_i</annotation></semantics></math>
+</li>
+<li>Short times are mostly early events:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">c_i = 1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(t_i)</annotation></semantics></math>
+is small, so residuals are close to 1</li>
+<li>Long times are mostly censored subjects:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_i = 0</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(t_i)</annotation></semantics></math>
+is large, so residuals are negative</li>
+<li>Time is part of the outcome, so this trend is expected even when the
+model fits well
+<ul>
+<li>Look instead for outlying residuals, or plot residuals against a
+covariate</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="martingale-residuals-vs-a-covariate">Martingale residuals vs a covariate<a class="anchor" aria-label="anchor" href="#martingale-residuals-vs-a-covariate"></a>
+</h3>
+<ul>
+<li>Left: model <em>without</em> <code>Var2</code>. The smoother’s shape
+suggests the functional form of <code>Var2</code> (here linear)</li>
+<li>Right: model with <code>Var2</code>. The smoother should be flat
+<img src="session_lecture_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="768">
+</li>
+</ul>
+</div>
+<div class="section level3">
 <h3 id="deviance-residuals-in-simulated-data">Deviance residuals in simulated data<a class="anchor" aria-label="anchor" href="#deviance-residuals-in-simulated-data"></a>
 </h3>
 <ul>
@@ -288,7 +323,7 @@ data well</li>
 <li>Should be more symmetrically distributed about zero?</li>
 <li>Observations with large deviance residuals are poorly predicted by
 the model
-<img src="session_lecture_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700">
+<img src="session_lecture_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700">
 </li>
 </ul>
 </div>
@@ -309,7 +344,7 @@ effect is changing.</li>
 <div class="section level3">
 <h3 id="schoenfeld-residuals-for-simulated-data">Schoenfeld residuals for simulated data<a class="anchor" aria-label="anchor" href="#schoenfeld-residuals-for-simulated-data"></a>
 </h3>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="schoenfeld-test-for-proportional-hazards">Schoenfeld test for proportional hazards<a class="anchor" aria-label="anchor" href="#schoenfeld-test-for-proportional-hazards"></a>
@@ -335,7 +370,7 @@ increases with time.</li>
 <div class="section level3">
 <h3 id="the-hazard-function-ht-stratified-by-var1">The hazard function h(t), stratified by Var1<a class="anchor" aria-label="anchor" href="#the-hazard-function-ht-stratified-by-var1"></a>
 </h3>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="log-minus-log-plot">Log-minus-log plot<a class="anchor" aria-label="anchor" href="#log-minus-log-plot"></a>
@@ -343,7 +378,7 @@ increases with time.</li>
 <ul>
 <li>Used to check proportional hazards assumption</li>
 </ul>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="example-primary-biliary-cirrhosis-pbc">Example: Primary Biliary Cirrhosis (PBC)<a class="anchor" aria-label="anchor" href="#example-primary-biliary-cirrhosis-pbc"></a>
@@ -362,7 +397,7 @@ conducted between 1974 and 1984, n=424 patients.</li>
 <div class="section level3">
 <h3 id="kaplan-meier-plot-of-treatment-and-placebo-arms">Kaplan-Meier plot of treatment and placebo arms<a class="anchor" aria-label="anchor" href="#kaplan-meier-plot-of-treatment-and-placebo-arms"></a>
 </h3>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"><img src="session_lecture_files/figure-html/unnamed-chunk-12-2.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"><img src="session_lecture_files/figure-html/unnamed-chunk-13-2.png" class="r-plt" alt="" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -381,7 +416,7 @@ coefficients and their order?</li>
 </ul>
 </li>
 </ul>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="fitting-a-test-for-trend-in-r">Fitting a test for trend in R<a class="anchor" aria-label="anchor" href="#fitting-a-test-for-trend-in-r"></a>
@@ -390,7 +425,7 @@ coefficients and their order?</li>
 <li>Just define stage as an <em>ordered factor</em> and tests for trend
 are done automatically:</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pbc.os</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">pbc.os</span>, stageordered <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">stage</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">os</span><span class="op">)</span> <span class="op">~</span> <span class="va">stageordered</span>, data <span class="op">=</span> <span class="va">pbc.os</span><span class="op">)</span></span>
@@ -432,18 +467,21 @@ test.</p>
 <li>only predicts relative risks between pairs of subjects</li>
 </ul>
 </li>
-<li>Key is to calculate the overall
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">S(t)</annotation></semantics></math>,
-then multiply it by the relative hazard for the specific covariate
-pattern.</li>
-<li>In this example we plot the baseline survival for all stages
-together, then for stages 1-4 separately.</li>
+<li>Key is to calculate the baseline survival
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">S_0(t)</annotation></semantics></math>
+for a reference covariate pattern, then raise it to the power of the
+hazard ratio for the specific covariate pattern:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>S</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mrow><mi mathvariant="normal">exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">S(t|x) = S_0(t)^{\exp(\beta x)}</annotation></semantics></math>
+</li>
+<li>In this example the baseline is stage 1 (the reference level), and
+we plot predicted survival for stages 1-4, plus the Kaplan-Meier curve
+for all patients together.</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="predicted-survival-for-specific-covariate-patterns">Predicted survival for specific covariate patterns<a class="anchor" aria-label="anchor" href="#predicted-survival-for-specific-covariate-patterns"></a>
 </h3>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="multivariate-regression">Multivariate regression<a class="anchor" aria-label="anchor" href="#multivariate-regression"></a>
@@ -461,7 +499,7 @@ together, then for stages 1-4 separately.</li>
 </div>
 <div class="section level3">
 <h3 id="section-1"></h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">os</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">edema</span></span>
 <span>             <span class="op">+</span> <span class="va">stage</span> <span class="op">+</span> <span class="va">arm</span>, data <span class="op">=</span> <span class="va">pbc.os</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
@@ -509,7 +547,7 @@ together, then for stages 1-4 separately.</li>
 </li>
 <li>Idea is to estimate hazard ratio in an unadjusted model:</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">unadjfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">os</span><span class="op">)</span> <span class="op">~</span> <span class="va">stage</span>, data <span class="op">=</span> <span class="va">pbc.os</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">unadjfit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   stage2   stage3   stage4 </span></span>
@@ -521,7 +559,7 @@ together, then for stages 1-4 separately.</li>
 <ul>
 <li>and in an adjusted model:</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adjfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">os</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">edema</span></span>
 <span>                <span class="op">+</span> <span class="va">stage</span> <span class="op">+</span> <span class="va">arm</span>, data <span class="op">=</span> <span class="va">pbc.os</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">adjfit</span><span class="op">)</span></span></code></pre></div>
@@ -536,12 +574,10 @@ together, then for stages 1-4 separately.</li>
 <ul>
 <li>The survival function will be calculated for a “baseline” group, say
 stage 1, then exponentiated with the adjusted coefficient, e.g.:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><msub><mi>S</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>=</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">]</mo><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>=</mo><mn>4</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">
-[S_{stage=1}(t)]^{exp(\beta_{stage=4})}
-</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><msub><mi>S</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>=</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">]</mo><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>=</mo><mn>4</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">[S_{stage=1}(t)]^{exp(\beta_{stage=4})}</annotation></semantics></math>
 </li>
 </ul>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -574,7 +610,7 @@ combined.</p></li>
 </h3>
 <p><strong>Example - in R, strata() can be added to any model
 formula</strong> </p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mycox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">os</span><span class="op">)</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html" class="external-link">strata</a></span><span class="op">(</span><span class="va">stage</span><span class="op">)</span>, </span>
 <span>               data <span class="op">=</span> <span class="va">pbc.os</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mycox</span><span class="op">)</span></span></code></pre></div>
@@ -744,11 +780,11 @@ Multivariate Behavioral Research, 46:3, 399-424, DOI: <a href="http://dx.doi.org
 methods for bias reduction in the comparison of a treatment to a
 non-randomized control group. Stat. Med. 17, 2265-2281. <a href="http://www.stat.ubc.ca/~john/papers/DAgostinoSIM1998.pdf" class="external-link">http://www.stat.ubc.ca/~john/papers/DAgostinoSIM1998.pdf</a>
 </li>
-<li>You don’t need any special package to do basic propensity score
+</ul>
+<p>You don’t need any special package to do basic propensity score
 matching (e.g. stratifying by quintiles), but the <a href="https://cran.r-project.org/package=MatchIt" class="external-link">MatchIt</a> package
 provides multiple matching approaches, diagnostics, good
-documentation</li>
-</ul>
+documentation</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

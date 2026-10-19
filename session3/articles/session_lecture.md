@@ -30,9 +30,9 @@
 
 ### Logistic Regression as GLM
 
-- **The model**: \$\$ \begin{aligned} Logit(P(x)) &= log \left(
-  \frac{P(x)}{1-P(x)} \right) \notag\\ &= \beta_0 + \beta_1 x\_{1i} +
-  \beta_2 x\_{2i} + ... + \beta_p x\_{pi} \notag \end{aligned} \$\$
+- **The model**: \$\$\begin{aligned} Logit(P(x)) &= log \left(
+  \frac{P(x)}{1-P(x)} \right) \notag\\\\ &= \beta_0 + \beta_1 x\_{1i} +
+  \beta_2 x\_{2i} + ... + \beta_p x\_{pi} \notag \end{aligned}\$\$
 
 - **Random component**: $`y_i`$ follows a Binomial distribution (outcome
   is a binary variable)

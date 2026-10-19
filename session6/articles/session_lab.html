@@ -98,130 +98,187 @@ time</li>
 <li>Perform and interpret log-rank test</li>
 <li>Define “informative” censoring</li>
 </ol>
-<p><strong>Exercises</strong></p>
-<ol style="list-style-type: decimal">
-<li>Calculate the follow-up table for 6 MP patients in the leukemia
-study</li>
-</ol>
+<div class="section level2">
+<h2 id="load-the-leukemia-6-mp-clinical-trial-dataset">Load the leukemia 6 MP clinical trial dataset<a class="anchor" aria-label="anchor" href="#load-the-leukemia-6-mp-clinical-trial-dataset"></a>
+</h2>
+<p>In this dataset, <code>time</code> is weeks until relapse or
+censoring, and <code>cens</code> is the event indicator: 1 if the
+patient relapsed and 0 if they were censored. Despite its name,
+<code>cens = 1</code> means an <em>event</em>, not a censored
+observation. We set Placebo as the reference group.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span></span>
-<span><span class="va">leuk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"leuk.csv"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">42</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">3</span></span></span>
-<span><span class="co">## <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">## <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
-<span><span class="co">## <span style="color: #BB0000;">chr</span> (1): group</span></span>
-<span><span class="co">## <span style="color: #00BB00;">dbl</span> (2): time, cens</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Plot the Kaplan-Meier estimate of the follow-up table from 1.
-<code><a href="https://rpkgs.datanovia.com/survminer/index.html" class="external-link">library(survminer)</a></code> is recommendable.</li>
-</ol>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html" class="external-link">survminer</a></span><span class="op">)</span></span>
+<span><span class="va">leuk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"leuk.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">group</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"6 MP"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">leuk</span><span class="op">$</span><span class="va">group</span>, <span class="va">leuk</span><span class="op">$</span><span class="va">cens</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##          </span></span>
+<span><span class="co">##            0  1</span></span>
+<span><span class="co">##   Placebo  0 21</span></span>
+<span><span class="co">##   6 MP    12  9</span></span></code></pre>
+<p><code><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv()</a></code> combines time and event status into a single
+outcome. Censored times are printed with a <code>+</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html" class="external-link">survminer</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Loading required package: ggplot2</span></span></code></pre>
-<pre><code><span><span class="co">## Loading required package: ggpubr</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'survminer'</span></span></code></pre>
-<pre><code><span><span class="co">## The following object is masked from 'package:survival':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     myeloma</span></span></code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">leuk</span>, <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1]  6   6   6   7  10  13  16  22  23   6+  9+ 10+ 11+ 17+ 19+ 20+ 25+ 32+ 32+</span></span>
 <span><span class="co">## [20] 34+ 35+  1   1   2   2   3   4   4   5   5   8   8   8   8  11  11  12  12 </span></span>
 <span><span class="co">## [39] 15  17  22  23</span></span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+</div>
+<div class="section level2">
+<h2 id="calculate-the-follow-up-table-for-6-mp-patients">Calculate the follow-up table for 6 MP patients<a class="anchor" aria-label="anchor" href="#calculate-the-follow-up-table-for-6-mp-patients"></a>
+</h2>
+<p><code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> of a <code>survfit</code> object gives the
+follow-up table: at each event time, the number at risk, the number of
+events, and the Kaplan-Meier estimate of survival with its 95%
+confidence interval. Compare this to the follow-up table in the
+lecture.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit6mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">leuk</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"6 MP"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit6mp</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Call: survfit(formula = Surv(time, cens) ~ 1, data = filter(leuk, group == </span></span>
+<span><span class="co">##     "6 MP"))</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  time n.risk n.event survival std.err lower 95% CI upper 95% CI</span></span>
+<span><span class="co">##     6     21       3    0.857  0.0764        0.720        1.000</span></span>
+<span><span class="co">##     7     17       1    0.807  0.0869        0.653        0.996</span></span>
+<span><span class="co">##    10     15       1    0.753  0.0963        0.586        0.968</span></span>
+<span><span class="co">##    13     12       1    0.690  0.1068        0.510        0.935</span></span>
+<span><span class="co">##    16     11       1    0.627  0.1141        0.439        0.896</span></span>
+<span><span class="co">##    22      7       1    0.538  0.1282        0.337        0.858</span></span>
+<span><span class="co">##    23      6       1    0.448  0.1346        0.249        0.807</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="plot-the-kaplan-meier-estimate-for-both-groups">Plot the Kaplan-Meier estimate for both groups<a class="anchor" aria-label="anchor" href="#plot-the-kaplan-meier-estimate-for-both-groups"></a>
+</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/surv_fit.html" class="external-link">surv_fit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span><span class="op">)</span></span>
 <span><span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit</span>,</span>
 <span>           xlab <span class="op">=</span> <span class="st">"Time (weeks)"</span>,</span>
 <span>           ylab <span class="op">=</span> <span class="st">"Survival Probability"</span>,</span>
-<span>           risk.table <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Ignoring unknown labels:</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span></span></code></pre>
-<p><img src="session_lab_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="" width="700"></p>
-<ol start="3" style="list-style-type: decimal">
-<li>What is the 75th percentile of survival times for the 6 MP group?
-For the Placebo group? This is the time that 75% of the patients
-survive. This is also the time at which 25% of patients have had
-events.</li>
-</ol>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<span>           risk.table <span class="op">=</span> <span class="cn">TRUE</span>, risk.table.col <span class="op">=</span> <span class="st">"strata"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="what-is-the-time-by-which-25-of-patients-in-each-group-have-relapsed">What is the time by which 25% of patients in each group have
+relapsed?<a class="anchor" aria-label="anchor" href="#what-is-the-time-by-which-25-of-patients-in-each-group-have-relapsed"></a>
+</h2>
+<p>This is the time at which the estimated survival probability drops to
+75%. <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile()</a></code> of a <code>survfit</code> object returns
+quantiles of the <em>event time</em> distribution, so this is the
+<code>25</code> column: the time by which 25% of patients have had an
+event, and 75% are still event-free.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $quantile</span></span>
 <span><span class="co">##               25 50 75</span></span>
-<span><span class="co">## group=6 MP    13 23 NA</span></span>
 <span><span class="co">## group=Placebo  4  8 12</span></span>
+<span><span class="co">## group=6 MP    13 23 NA</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $lower</span></span>
 <span><span class="co">##               25 50 75</span></span>
-<span><span class="co">## group=6 MP     6 16 23</span></span>
 <span><span class="co">## group=Placebo  2  4  8</span></span>
+<span><span class="co">## group=6 MP     6 16 23</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $upper</span></span>
 <span><span class="co">##               25 50 75</span></span>
-<span><span class="co">## group=6 MP    NA NA NA</span></span>
-<span><span class="co">## group=Placebo  8 12 NA</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<span><span class="co">## group=Placebo  8 12 NA</span></span>
+<span><span class="co">## group=6 MP    NA NA NA</span></span></code></pre>
+<p>25% of 6 MP patients had relapsed by 13 weeks, compared to 4 weeks
+for Placebo patients. The <code>75</code> column is <code>NA</code> for
+the 6 MP group because the Kaplan-Meier estimate never drops below 25%
+survival before follow-up ends.</p>
+</div>
+<div class="section level2">
+<h2 id="perform-a-log-rank-test-comparing-the-two-groups">Perform a log-rank test comparing the two groups<a class="anchor" aria-label="anchor" href="#perform-a-log-rank-test-comparing-the-two-groups"></a>
+</h2>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call:</span></span>
 <span><span class="co">## survdiff(formula = Surv(time, cens) ~ group, data = leuk)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##                N Observed Expected (O-E)^2/E (O-E)^2/V</span></span>
-<span><span class="co">## group=6 MP    21        9     19.3      5.46      16.8</span></span>
 <span><span class="co">## group=Placebo 21       21     10.7      9.77      16.8</span></span>
+<span><span class="co">## group=6 MP    21        9     19.3      5.46      16.8</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Chisq= 16.8  on 1 degrees of freedom, p= 4e-05</span></span></code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Suppose you were instructed to cap follow-up times at 20 weeks.
-Re-do the Kaplan-Meier plot for both groups, and re-do the logrank
-test.</li>
-</ol>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## ── <span style="font-weight: bold;">Attaching core tidyverse packages</span> ──────────────────────── tidyverse 2.0.0 ──</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr    </span> 1.2.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">stringr  </span> 1.6.0</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">forcats  </span> 1.0.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble   </span> 3.3.1</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">lubridate</span> 1.9.5     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr    </span> 1.3.2</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr    </span> 1.2.2     </span></span>
-<span><span class="co">## ── <span style="font-weight: bold;">Conflicts</span> ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
-<span><span class="co">## <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span> masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
-<span><span class="co">## <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>    masks <span style="color: #0000BB;">stats</span>::lag()</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Use the conflicted package (<span style="color: #0000BB; font-style: italic;">&lt;http://conflicted.r-lib.org/&gt;</span>) to force all conflicts to become errors</span></span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">leuknew</span> <span class="op">&lt;-</span> <span class="va">leuk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>newtime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="va">time</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+</div>
+<div class="section level2">
+<h2 id="cap-follow-up-times-at-20-weeks">Cap follow-up times at 20 weeks<a class="anchor" aria-label="anchor" href="#cap-follow-up-times-at-20-weeks"></a>
+</h2>
+<p>Suppose you were instructed to cap follow-up times at 20 weeks.
+Anyone still event-free at 20 weeks becomes censored at 20 weeks, and
+events after 20 weeks are no longer counted.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">leuknew</span> <span class="op">&lt;-</span> <span class="va">leuk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>newtime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="va">time</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>newcens <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">time</span> <span class="op">&lt;=</span> <span class="fl">20</span>, <span class="va">cens</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Kaplan-Meier plot</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/surv_fit.html" class="external-link">surv_fit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">newtime</span>, <span class="va">newcens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuknew</span><span class="op">)</span></span>
-<span><span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit</span>,</span>
+<p>Kaplan-Meier plot:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit20</span> <span class="op">&lt;-</span> <span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/surv_fit.html" class="external-link">surv_fit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">newtime</span>, <span class="va">newcens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuknew</span><span class="op">)</span></span>
+<span><span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit20</span>,</span>
 <span>           xlab <span class="op">=</span> <span class="st">"Time (weeks)"</span>,</span>
 <span>           ylab <span class="op">=</span> <span class="st">"Survival Probability"</span>,</span>
-<span>           risk.table <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Ignoring unknown labels:</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span></span></code></pre>
-<p><img src="session_lab_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700"></p>
-<p>Logrank test</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<span>           risk.table <span class="op">=</span> <span class="cn">TRUE</span>, risk.table.col <span class="op">=</span> <span class="st">"strata"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="700"></p>
+<p>Log-rank test:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">newtime</span>, <span class="va">newcens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuknew</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call:</span></span>
 <span><span class="co">## survdiff(formula = Surv(newtime, newcens) ~ group, data = leuknew)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##                N Observed Expected (O-E)^2/E (O-E)^2/V</span></span>
-<span><span class="co">## group=6 MP    21        7       16      5.05        14</span></span>
 <span><span class="co">## group=Placebo 21       19       10      8.05        14</span></span>
+<span><span class="co">## group=6 MP    21        7       16      5.05        14</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Chisq= 14  on 1 degrees of freedom, p= 2e-04</span></span></code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Give a hypothetical example of how censoring in this example might
-be “informative.”</li>
-</ol>
+</div>
+<div class="section level2">
+<h2 id="give-a-hypothetical-example-of-how-censoring-in-this-example-might-be-informative-">Give a hypothetical example of how censoring in this example might
+be “informative.”<a class="anchor" aria-label="anchor" href="#give-a-hypothetical-example-of-how-censoring-in-this-example-might-be-informative-"></a>
+</h2>
 <p>If sicker patients were moved to another hospital where they weren’t
 followed up on, and were also more likely to relapse, this would be
 informative censoring.</p>
-  </main>
+</div>
+<div class="section level2">
+<h2 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h2>
+<div class="section level3">
+<h3 id="exercise-1-median-survival-and-median-potential-follow-up-time">Exercise 1: Median survival and median potential follow-up time<a class="anchor" aria-label="anchor" href="#exercise-1-median-survival-and-median-potential-follow-up-time"></a>
+</h3>
+<p>Using the uncapped data, find the median survival time and its 95%
+confidence interval for each group by printing <code>fit</code>. Then
+estimate the median <em>potential</em> follow-up time for each group
+using the reverse Kaplan-Meier method from the lecture, where censoring
+is treated as the “event”:
+<code>survfit(Surv(time, 1 - cens) ~ group, data = leuk)</code>. Why is
+the median potential follow-up time <code>NA</code> for the Placebo
+group? Is there any reason to believe potential follow-up differed
+between the two arms of this trial?</p>
+</div>
+<div class="section level3">
+<h3 id="exercise-2-cumulative-event-function">Exercise 2: Cumulative event function<a class="anchor" aria-label="anchor" href="#exercise-2-cumulative-event-function"></a>
+</h3>
+<p>Plot the cumulative event function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>S</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">1 - S(t)</annotation></semantics></math>
+for both groups by adding <code>fun = "event"</code> to
+<code><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot()</a></code>. Using <code>summary(fit, times = 10)</code>,
+estimate the proportion of patients in each group who had relapsed by 10
+weeks.</p>
+</div>
+<div class="section level3">
+<h3 id="exercise-3-effect-of-capping-follow-up">Exercise 3: Effect of capping follow-up<a class="anchor" aria-label="anchor" href="#exercise-3-effect-of-capping-follow-up"></a>
+</h3>
+<p>Compare the log-rank test from the uncapped data to the one capped at
+20 weeks. How did the observed and expected numbers of events, and the
+chi-square statistic, change? Explain why capping follow-up changed the
+result, even though the Kaplan-Meier curves before 20 weeks are
+identical.</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

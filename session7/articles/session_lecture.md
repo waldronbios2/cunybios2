@@ -239,7 +239,7 @@ Multiplicative or additive model?
 
 Source: [Using Time Dependent Covariates and Time Dependent Coefficients
 in the Cox
-Model](https://cran.r-project.org/web/packages/survival/vignettes/timedep.pdf)
+Model](https://bethatkinson.github.io/survivalVignettes/vignettes/timedep.html)
 
 ### Immortal time bias example
 

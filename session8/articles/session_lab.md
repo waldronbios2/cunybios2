@@ -1,23 +1,26 @@
-# Session 8 lab exercise: What it's about
+# Session 8 lab exercise: Survival Analysis part 3
 
 **Learning objectives**
 
 1.  Make stratified and unstratified Kaplan-Meier plots
 2.  Perform Cox proportional hazards regression
-3.  Assess proportional hazards assumption
-
-**Exercises**
+3.  Assess the proportional hazards assumption
+4.  Use residuals to check the fit of a Cox model
+5.  Fit multivariable Cox models, perform tests for trend, and predict
+    survival for specific covariate patterns
 
 ## Load the Primary Biliary Cirrhosis (pbc) dataset from the survival package
 
 - Mayo Clinic trial in primary biliary cirrhosis (PBC) of the liver
-  conducted between 1974 and 1984, $`n=424`$ patients.
+  conducted between 1974 and 1984, $`n=418`$ patients.
 - Randomized placebo controlled trial of the drug D-penicillamine.
-  - 312 cases from RCT, plus additional 112 not from RCT.
+  - 312 cases from RCT, plus additional 106 not from RCT.
 - Primary outcome is (censored) time to death
 
 \
 [`library`](https://rdrr.io/r/base/library.html)`(`[`survival`](https://github.com/therneau/survival)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`\
 [`data`](https://rdrr.io/r/utils/data.html)`(``pbc``)`\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``pbc``)`
 
@@ -64,109 +67,96 @@
 
 ## Create a `Surv` object using variables “time” and “status”, add this to the pbc dataframe
 
-Here “1” are patients who received transplants, and are thus removed
+`status` is coded 0 = censored (alive at end of study), 1 = liver
+transplant, and 2 = dead. Patients who received transplants are removed
 from risk of death, at least due to liver cirrhosis. Transplantation may
 thus be related to risk, and not qualify as uninformative censoring. It
-could actually be considered a “competing hazard” because high-risk
-patients may be prioritized for liver transplant - a topic we don’t get
-to in this course. Instead, we will simply treat 0 (end of study) and 1
-as censored, 2 (death) as an event.
+could actually be considered a “competing risk” because high-risk
+patients may be prioritized for liver transplant (see the end of the
+lecture). Instead, we will simply treat 0 and 1 as censored, and 2
+(death) as an event.
 
-\
-[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
+We also keep only the 312 participants in the RCT, who have a
+non-missing treatment assignment `trt` (1 = D-penicillamine, 2 =
+placebo), and recode it as a factor with placebo as the reference group,
+as in the lecture. `stage` and `edema` are converted to factors for
+later use.
 
 \
 `pbc2`` ``<-`` ``pbc`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
-`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``cens ``=`` ``status`` ``>`` ``1.5``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
-`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``y ``=`` `[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``cens``)``)`
+`  `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``!`[`is.na`](https://rdrr.io/r/base/NA.html)`(``trt``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``death ``=`` ``status`` ``==`` ``2``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``y ``=`` `[`Surv`](https://rdrr.io/pkg/survival/man/Surv.html)`(``time``, ``death``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``arm ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``trt``, levels ``=`` ``2``:``1``, labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"placebo"``, ``"D-penicillamine"``)``)``,`\
+`         stage ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``stage``)``,`\
+`         edema ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``edema``)``)`\
+[`table`](https://rdrr.io/r/base/table.html)`(``pbc2``$``arm``, ``pbc2``$``death``)`
+
+    ##                  
+    ##                   FALSE TRUE
+    ##   placebo            94   60
+    ##   D-penicillamine    93   65
 
 ## Plot a KM curve for all participants using `library(survminer)` function `ggsurvplot()`.
 
 \
-[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`
-
-    ## Loading required package: ggplot2
-
-    ## Loading required package: ggpubr
-
-    ## 
-    ## Attaching package: 'survminer'
-
-    ## The following object is masked from 'package:survival':
-    ## 
-    ##     myeloma
-
-\
 `fit`` ``<-`` `[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(``y`` ``~`` ``1``, data ``=`` ``pbc2``)`\
-[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit``)`
+[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit``, xlab ``=`` ``"Time (days)"``, ylab ``=`` ``"Survival Probability"``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-3-1.png)
 
 ## Stratify by treatment and add a p-value to this plot (see `?ggsurvplot`).
 
 \
-`fit2`` ``<-`` `[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`\
-[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit2``, pval ``=`` ``TRUE``)`
+`fit2`` ``<-`` `[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(``y`` ``~`` ``arm``, data ``=`` ``pbc2``)`\
+[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit2``, pval ``=`` ``TRUE``, xlab ``=`` ``"Time (days)"``, ylab ``=`` ``"Survival Probability"``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-4-1.png)
 
 ## Check whether these p-values correspond to results from a log-rank test.
 
 \
-[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`
+[`survdiff`](https://rdrr.io/pkg/survival/man/survdiff.html)`(``y`` ``~`` ``arm``, data ``=`` ``pbc2``)`
 
     ## Call:
-    ## survdiff(formula = y ~ trt, data = pbc2)
+    ## survdiff(formula = y ~ arm, data = pbc2)
     ## 
-    ## n=312, 106 observations deleted due to missingness.
-    ## 
-    ##         N Observed Expected (O-E)^2/E (O-E)^2/V
-    ## trt=1 158       65     63.2    0.0502     0.102
-    ## trt=2 154       60     61.8    0.0513     0.102
+    ##                       N Observed Expected (O-E)^2/E (O-E)^2/V
+    ## arm=placebo         154       60     61.8    0.0513     0.102
+    ## arm=D-penicillamine 158       65     63.2    0.0502     0.102
     ## 
     ##  Chisq= 0.1  on 1 degrees of freedom, p= 0.7
 
-## Perform a Cox proportional hazards regression, using the “trt” variable as a predictor.
+## Perform a Cox proportional hazards regression, using the treatment arm as a predictor.
 
 \
-`fitcox`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(``y`` ``~`` ``trt``, data ``=`` ``pbc2``)`\
+`fitcox`` ``<-`` `[`coxph`](https://rdrr.io/pkg/survival/man/coxph.html)`(``y`` ``~`` ``arm``, data ``=`` ``pbc2``)`\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``fitcox``)`
 
     ## Call:
-    ## coxph(formula = y ~ trt, data = pbc2)
+    ## coxph(formula = y ~ arm, data = pbc2)
     ## 
     ##   n= 312, number of events= 125 
-    ##    (106 observations deleted due to missingness)
     ## 
-    ##         coef exp(coef) se(coef)      z Pr(>|z|)
-    ## trt -0.05722   0.94438  0.17916 -0.319    0.749
+    ##                       coef exp(coef) se(coef)     z Pr(>|z|)
+    ## armD-penicillamine 0.05722   1.05889  0.17916 0.319    0.749
     ## 
-    ##     exp(coef) exp(-coef) lower .95 upper .95
-    ## trt    0.9444      1.059    0.6647     1.342
+    ##                    exp(coef) exp(-coef) lower .95 upper .95
+    ## armD-penicillamine     1.059     0.9444    0.7453     1.504
     ## 
     ## Concordance= 0.499  (se = 0.025 )
     ## Likelihood ratio test= 0.1  on 1 df,   p=0.7
     ## Wald test            = 0.1  on 1 df,   p=0.7
     ## Score (logrank) test = 0.1  on 1 df,   p=0.7
 
-## Create a log-minus-log plot to test the proportional hazards assumption.
+## Create a log-minus-log plot to assess the proportional hazards assumption.
 
-Using a simpler method from survminer:
+`fun = "cloglog"` plots $`\log(-\log(\hat S(t)))`$ against time on a log
+scale. Under proportional hazards, the curves for the two arms should be
+roughly parallel.
 
 \
-[`library`](https://rdrr.io/r/base/library.html)`(`[`survminer`](https://rpkgs.datanovia.com/survminer/index.html)`)`\
-[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit2``, fun ``=`` ``"cloglog"``)`
+[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``fit2``, fun ``=`` ``"cloglog"``, xlab ``=`` ``"Time (days, log scale)"``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-7-1.png)
 
@@ -182,5 +172,61 @@ Using a simpler method from survminer:
 `fitzph`
 
     ##        chisq df    p
-    ## trt    0.612  1 0.43
+    ## arm    0.612  1 0.43
     ## GLOBAL 0.612  1 0.43
+
+## Exercises
+
+### Exercise 1: Martingale and deviance residuals
+
+Fit the Cox model `coxph(y ~ age + edema + arm, data = pbc2)`. As in the
+lecture, plot its Martingale residuals
+(`residuals(..., type = "martingale")`) and deviance residuals
+(`residuals(..., type = "deviance")`) against follow-up time, with a
+horizontal line at zero and a smoother, for example with
+[`ggplot()`](https://ggplot2.tidyverse.org/reference/ggplot.html),
+[`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html),
+[`geom_hline()`](https://ggplot2.tidyverse.org/reference/geom_abline.html),
+and
+[`geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html).
+
+1.  What is the largest possible value of a Martingale residual, and
+    why? Which of the two types of residual is more symmetrically
+    distributed about zero?
+2.  Find the 5 patients with the largest absolute deviance residuals,
+    and look at their `time`, `death`, `age`, `edema`, and `arm`. Why
+    does the model predict these patients poorly?
+
+### Exercise 2: Test for trend across stage
+
+Fit a Cox model with histologic `stage` as an unordered factor, then
+refit it with `stage` as an ordered factor
+(`factor(stage, ordered = TRUE)`), as in the lecture. In the ordered
+model, the `.L`, `.Q`, and `.C` terms are the linear, quadratic, and
+cubic trends across the four stages. Is there evidence for a linear
+trend in the log hazard across stage? For a non-linear trend?
+
+### Exercise 3: Multivariable model and predicted survival
+
+Fit a multivariable Cox model
+`coxph(y ~ age + edema + stage + arm, data = pbc2)` and report the
+adjusted hazard ratios with 95% confidence intervals. Check the
+proportional hazards assumption for every term with
+[`cox.zph()`](https://rdrr.io/pkg/survival/man/cox.zph.html); does any
+term appear to violate it? Finally, predict and plot survival curves for
+two patients who are both 50 years old, with no edema, and in the
+placebo arm: one in stage 1 and one in stage 4.
+
+*Hint*: Create the covariate patterns with a `data.frame` whose factor
+levels match the data, then pass it to
+[`survfit()`](https://rdrr.io/pkg/survival/man/survfit.html):
+
+\
+`newpatients`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`\
+`  age ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``50``, ``50``)``,`\
+`  edema ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"0"``, ``"0"``)``, levels ``=`` `[`levels`](https://rdrr.io/r/base/levels.html)`(``pbc2``$``edema``)``)``,`\
+`  stage ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"1"``, ``"4"``)``, levels ``=`` `[`levels`](https://rdrr.io/r/base/levels.html)`(``pbc2``$``stage``)``)``,`\
+`  arm ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"placebo"``, ``"placebo"``)``, levels ``=`` `[`levels`](https://rdrr.io/r/base/levels.html)`(``pbc2``$``arm``)``)`\
+`)`\
+`predfit`` ``<-`` `[`survfit`](https://rdrr.io/pkg/survival/man/survfit.html)`(``fitmulti``, newdata ``=`` ``newpatients``)`\
+[`ggsurvplot`](https://rdrr.io/pkg/survminer/man/ggsurvplot.html)`(``predfit``, data ``=`` ``newpatients``, legend.labs ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Stage 1"``, ``"Stage 4"``)``)`

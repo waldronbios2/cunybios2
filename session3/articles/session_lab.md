@@ -185,12 +185,12 @@ number “four”, but you’ll have to look at the .Rmd to see how I did
 that! Doing this in reports allows you to update them as input data
 changes, without having to manually re-enter or copy numbers.
 
-$`P = \textit{logit}^{-1} \left(
-   -1.13 + 0.39 \times \textit{age25-29} +
+$`P = \textit{logit}^{-1} \left( 
+   -1.13 + 0.39 \times \textit{age25-29} + 
    0.91 \times \textit{age30-39} +
    1.19 \times \textit{age40-49} +
    0.32 \times \textit{educationhigh} +
-   -0.83 \times \textit{wantsMoreyes}
+   -0.83 \times \textit{wantsMoreyes} 
    \right)`$
 
 $`\textit{logit}^{-1}(x) = \frac{1}{1+e^{-x}}`$

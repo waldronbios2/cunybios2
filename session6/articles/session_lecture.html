@@ -316,8 +316,6 @@ of the Survival function
 <div class="section level3">
 <h3 id="kaplan-meier-estimate">Kaplan-Meier Estimate<a class="anchor" aria-label="anchor" href="#kaplan-meier-estimate"></a>
 </h3>
-<pre><code><span><span class="co">## Ignoring unknown labels:</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span></span></code></pre>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
@@ -334,7 +332,7 @@ survival function
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>S</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\hat S(t)</annotation></semantics></math>
 </li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span><span class="op">~</span><span class="va">group</span>, data<span class="op">=</span><span class="va">leuk</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call: survfit(formula = Surv(time, cens) ~ group, data = leuk)</span></span>
 <span><span class="co">## </span></span>
@@ -355,7 +353,7 @@ obvious way</li>
 potential follow-up time. Use a reverse Kaplan-Meier estimate
 instead:</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="fl">1</span><span class="op">-</span><span class="va">cens</span><span class="op">)</span><span class="op">~</span><span class="va">group</span>, data<span class="op">=</span><span class="va">leuk</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call: survfit(formula = Surv(time, 1 - cens) ~ group, data = leuk)</span></span>
 <span><span class="co">## </span></span>
@@ -438,7 +436,7 @@ expected vs. observed number of events in each group.
 </h3>
 <p>Logrank test is just a chisquare test on the observed and expected
 number of events:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span><span class="op">~</span><span class="va">group</span>, data<span class="op">=</span><span class="va">leuk</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call:</span></span>
 <span><span class="co">## survdiff(formula = Surv(time, cens) ~ group, data = leuk)</span></span>

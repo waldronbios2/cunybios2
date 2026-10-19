@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Session 8 lab exercise: What it's about • session8</title>
+<title>Session 8 lab exercise: Survival Analysis part 3 • session8</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Session 8 lab exercise: What it's about">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Session 8 lab exercise: Survival Analysis part 3">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-176789980-1"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -79,7 +79,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Session 8 lab exercise: What it's about</h1>
+      <h1>Session 8 lab exercise: Survival Analysis part 3</h1>
                         <h4 data-toc-skip class="author">Levi
 Waldron</h4>
             
@@ -94,9 +94,11 @@ Waldron</h4>
 <ol style="list-style-type: decimal">
 <li>Make stratified and unstratified Kaplan-Meier plots</li>
 <li>Perform Cox proportional hazards regression</li>
-<li>Assess proportional hazards assumption</li>
+<li>Assess the proportional hazards assumption</li>
+<li>Use residuals to check the fit of a Cox model</li>
+<li>Fit multivariable Cox models, perform tests for trend, and predict
+survival for specific covariate patterns</li>
 </ol>
-<p><strong>Exercises</strong></p>
 <div class="section level2">
 <h2 id="load-the-primary-biliary-cirrhosis-pbc-dataset-from-the-survival-package">Load the Primary Biliary Cirrhosis (pbc) dataset from the survival
 package<a class="anchor" aria-label="anchor" href="#load-the-primary-biliary-cirrhosis-pbc-dataset-from-the-survival-package"></a>
@@ -104,17 +106,19 @@ package<a class="anchor" aria-label="anchor" href="#load-the-primary-biliary-cir
 <ul>
 <li>Mayo Clinic trial in primary biliary cirrhosis (PBC) of the liver
 conducted between 1974 and 1984,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>424</mn></mrow><annotation encoding="application/x-tex">n=424</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>418</mn></mrow><annotation encoding="application/x-tex">n=418</annotation></semantics></math>
 patients.</li>
 <li>Randomized placebo controlled trial of the drug D-penicillamine.
 <ul>
-<li>312 cases from RCT, plus additional 112 not from RCT.</li>
+<li>312 cases from RCT, plus additional 106 not from RCT.</li>
 </ul>
 </li>
 <li>Primary outcome is (censored) time to death</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html" class="external-link">survminer</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">pbc</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        id             time          status            trt       </span></span>
@@ -162,90 +166,83 @@ patients.</li>
 <h2 id="create-a-surv-object-using-variables-time-and-status-add-this-to-the-pbc-dataframe">Create a <code>Surv</code> object using variables “time” and
 “status”, add this to the pbc dataframe<a class="anchor" aria-label="anchor" href="#create-a-surv-object-using-variables-time-and-status-add-this-to-the-pbc-dataframe"></a>
 </h2>
-<p>Here “1” are patients who received transplants, and are thus removed
-from risk of death, at least due to liver cirrhosis. Transplantation may
-thus be related to risk, and not qualify as uninformative censoring. It
-could actually be considered a “competing hazard” because high-risk
-patients may be prioritized for liver transplant - a topic we don’t get
-to in this course. Instead, we will simply treat 0 (end of study) and 1
-as censored, 2 (death) as an event.</p>
+<p><code>status</code> is coded 0 = censored (alive at end of study), 1
+= liver transplant, and 2 = dead. Patients who received transplants are
+removed from risk of death, at least due to liver cirrhosis.
+Transplantation may thus be related to risk, and not qualify as
+uninformative censoring. It could actually be considered a “competing
+risk” because high-risk patients may be prioritized for liver transplant
+(see the end of the lecture). Instead, we will simply treat 0 and 1 as
+censored, and 2 (death) as an event.</p>
+<p>We also keep only the 312 participants in the RCT, who have a
+non-missing treatment assignment <code>trt</code> (1 = D-penicillamine,
+2 = placebo), and recode it as a factor with placebo as the reference
+group, as in the lecture. <code>stage</code> and <code>edema</code> are
+converted to factors for later use.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'dplyr'</span></span></code></pre>
-<pre><code><span><span class="co">## The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     filter, lag</span></span></code></pre>
-<pre><code><span><span class="co">## The following objects are masked from 'package:base':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     intersect, setdiff, setequal, union</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pbc2</span> <span class="op">&lt;-</span> <span class="va">pbc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>cens <span class="op">=</span> <span class="va">status</span> <span class="op">&gt;</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">trt</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>death <span class="op">=</span> <span class="va">status</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">death</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">trt</span>, levels <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"placebo"</span>, <span class="st">"D-penicillamine"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         stage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">stage</span><span class="op">)</span>,</span>
+<span>         edema <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">edema</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">pbc2</span><span class="op">$</span><span class="va">arm</span>, <span class="va">pbc2</span><span class="op">$</span><span class="va">death</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                  </span></span>
+<span><span class="co">##                   FALSE TRUE</span></span>
+<span><span class="co">##   placebo            94   60</span></span>
+<span><span class="co">##   D-penicillamine    93   65</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="plot-a-km-curve-for-all-participants-using-librarysurvminer-function-ggsurvplot-">Plot a KM curve for all participants using
 <code>library(survminer)</code> function <code>ggsurvplot()</code>.<a class="anchor" aria-label="anchor" href="#plot-a-km-curve-for-all-participants-using-librarysurvminer-function-ggsurvplot-"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html" class="external-link">survminer</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Loading required package: ggplot2</span></span></code></pre>
-<pre><code><span><span class="co">## Loading required package: ggpubr</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'survminer'</span></span></code></pre>
-<pre><code><span><span class="co">## The following object is masked from 'package:survival':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     myeloma</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">pbc2</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit</span>, xlab <span class="op">=</span> <span class="st">"Time (days)"</span>, ylab <span class="op">=</span> <span class="st">"Survival Probability"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="stratify-by-treatment-and-add-a-p-value-to-this-plot-see-ggsurvplot-">Stratify by treatment and add a p-value to this plot (see
 <code>?ggsurvplot</code>).<a class="anchor" aria-label="anchor" href="#stratify-by-treatment-and-add-a-p-value-to-this-plot-see-ggsurvplot-"></a>
 </h2>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">pbc2</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit2</span>, pval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">arm</span>, data <span class="op">=</span> <span class="va">pbc2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit2</span>, pval <span class="op">=</span> <span class="cn">TRUE</span>, xlab <span class="op">=</span> <span class="st">"Time (days)"</span>, ylab <span class="op">=</span> <span class="st">"Survival Probability"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="check-whether-these-p-values-correspond-to-results-from-a-log-rank-test-">Check whether these p-values correspond to results from a log-rank
 test.<a class="anchor" aria-label="anchor" href="#check-whether-these-p-values-correspond-to-results-from-a-log-rank-test-"></a>
 </h2>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survdiff</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">pbc2</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survdiff</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">arm</span>, data <span class="op">=</span> <span class="va">pbc2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call:</span></span>
-<span><span class="co">## survdiff(formula = y ~ trt, data = pbc2)</span></span>
+<span><span class="co">## survdiff(formula = y ~ arm, data = pbc2)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## n=312, 106 observations deleted due to missingness.</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##         N Observed Expected (O-E)^2/E (O-E)^2/V</span></span>
-<span><span class="co">## trt=1 158       65     63.2    0.0502     0.102</span></span>
-<span><span class="co">## trt=2 154       60     61.8    0.0513     0.102</span></span>
+<span><span class="co">##                       N Observed Expected (O-E)^2/E (O-E)^2/V</span></span>
+<span><span class="co">## arm=placebo         154       60     61.8    0.0513     0.102</span></span>
+<span><span class="co">## arm=D-penicillamine 158       65     63.2    0.0502     0.102</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Chisq= 0.1  on 1 degrees of freedom, p= 0.7</span></span></code></pre>
 </div>
 <div class="section level2">
-<h2 id="perform-a-cox-proportional-hazards-regression-using-the-trt-variable-as-a-predictor-">Perform a Cox proportional hazards regression, using the “trt”
-variable as a predictor.<a class="anchor" aria-label="anchor" href="#perform-a-cox-proportional-hazards-regression-using-the-trt-variable-as-a-predictor-"></a>
+<h2 id="perform-a-cox-proportional-hazards-regression-using-the-treatment-arm-as-a-predictor-">Perform a Cox proportional hazards regression, using the treatment
+arm as a predictor.<a class="anchor" aria-label="anchor" href="#perform-a-cox-proportional-hazards-regression-using-the-treatment-arm-as-a-predictor-"></a>
 </h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fitcox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">pbc2</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fitcox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">arm</span>, data <span class="op">=</span> <span class="va">pbc2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fitcox</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call:</span></span>
-<span><span class="co">## coxph(formula = y ~ trt, data = pbc2)</span></span>
+<span><span class="co">## coxph(formula = y ~ arm, data = pbc2)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##   n= 312, number of events= 125 </span></span>
-<span><span class="co">##    (106 observations deleted due to missingness)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##         coef exp(coef) se(coef)      z Pr(&gt;|z|)</span></span>
-<span><span class="co">## trt -0.05722   0.94438  0.17916 -0.319    0.749</span></span>
+<span><span class="co">##                       coef exp(coef) se(coef)     z Pr(&gt;|z|)</span></span>
+<span><span class="co">## armD-penicillamine 0.05722   1.05889  0.17916 0.319    0.749</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##     exp(coef) exp(-coef) lower .95 upper .95</span></span>
-<span><span class="co">## trt    0.9444      1.059    0.6647     1.342</span></span>
+<span><span class="co">##                    exp(coef) exp(-coef) lower .95 upper .95</span></span>
+<span><span class="co">## armD-penicillamine     1.059     0.9444    0.7453     1.504</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Concordance= 0.499  (se = 0.025 )</span></span>
 <span><span class="co">## Likelihood ratio test= 0.1  on 1 df,   p=0.7</span></span>
@@ -253,28 +250,90 @@ variable as a predictor.<a class="anchor" aria-label="anchor" href="#perform-a-c
 <span><span class="co">## Score (logrank) test = 0.1  on 1 df,   p=0.7</span></span></code></pre>
 </div>
 <div class="section level2">
-<h2 id="create-a-log-minus-log-plot-to-test-the-proportional-hazards-assumption-">Create a log-minus-log plot to test the proportional hazards
-assumption.<a class="anchor" aria-label="anchor" href="#create-a-log-minus-log-plot-to-test-the-proportional-hazards-assumption-"></a>
+<h2 id="create-a-log-minus-log-plot-to-assess-the-proportional-hazards-assumption-">Create a log-minus-log plot to assess the proportional hazards
+assumption.<a class="anchor" aria-label="anchor" href="#create-a-log-minus-log-plot-to-assess-the-proportional-hazards-assumption-"></a>
 </h2>
-<p>Using a simpler method from survminer:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html" class="external-link">survminer</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit2</span>, fun <span class="op">=</span> <span class="st">"cloglog"</span><span class="op">)</span></span></code></pre></div>
+<p><code>fun = "cloglog"</code> plots
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>S</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\log(-\log(\hat S(t)))</annotation></semantics></math>
+against time on a log scale. Under proportional hazards, the curves for
+the two arms should be roughly parallel.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">fit2</span>, fun <span class="op">=</span> <span class="st">"cloglog"</span>, xlab <span class="op">=</span> <span class="st">"Time (days, log scale)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="plot-schoenfeld-residuals-and-perform-schoenfeld-test-for-the-above-cox-model">Plot Schoenfeld residuals and perform Schoenfeld test for the above
 Cox model<a class="anchor" aria-label="anchor" href="#plot-schoenfeld-residuals-and-perform-schoenfeld-test-for-the-above-cox-model"></a>
 </h2>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitzph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/cox.zph.html" class="external-link">cox.zph</a></span><span class="op">(</span><span class="va">fitcox</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fitzph</span><span class="op">)</span></span></code></pre></div>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="700"></p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitzph</span></span></code></pre></div>
 <pre><code><span><span class="co">##        chisq df    p</span></span>
-<span><span class="co">## trt    0.612  1 0.43</span></span>
+<span><span class="co">## arm    0.612  1 0.43</span></span>
 <span><span class="co">## GLOBAL 0.612  1 0.43</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h2>
+<div class="section level3">
+<h3 id="exercise-1-martingale-and-deviance-residuals">Exercise 1: Martingale and deviance residuals<a class="anchor" aria-label="anchor" href="#exercise-1-martingale-and-deviance-residuals"></a>
+</h3>
+<p>Fit the Cox model
+<code>coxph(y ~ age + edema + arm, data = pbc2)</code>. As in the
+lecture, plot its Martingale residuals
+(<code>residuals(..., type = "martingale")</code>) and deviance
+residuals (<code>residuals(..., type = "deviance")</code>) against
+follow-up time, with a horizontal line at zero and a smoother, for
+example with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point()</a></code>,
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline()</a></code>, and <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth()</a></code>.</p>
+<ol style="list-style-type: decimal">
+<li>What is the largest possible value of a Martingale residual, and
+why? Which of the two types of residual is more symmetrically
+distributed about zero?</li>
+<li>Find the 5 patients with the largest absolute deviance residuals,
+and look at their <code>time</code>, <code>death</code>,
+<code>age</code>, <code>edema</code>, and <code>arm</code>. Why does the
+model predict these patients poorly?</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="exercise-2-test-for-trend-across-stage">Exercise 2: Test for trend across stage<a class="anchor" aria-label="anchor" href="#exercise-2-test-for-trend-across-stage"></a>
+</h3>
+<p>Fit a Cox model with histologic <code>stage</code> as an unordered
+factor, then refit it with <code>stage</code> as an ordered factor
+(<code>factor(stage, ordered = TRUE)</code>), as in the lecture. In the
+ordered model, the <code>.L</code>, <code>.Q</code>, and <code>.C</code>
+terms are the linear, quadratic, and cubic trends across the four
+stages. Is there evidence for a linear trend in the log hazard across
+stage? For a non-linear trend?</p>
+</div>
+<div class="section level3">
+<h3 id="exercise-3-multivariable-model-and-predicted-survival">Exercise 3: Multivariable model and predicted survival<a class="anchor" aria-label="anchor" href="#exercise-3-multivariable-model-and-predicted-survival"></a>
+</h3>
+<p>Fit a multivariable Cox model
+<code>coxph(y ~ age + edema + stage + arm, data = pbc2)</code> and
+report the adjusted hazard ratios with 95% confidence intervals. Check
+the proportional hazards assumption for every term with
+<code><a href="https://rdrr.io/pkg/survival/man/cox.zph.html" class="external-link">cox.zph()</a></code>; does any term appear to violate it? Finally,
+predict and plot survival curves for two patients who are both 50 years
+old, with no edema, and in the placebo arm: one in stage 1 and one in
+stage 4.</p>
+<p><em>Hint</em>: Create the covariate patterns with a
+<code>data.frame</code> whose factor levels match the data, then pass it
+to <code><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit()</a></code>:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">newpatients</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>,</span>
+<span>  edema <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"0"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">pbc2</span><span class="op">$</span><span class="va">edema</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  stage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"4"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">pbc2</span><span class="op">$</span><span class="va">stage</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  arm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"placebo"</span>, <span class="st">"placebo"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">pbc2</span><span class="op">$</span><span class="va">arm</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">predfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="va">fitmulti</span>, newdata <span class="op">=</span> <span class="va">newpatients</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">predfit</span>, data <span class="op">=</span> <span class="va">newpatients</span>, legend.labs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Stage 1"</span>, <span class="st">"Stage 4"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

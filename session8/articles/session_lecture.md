@@ -113,9 +113,6 @@ Rename variables of simulated data, and make one variable categorical:
 
 ### Kaplan-Meier plot of simulated data, stratified by Var1
 
-    ## Ignoring unknown labels:
-    ## • colour : "Strata"
-
 ![](session_lecture_files/figure-html/unnamed-chunk-4-1.png)
 
 ### Martingale residuals
@@ -136,12 +133,32 @@ Rename variables of simulated data, and make one variable categorical:
 
 ![](session_lecture_files/figure-html/unnamed-chunk-5-1.png)
 
+### Why do the smoothed residuals decrease with time?
+
+- The estimated cumulative hazard $`H(t_i)`$ increases with follow-up
+  time $`t_i`$
+- Short times are mostly early events: $`c_i = 1`$ and $`H(t_i)`$ is
+  small, so residuals are close to 1
+- Long times are mostly censored subjects: $`c_i = 0`$ and $`H(t_i)`$ is
+  large, so residuals are negative
+- Time is part of the outcome, so this trend is expected even when the
+  model fits well
+  - Look instead for outlying residuals, or plot residuals against a
+    covariate
+
+### Martingale residuals vs a covariate
+
+- Left: model *without* `Var2`. The smoother’s shape suggests the
+  functional form of `Var2` (here linear)
+- Right: model with `Var2`. The smoother should be flat
+  ![](session_lecture_files/figure-html/unnamed-chunk-6-1.png)
+
 ### Deviance residuals in simulated data
 
 - Deviance residuals are scaled Martingale residuals
 - Should be more symmetrically distributed about zero?
 - Observations with large deviance residuals are poorly predicted by the
-  model ![](session_lecture_files/figure-html/unnamed-chunk-6-1.png)
+  model ![](session_lecture_files/figure-html/unnamed-chunk-7-1.png)
 
 ### Schoenfeld residuals
 
@@ -156,7 +173,7 @@ Rename variables of simulated data, and make one variable categorical:
 
 ### Schoenfeld residuals for simulated data
 
-![](session_lecture_files/figure-html/unnamed-chunk-7-1.png)
+![](session_lecture_files/figure-html/unnamed-chunk-8-1.png)
 
 ### Schoenfeld test for proportional hazards
 
@@ -177,13 +194,13 @@ Rename variables of simulated data, and make one variable categorical:
 
 ### The hazard function h(t), stratified by Var1
 
-![](session_lecture_files/figure-html/unnamed-chunk-9-1.png)
+![](session_lecture_files/figure-html/unnamed-chunk-10-1.png)
 
 ### Log-minus-log plot
 
 - Used to check proportional hazards assumption
 
-![](session_lecture_files/figure-html/unnamed-chunk-10-1.png)
+![](session_lecture_files/figure-html/unnamed-chunk-11-1.png)
 
 ### Example: Primary Biliary Cirrhosis (PBC)
 
@@ -195,7 +212,7 @@ Rename variables of simulated data, and make one variable categorical:
 
 ### Kaplan-Meier plot of treatment and placebo arms
 
-![](session_lecture_files/figure-html/unnamed-chunk-12-1.png)![](session_lecture_files/figure-html/unnamed-chunk-12-2.png)
+![](session_lecture_files/figure-html/unnamed-chunk-13-1.png)![](session_lecture_files/figure-html/unnamed-chunk-13-2.png)
 
 ## Tests for trend
 
@@ -207,7 +224,7 @@ Rename variables of simulated data, and make one variable categorical:
     coefficients and their order?
   - Test by LRT or Wald Test
 
-![](session_lecture_files/figure-html/unnamed-chunk-13-1.png)
+![](session_lecture_files/figure-html/unnamed-chunk-14-1.png)
 
 ### Fitting a test for trend in R
 
@@ -250,14 +267,16 @@ Highly significant tests of overall fit by LRT, Wald, and logrank test.
 
 - The Cox model is a *relative* risk model
   - only predicts relative risks between pairs of subjects
-- Key is to calculate the overall $`S(t)`$, then multiply it by the
-  relative hazard for the specific covariate pattern.
-- In this example we plot the baseline survival for all stages together,
-  then for stages 1-4 separately.
+- Key is to calculate the baseline survival $`S_0(t)`$ for a reference
+  covariate pattern, then raise it to the power of the hazard ratio for
+  the specific covariate pattern: $`S(t|x) = S_0(t)^{\exp(\beta x)}`$
+- In this example the baseline is stage 1 (the reference level), and we
+  plot predicted survival for stages 1-4, plus the Kaplan-Meier curve
+  for all patients together.
 
 ### Predicted survival for specific covariate patterns
 
-![](session_lecture_files/figure-html/unnamed-chunk-15-1.png)
+![](session_lecture_files/figure-html/unnamed-chunk-16-1.png)
 
 ### Multivariate regression
 
@@ -343,7 +362,7 @@ Highly significant tests of overall fit by LRT, Wald, and logrank test.
   [S_{stage=1}(t)]^{exp(\beta_{stage=4})}
   ```
 
-![](session_lecture_files/figure-html/unnamed-chunk-19-1.png)
+![](session_lecture_files/figure-html/unnamed-chunk-20-1.png)
 
 ## Stratification
 
@@ -497,7 +516,8 @@ Trials, 26(5), 569–585.
   methods for bias reduction in the comparison of a treatment to a
   non-randomized control group. Stat. Med. 17, 2265-2281.
   <http://www.stat.ubc.ca/~john/papers/DAgostinoSIM1998.pdf>
-- You don’t need any special package to do basic propensity score
-  matching (e.g. stratifying by quintiles), but the
-  [MatchIt](https://cran.r-project.org/package=MatchIt) package provides
-  multiple matching approaches, diagnostics, good documentation
+
+You don’t need any special package to do basic propensity score matching
+(e.g. stratifying by quintiles), but the
+[MatchIt](https://cran.r-project.org/package=MatchIt) package provides
+multiple matching approaches, diagnostics, good documentation
