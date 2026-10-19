@@ -21,21 +21,37 @@ always_allow_html: true
 3. Perform and interpret log-rank test
 4. Define "informative" censoring
 
-**Exercises**
+# Load the leukemia 6 MP clinical trial dataset
 
-1. Calculate the follow-up table for 6 MP patients in the leukemia study
+In this dataset, `time` is weeks until relapse or censoring, and `cens` is the event indicator: 1 if the patient relapsed and 0 if they were censored. Despite its name, `cens = 1` means an *event*, not a censored observation. We set Placebo as the reference group.
 
-```{r}
-library(readr)
-leuk <- read_csv("leuk.csv")
-```
-
-2. Plot the Kaplan-Meier estimate of the follow-up table from 1. `library(survminer)` is recommendable. 
-
-```{r}
+```{r, message=FALSE}
+library(tidyverse)
 library(survival)
 library(survminer)
+leuk <- read_csv("leuk.csv") %>%
+  mutate(group = factor(group, levels = c("Placebo", "6 MP")))
+table(leuk$group, leuk$cens)
+```
+
+`Surv()` combines time and event status into a single outcome. Censored times are printed with a `+`:
+
+```{r}
 with(leuk, Surv(time, cens))
+```
+
+# Calculate the follow-up table for 6 MP patients
+
+`summary()` of a `survfit` object gives the follow-up table: at each event time, the number at risk, the number of events, and the Kaplan-Meier estimate of survival with its 95% confidence interval. Compare this to the follow-up table in the lecture.
+
+```{r}
+fit6mp <- survfit(Surv(time, cens) ~ 1, data = filter(leuk, group == "6 MP"))
+summary(fit6mp)
+```
+
+# Plot the Kaplan-Meier estimate for both groups
+
+```{r}
 fit <- survminer::surv_fit(Surv(time, cens) ~ group, data = leuk)
 survminer::ggsurvplot(fit,
            xlab = "Time (weeks)",
@@ -43,41 +59,74 @@ survminer::ggsurvplot(fit,
            risk.table = TRUE)
 ```
 
+# What is the time by which 25% of patients in each group have relapsed?
 
-3. What is the 75th percentile of survival times for the 6 MP group? For the Placebo group? This is the time that 75% of the patients survive. This is also the time at which 25% of patients have had events.
+This is the time at which the estimated survival probability drops to 75%. `quantile()` of a `survfit` object returns quantiles of the *event time* distribution, so this is the `25` column: the time by which 25% of patients have had an event, and 75% are still event-free.
 
 ```{r}
 quantile(fit)
 ```
 
+25% of 6 MP patients had relapsed by `r quantile(fit)$quantile["group=6 MP", "25"]` weeks, compared to `r quantile(fit)$quantile["group=Placebo", "25"]` weeks for Placebo patients. The `75` column is `NA` for the 6 MP group because the Kaplan-Meier estimate never drops below 25% survival before follow-up ends.
+
+# Perform a log-rank test comparing the two groups
+
 ```{r}
 survdiff(Surv(time, cens) ~ group, data = leuk)
 ```
 
-4. Suppose you were instructed to cap follow-up times at 20 weeks. Re-do the Kaplan-Meier plot for both groups, and re-do the logrank test.
+# Cap follow-up times at 20 weeks
+
+Suppose you were instructed to cap follow-up times at 20 weeks. Anyone still event-free at 20 weeks becomes censored at 20 weeks, and events after 20 weeks are no longer counted.
 
 ```{r}
-library(tidyverse)
-leuknew <- leuk %>% mutate(newtime = pmin(time, 20)) %>% 
+leuknew <- leuk %>%
+  mutate(newtime = pmin(time, 20)) %>%
   mutate(newcens = ifelse(time <= 20, cens, 0))
 ```
 
-Kaplan-Meier plot
+Kaplan-Meier plot:
+
 ```{r}
-fit <- survminer::surv_fit(Surv(newtime, newcens) ~ group, data = leuknew)
-survminer::ggsurvplot(fit,
+fit20 <- survminer::surv_fit(Surv(newtime, newcens) ~ group, data = leuknew)
+survminer::ggsurvplot(fit20,
            xlab = "Time (weeks)",
            ylab = "Survival Probability",
            risk.table = TRUE)
 ```
 
-Logrank test
+Log-rank test:
+
 ```{r logrank}
 survdiff(Surv(newtime, newcens) ~ group, data = leuknew)
 ```
 
-
-5. Give a hypothetical example of how censoring in this example might be "informative."
+# Give a hypothetical example of how censoring in this example might be "informative."
 
 If sicker patients were moved to another hospital where they weren't followed up on, and were also more likely to relapse, this would be informative censoring.
 
+# Exercises
+
+## Exercise 1: Median survival and median potential follow-up time
+
+Using the uncapped data, find the median survival time and its 95% confidence interval for each group by printing `fit`. Then estimate the median *potential* follow-up time for each group using the reverse Kaplan-Meier method from the lecture, where censoring is treated as the "event": `survfit(Surv(time, 1 - cens) ~ group, data = leuk)`. Why is the median potential follow-up time `NA` for the Placebo group? Is there any reason to believe potential follow-up differed between the two arms of this trial?
+
+```{r}
+
+```
+
+## Exercise 2: Cumulative event function
+
+Plot the cumulative event function $1 - S(t)$ for both groups by adding `fun = "event"` to `ggsurvplot()`. Using `summary(fit, times = 10)`, estimate the proportion of patients in each group who had relapsed by 10 weeks.
+
+```{r}
+
+```
+
+## Exercise 3: Effect of capping follow-up
+
+Compare the log-rank test from the uncapped data to the one capped at 20 weeks. How did the observed and expected numbers of events, and the chi-square statistic, change? Explain why capping follow-up changed the result, even though the Kaplan-Meier curves before 20 weeks are identical.
+
+```{r}
+
+```
