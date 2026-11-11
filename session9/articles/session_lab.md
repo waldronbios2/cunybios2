@@ -8,6 +8,8 @@
 4.  Do a manual ICC calculation
 5.  Write a function
 6.  Perform a permutation simulation
+7.  Account for subject in a two-way ANOVA, and test effects with
+    permutation
 
 **Exercises**
 
@@ -174,3 +176,27 @@ observations are not independent.
 [`sum`](https://rdrr.io/r/base/sum.html)`(``simresults`` ``>`` ``ICCfun``(``dat``)``)`
 
     ## [1] 0
+
+## Exercises
+
+### Exercise 1: Permutation test for pill type
+
+The simulation above shuffles subjects within each pill type, so it
+tests the null hypothesis that there is no subject effect (ICC = 0).
+
+1.  Calculate a permutation p-value from `simresults`, as (number of
+    simulated ICCs at least as large as the observed ICC + 1) / (999 +
+    1). Why do we add 1 to the numerator and denominator?
+
+2.  Now test for a pill type effect instead. Write a function that
+    returns the F statistic for pill type from the two-way ANOVA, and
+    another that shuffles `pilltype` *within* each subject. Repeat the
+    shuffle 999 times, and calculate a permutation p-value for the
+    observed F statistic. Compare it to the p-value for pill type from
+    the two-way ANOVA in Exercise 1. Why do we shuffle pill type within
+    subject, instead of across the whole dataset?
+
+*Hint*: `anova(fit)["pilltype", "F value"]` extracts the F statistic,
+and
+`dat %>% group_by(subject) %>% mutate(pilltype = sample(pilltype)) %>% ungroup()`
+shuffles pill type within subject.

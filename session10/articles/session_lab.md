@@ -12,6 +12,9 @@
 6.  Make QQ plots for mixed-effects models
 7.  Calculate ICC from a random or mixed-effects model
 8.  Fit a population average model, aka marginal model, using GEE
+9.  Fit and test a random slope model
+10. Compare subject-specific and population-average estimates for a
+    binary outcome
 
 **Exercises**
 
@@ -478,3 +481,19 @@ birthweight dataset.
 `  `[`pheatmap`](https://rdrr.io/pkg/pheatmap/man/pheatmap.html)`(``clustering_distance_rows ``=`` ``"correlation"``, clustering_distance_cols ``=`` ``"correlation"``, scale ``=`` ``"column"``)`
 
 ![](session_lab_files/figure-html/unnamed-chunk-18-1.png)
+
+## Exercises
+
+### Exercise 1: ICC of birth weights within mothers
+
+Use `ICClme()` to estimate the ICC from the random intercept model
+`gafit1`, and interpret it in a sentence. Then calculate the correlation
+matrix of birth weights across the five birth orders, using a
+wide-format dataset as for the heatmap above.
+
+1.  How does the average of the pairwise correlations compare to the
+    ICC?
+2.  An exchangeable correlation structure assumes all pairs of births
+    from the same mother are equally correlated, while an AR-1 structure
+    assumes that correlations decrease as births are further apart.
+    Which one do these correlations look more consistent with?
